@@ -4,7 +4,7 @@
 |---|---|
 | 起票日 | 2026-08-26 |
 | 依頼者 | scarab@superior.co.jp |
-| 対応者 | GitHub Organization `fujiwara-superior` の Owner（または GitHub App 管理権限保有者） |
+| 対応者 | GitHub アカウント `fujiwara-superior` の管理者（不明な場合は §3 の特定方法を参照） |
 | 対象リポジトリ | **`fujiwara-superior/-`**（リポジトリ名はハイフン1文字） |
 | 緊急度 | 中（作業成果物がリモートに保存できない状態） |
 | 想定作業時間 | 5分程度 |
@@ -48,7 +48,26 @@ fatal: unable to access 'https://github.com/fujiwara-superior/-/': The requested
 
 ---
 
-## 3. 対応手順
+## 3. 対応者が分からない場合の特定方法
+
+権限を付与できるのは **GitHub アカウント `fujiwara-superior` を管理している人物**です。社内の誰が該当するか不明な場合は、次の順に確認してください。
+
+> ⚠️ **重要 — 個人アカウントの可能性**
+> リポジトリの初期コミット（2021-06-23）の作成者が `fujiwara-superior`（GitHub ユーザー ID `86355934`）本人であることから、これは **Organization ではなく個人アカウントである可能性が高い**と考えられます。その場合、対応者は「社内の GitHub 管理者」ではなく **この GitHub ログインを作成・保有している本人**です。
+
+1. **アカウントの種別を確認する** — `https://github.com/fujiwara-superior` を開く。
+   - 「People」タブや Organization の表示がある → **Organization**。次の項目へ。
+   - 個人プロフィール（Repositories / Projects などのタブのみ）→ **個人アカウント**。そのログインの保有者が対応者です。
+2. **Organization の場合** — People タブを開き、Role で **Owner** を絞り込む。表示されたメンバーが権限保有者です。
+3. **それでも分からない場合** — 次のいずれかを手がかりにする。
+   - リポジトリを 2021 年 6 月に作成した本人（社内で最初に GitHub を導入した担当者）
+   - GitHub の請求・支払いを担当している部署
+   - アカウント名から推測される担当者（`fujiwara-superior`）
+4. **ご自身が該当する場合** — そのまま手順 A・B を実施してください。他者への依頼は不要です。
+
+---
+
+## 4. 対応手順
 
 ### 手順A（本命）— GitHub App のインストール／対象リポジトリの追加
 
@@ -91,7 +110,7 @@ fatal: unable to access 'https://github.com/fujiwara-superior/-/': The requested
 
 ---
 
-## 4. 完了確認の方法
+## 5. 完了確認の方法
 
 **管理者側での確認：**
 
@@ -106,7 +125,7 @@ fatal: unable to access 'https://github.com/fujiwara-superior/-/': The requested
 
 ---
 
-## 5. 完了時にご連絡いただきたい内容
+## 6. 完了時にご連絡いただきたい内容
 
 以下を依頼者へお知らせください。
 
@@ -117,7 +136,23 @@ fatal: unable to access 'https://github.com/fujiwara-superior/-/': The requested
 
 ---
 
-## 6. 補足事項
+## 7. 権限付与を待たずに作業を確定させる回避策
+
+この 403 は **GitHub App「Claude」の権限**の問題であり、**利用者ご自身の GitHub アカウントの権限とは別**です。ご自身のアカウントに書き込み権限があれば、手元の PC から push できます。
+
+```bash
+git clone https://github.com/fujiwara-superior/-.git
+cd -
+git checkout -b claude/showa-spring-proposal-euikzw
+git am /path/to/0001-*.patch /path/to/0002-*.patch
+git push -u origin claude/showa-spring-proposal-euikzw
+```
+
+コミット履歴の再現が不要であれば、受け取った 2 つの Markdown ファイルを GitHub の Web 画面から直接アップロードするだけでも構いません。
+
+---
+
+## 8. 補足事項
 
 - 本件で push する内容は、顧客提案用の Markdown ドキュメント 1ファイルのみです。既存のコード・設定への変更は含まれません。
 - Repository access を **Only select repositories** に絞る運用でも問題ありません。その場合、今後 Claude Code で扱うリポジトリが増えるたびに同様の追加作業が必要になります。
