@@ -91,9 +91,9 @@ p{margin:0 0 14px}
 
 /* summary bullets */
 ul.tight{list-style:none;margin:0;padding:0;display:grid;gap:11px}
-ul.tight>li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:baseline;font-size:14.5px}
-ul.tight>li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--blue);
-  transform:translateY(-3px)}
+ul.tight>li{position:relative;padding-left:17px;font-size:14.5px}
+ul.tight>li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:5px;
+  border-radius:50%;background:var(--blue)}
 ul.tight>li b{font-weight:700}
 
 /* ---- structure diagram ---- */
@@ -172,9 +172,8 @@ td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:now
   padding:15px 0 0 14px}
 .q-b{padding:14px 16px 15px 4px}
 .q-t{font-size:14.5px;font-weight:500;line-height:1.7;margin:0 0 5px}
-.q-w{font-size:12.5px;color:var(--muted);line-height:1.65;margin:0;
-  display:grid;grid-template-columns:auto 1fr;gap:7px;align-items:baseline}
-.q-w::before{content:"→";color:var(--rose);font-family:var(--mono);font-size:11px}
+.q-w{font-size:12.5px;color:var(--muted);line-height:1.65;margin:0;position:relative;padding-left:16px}
+.q-w::before{content:"→";position:absolute;left:0;top:0;color:var(--rose);font-family:var(--mono);font-size:11px}
 .q.key .q-t{color:var(--ink)}
 .q.key{background:linear-gradient(90deg,var(--rose-soft) 0 3px,transparent 3px)}
 
@@ -187,18 +186,18 @@ td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:now
 .call p:last-child{margin-bottom:0}
 
 ol.steps{margin:0;padding-left:0;list-style:none;counter-reset:s;display:grid;gap:12px}
-ol.steps>li{counter-increment:s;display:grid;grid-template-columns:26px 1fr;gap:12px;font-size:14px}
-ol.steps>li::before{content:counter(s);font-family:var(--mono);font-size:11px;font-weight:600;
-  color:var(--blue);background:var(--blue-soft);border-radius:2px;height:20px;display:grid;
-  place-items:center;transform:translateY(3px)}
+ol.steps>li{counter-increment:s;position:relative;padding-left:38px;font-size:14px}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:.28em;font-family:var(--mono);
+  font-size:11px;font-weight:600;color:var(--blue);background:var(--blue-soft);border-radius:2px;
+  width:26px;height:20px;display:grid;place-items:center}
 
 ul.plain{margin:0;padding-left:1.15em;font-size:14px}
 ul.plain li{margin-bottom:8px}
 
 .checklist{display:grid;gap:9px;list-style:none;margin:0;padding:0;font-size:14px}
-.checklist li{display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:baseline}
-.checklist li::before{content:"";width:11px;height:11px;border:1.5px solid var(--line-strong);
-  border-radius:2px;transform:translateY(1px)}
+.checklist li{position:relative;padding-left:23px}
+.checklist li::before{content:"";position:absolute;left:0;top:.42em;width:11px;height:11px;
+  border:1.5px solid var(--line-strong);border-radius:2px}
 
 footer{border-top:1px solid var(--line);margin-top:60px;padding:28px 0 60px;
   font-size:12.5px;color:var(--muted)}
@@ -208,6 +207,22 @@ footer ul{margin:0;padding-left:1.1em;display:grid;gap:5px}
 footer a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-strong)}
 footer a:hover{color:var(--blue)}
 .disclaim{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);line-height:1.7;max-width:70ch}
+
+/* --- pre-meeting email & remote-specific --- */
+.mailwrap{border:1px solid var(--line-strong);border-radius:3px;overflow:hidden;background:var(--surface)}
+.mailhdr{background:var(--surface-2);border-bottom:1px solid var(--line);padding:13px 16px;
+  display:grid;gap:6px;font-size:12.5px}
+.mailhdr>div{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:baseline}
+.mailhdr>div>span:first-child{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--muted)}
+.mailhdr>div>span:last-child{color:var(--ink);font-weight:500;word-break:break-all}
+.mailbody{padding:20px;font-size:13.5px;line-height:2;white-space:pre-wrap;color:var(--ink);
+  max-height:none;overflow-x:auto}
+.share{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:.08em;
+  padding:1px 6px;border-radius:2px;margin-left:9px;vertical-align:2px;font-weight:600}
+.share.on{background:var(--rose-soft);color:var(--rose);border:1px solid var(--rose)}
+.share.off{background:var(--sunk);color:var(--muted);border:1px solid var(--line-strong)}
+.panel>b{font-size:14.5px;line-height:1.6;display:block}
 
 @media print{
   nav.jump{display:none}
@@ -238,14 +253,15 @@ footer a:hover{color:var(--blue)}
       <li><a href="#s2"><span class="n">02</span>会社の全体像</a></li>
       <li><a href="#s3"><span class="n">03</span>事実と推定</a></li>
       <li><a href="#s4"><span class="n">04</span>困りごと仮説</a></li>
-      <li><a href="#s5"><span class="n">05</span>当日の進め方</a></li>
-      <li><a href="#s6"><span class="n">06</span>質問集</a></li>
-      <li><a href="#s7"><span class="n">07</span>痛みの数量化</a></li>
-      <li><a href="#s8"><span class="n">08</span>提案の3段階</a></li>
-      <li><a href="#s9"><span class="n">09</span>打ち手 早見表</a></li>
-      <li><a href="#s10"><span class="n">10</span>その場の台本</a></li>
-      <li><a href="#s11"><span class="n">11</span>地雷</a></li>
-      <li><a href="#s12"><span class="n">12</span>面談後</a></li>
+      <li><a href="#s5"><span class="n">05</span>事前メール</a></li>
+      <li><a href="#s6"><span class="n">06</span>リモートの進め方</a></li>
+      <li><a href="#s7"><span class="n">07</span>質問集</a></li>
+      <li><a href="#s8"><span class="n">08</span>痛みの数量化</a></li>
+      <li><a href="#s9"><span class="n">09</span>提案の3段階</a></li>
+      <li><a href="#s10"><span class="n">10</span>打ち手 早見表</a></li>
+      <li><a href="#s11"><span class="n">11</span>その場の台本</a></li>
+      <li><a href="#s12"><span class="n">12</span>地雷</a></li>
+      <li><a href="#s13"><span class="n">13</span>面談後</a></li>
     </ol>
   </div>
 </nav>
@@ -476,23 +492,214 @@ footer a:hover{color:var(--blue)}
 
 <section id="s5">
   <span class="h2num">05</span>
-  <h2>当日の進め方（90分想定）</h2>
-  <p class="lede">60分なら「会社・事業の確認」を5分に圧縮し、業務フローを描く時間を死守してください。<b>提案スライドは持っていかない</b>のが正解です。持っていくのは白紙のA3とペン。</p>
-  <div class="tl">
-    <div class="tl-row"><div class="tl-t">0-5</div><div class="tl-c"><b>名刺交換・アイスブレイク</b><span>甲良町・湖東の話、創業70年、「ドライヤーン」というネーミングの由来。相手の商品の話から入る。</span></div></div>
-    <div class="tl-row"><div class="tl-t">5-10</div><div class="tl-c"><b>こちらの自己紹介は3分で切る</b><span>「今日は提案に来たのではなく、御社で"時間が溶けている作業"を探しに来ました」と目的を明言。売り込まれる警戒を最初に解く。</span></div></div>
-    <div class="tl-row"><div class="tl-t">10-25</div><div class="tl-c"><b>事業の確認（調べてきた前提のすり合わせ）</b><span>02章の理解をぶつけて訂正してもらう。この15分で「この人は分かっている」と思わせられるかが全体を決める。</span></div></div>
-    <div class="tl-row"><div class="tl-t">25-55</div><div class="tl-c"><b>業務の流れを一緒に描く ← 山場</b><span>A3に「受注 → 生産計画 → 製造 → 検査 → 出荷 → 監査・書類対応」を横に描き、各工程で「誰が」「何を使って」「何回入力するか」を書き込んでいく。相手に描かせず、こちらが描いて確認を取る形が速い。</span></div></div>
-    <div class="tl-row"><div class="tl-t">55-70</div><div class="tl-c"><b>痛みの数量化</b><span>フロー図の中で一番顔が曇った工程に戻り、07章の3点セットを当てる。数字が出たらその場でメモに丸をつけて共有する。</span></div></div>
-    <div class="tl-row"><div class="tl-t">70-80</div><div class="tl-c"><b>現場を見せてもらう依頼</b><span>「見せられる工場」を標榜する会社なので、見学の打診はむしろ喜ばれる可能性が高い。ここで紙の記録・掲示物・端末の有無が一目で分かる。時間が押したら次回でもよい。</span></div></div>
-    <div class="tl-row"><div class="tl-t">80-90</div><div class="tl-c"><b>次につなげる ── 求める合意は「棚卸をさせてください」の一点</b><span>提案でも見積でもなく、<b>業務棚卸の場をもらうこと</b>だけをこの日のゴールにする。「今日伺った◯◯を、2〜3回に分けて工数と金額まで落とさせてください」と言い、<b>その場で次回日程を押さえる</b>。口頭の「また連絡します」で終わらせない。</span></div></div>
+  <h2>事前メールと質問シート</h2>
+  <p class="lede">質問は21問ありますが、<b>全部を送ってはいけません</b>。事前に送るのは「調べれば分かる事実」だけの7問。残りは当日に温存します。理由は下に書きました。</p>
+
+  <div class="call warn">
+    <span class="ct">なぜ21問すべてを送ってはいけないのか</span>
+    <p><b>理由は2つあります。</b>ひとつは単純に、初対面の相手に21問は負担が大きく、回答されないか、埋めやすいものだけ半分返ってくるからです。もうひとつのほうが重要で——Q3「付加価値を生んでいない作業は何ですか」やQ12「前にも同じことを答えた気がしますか」は、<b>その場の表情と間合いから引き出す質問</b>です。メールで書かせると当たり障りのない一文が返ってきて、<b>当日そこを二度と掘れなくなります</b>。事前に取るのは事実だけ。感情と判断は当日に残す。この線引きが事前送付の成否を分けます。</p>
+  </div>
+
+  <h3>送付前の確認事項</h3>
+  <ul class="plain">
+    <li><b>送付先ドメインが山仁産業様のものではありません。</b>customer@aidma-hd.jp は同社（yamani-g.co.jp）のドメインと異なるため、商談を設定された会社を経由している可能性があります。<b>先方に転送される前提</b>で書いてください。具体的には、①<b>添付ファイルを使わず本文に直接書く</b>（転送時に添付が落ちる・開けない事故を防ぐ）②宛名は「岡井様」に加えて山仁産業様のご担当者にも読まれる想定にする。この点は送信前に、経緯をご存じの方に確認されることをおすすめします。</li>
+    <li><b>送信タイミングは9/1(月)の午前中。</b>面談前日です。早すぎると忘れられ、当日朝だと間に合いません。</li>
+    <li><b>回答期限には必ず逃げ道を作る。</b>「9/2午前中まで、難しければ当日口頭でも構いません」。期限だけ切って逃げ道がないと、回答できなかったときに相手が気まずくなり、当日の空気が硬くなります。</li>
+  </ul>
+
+  <h3>メール文面（このまま使えます）</h3>
+  <div class="mailwrap">
+    <div class="mailhdr">
+      <div><span>To</span><span>customer@aidma-hd.jp</span></div>
+      <div><span>宛名</span><span>山仁産業株式会社　岡井様</span></div>
+      <div><span>件名</span><span>【9/2(火) オンライン面談】事前におうかがいしたい7点のご連絡</span></div>
+      <div><span>送信</span><span>9/1(月) 午前</span></div>
+    </div>
+    <div class="mailbody">山仁産業株式会社
+岡井様
+
+お世話になっております。
+株式会社〇〇の〇〇と申します。
+
+9月2日(火)〇時より、オンラインにてお時間をいただき、
+誠にありがとうございます。
+
+当日は限られたお時間ですので、
+基本的な確認だけで終わってしまわないよう、
+事前に7点だけ、簡単におうかがいできればと存じます。
+
+いずれも「だいたいで結構です」という粒度のものですので、
+分かる範囲で箇条書きにてご返信いただければ十分です。
+ご負担なようでしたら、当日口頭でも構いません。
+
+────────────────────
+■ 事前におうかがいしたい7点
+
+1. 従業員数の内訳
+   （製造／品質・品質保証／事務・営業 のおおよその人数）
+
+2. お客様の構成比
+   （医薬品／食品／工業用途／一般消費者向け のおおよその割合）
+
+3. ご注文の受け取り方法と、その比率
+   （FAX／メール／EDI・Web／電話 など）
+
+4. 現在お使いのシステムの名称
+   （販売管理・生産管理・在庫管理・会計 など。
+   　Excel中心の場合は、その旨で結構です）
+
+5. お客様からの品質調査票・アンケートの頻度
+   （月に何件ほど届くか）
+
+6. お客様による監査の頻度
+   （年に何回ほどか）
+
+7. 製造記録・チェックシートは、紙とシステムのどちらが中心か
+
+────────────────────
+
+■ 当日の進め方について
+
+60分を予定しております。
+前半は御社の業務の流れをおうかがいし、
+後半は画面を共有しながら、その流れを図に整理させていただきます。
+
+こちらから提案資料をお持ちすることはいたしません。
+まずは御社の現状を正確に理解することを目的とさせてください。
+
+■ ご参加者について
+
+製造または品質の実務に近い方にご同席いただけますと、
+より具体的なお話ができるかと存じます。
+（ご都合のつく範囲で構いません）
+
+お忙しいところ恐縮ですが、
+可能でしたら9月2日(火)午前中までにご返信いただけますと幸いです。
+
+何卒よろしくお願い申し上げます。
+
+──────────
+株式会社〇〇
+〇〇 〇〇
+TEL / MAIL
+──────────</div>
+  </div>
+
+  <h3>この文面に仕込んである3つの仕掛け</h3>
+  <div class="grid g3">
+    <div class="panel">
+      <div class="eyebrow" style="margin-bottom:8px">仕掛け 01</div>
+      <b>「だいたいで結構です」「当日口頭でも構いません」</b>
+      <p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">回答率を上げるための逃げ道。完璧な回答を求めると返信は0通になります。粗くても返ってくるほうが、正確でも返ってこないより100倍価値があります。</p>
+    </div>
+    <div class="panel">
+      <div class="eyebrow" style="margin-bottom:8px">仕掛け 02</div>
+      <b>「提案資料をお持ちすることはいたしません」</b>
+      <p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">売り込まれる警戒を、当日を待たずに解いておく一文。これがあるかないかで、面談開始5分の空気がはっきり変わります。</p>
+    </div>
+    <div class="panel">
+      <div class="eyebrow" style="margin-bottom:8px">仕掛け 03</div>
+      <b>「実務に近い方にご同席いただけますと」</b>
+      <p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">実務者を引き出す仕掛け。決裁者だけの面談では「月に何時間」という数字が絶対に出てきません。強制せず、あくまでお願いの形で。</p>
+    </div>
+  </div>
+
+  <h3>7問それぞれの狙い</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>#</th><th>質問</th><th>何が分かるか</th><th>対応する仮説</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td>従業員数の内訳</td><td>品質保証が1〜2名なら、監査・調査票の痛みはほぼ確定する</td><td class="id">D1・A1</td></tr>
+        <tr><td class="num">2</td><td>顧客の構成比</td><td>医薬品比率が高いほど書類要求が重い。提案の重心が決まる</td><td class="id">A1-A4</td></tr>
+        <tr><td class="num">3</td><td>受注の受け取り方法</td><td>FAXが残っていれば読取自動化が即戦力。EDI中心なら攻め口を変える</td><td class="id">B1</td></tr>
+        <tr><td class="num">4</td><td>使用システムの名称</td><td><b>最重要。</b>既存プロダクトがハマるか、受託になるかの判断がここで決まる</td><td class="id">B2・C1</td></tr>
+        <tr><td class="num">5</td><td>品質調査票の頻度</td><td><b>最重要。</b>件数が出れば、当日は「1件あたり何分」を足すだけで金額になる</td><td class="id">A1</td></tr>
+        <tr><td class="num">6</td><td>監査の頻度</td><td>年間の準備工数の分母。頻度が高いほどA2の優先度が上がる</td><td class="id">A2</td></tr>
+        <tr><td class="num">7</td><td>製造記録は紙かシステムか</td><td>紙なら転記工数の話へ。ただし「紙をやめる」提案は禁物</td><td class="id">C2・A4</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>当日まで温存する質問</h3>
+  <p style="font-size:14px;color:var(--ink-2);max-width:70ch">次の6問は、<b>絶対にメールで送らないでください</b>。相手の反応そのものが情報になる質問で、文章で答えられた時点で価値が失われます。</p>
+  <div class="qset">
+    <div class="q key"><div class="q-n">Q3</div><div class="q-b"><p class="q-t">これは付加価値を生んでいないな、と感じる作業は何ですか</p><p class="q-w">メールなら「特にありません」で終わる。対話でしか出てこない。</p></div></div>
+    <div class="q key"><div class="q-n">Q9</div><div class="q-b"><p class="q-t">その方が不在のときは止まりますか</p><p class="q-w">文章だと組織の弱みの告白になり、書きにくい。口頭なら出る。</p></div></div>
+    <div class="q key"><div class="q-n">Q11</div><div class="q-b"><p class="q-t">過去の記録を探すとき、どこを見に行かれますか</p><p class="q-w">実際に指を折りながら数えてもらう質問。文字にすると1行で終わる。</p></div></div>
+    <div class="q key"><div class="q-n">Q12</div><div class="q-b"><p class="q-t">前にも同じことを答えた気がする、と感じることはありますか</p><p class="q-w">共感を取る質問。メールで送ると詰問に見える。</p></div></div>
+    <div class="q key"><div class="q-n">Q19</div><div class="q-b"><p class="q-t">書類仕事が半分になったら、空いた時間で何をされたいですか</p><p class="q-w">次回提案の冒頭になる言葉を取る質問。その場の即答にこそ本音が出る。</p></div></div>
+    <div class="q key"><div class="q-n">Q21</div><div class="q-b"><p class="q-t">ITやAIで、これまで試されたこと・やめられたことは</p><p class="q-w">過去の失敗は、書面には残したくない話。信頼が生まれてから聞く。</p></div></div>
   </div>
 </section>
 
 <section id="s6">
   <span class="h2num">06</span>
+  <h2>リモート面談の進め方</h2>
+  <p class="lede">9月2日(火)・オンライン・60分想定。リモートは対面より情報密度が落ちます。<b>事前シートで冒頭15分を浮かせ、その15分を「一緒に図を描く時間」に回す</b>——これが今回の設計の核です。</p>
+
+  <div class="call">
+    <span class="ct">設計の要 ／ 画面共有のON・OFFを意図的に切り替える</span>
+    <p><b>前半は共有しない。</b>相手の顔を見て聞くことに専念します。シナリオは共有していないので、手元の紙かサブディスプレイに置いて自由に見られます。<b>後半だけ共有する。</b>業務フロー図をその場で描くためです。対面でA3に描く行為の代替であり、リモートで「一緒に作った」感覚を生む唯一の方法です。<b>ずっと共有しっぱなしにするのが最悪</b>で、相手の顔が見えないまま一方的に話す時間が生まれます。</p>
+  </div>
+
+  <div class="tl" style="margin-top:18px">
+    <div class="tl-row"><div class="tl-t">0-3</div><div class="tl-c"><b>接続確認・録画の許可<span class="share off">共有 OFF</span></b><span>「議事録用に録画させていただいてもよろしいでしょうか。社内での共有以外には使いません」——理由と用途をセットで言えば、まず断られません。断られたら素直に引く。</span></div></div>
+    <div class="tl-row"><div class="tl-t">3-6</div><div class="tl-c"><b>自己紹介は3分で切る＋目的の明言<span class="share off">共有 OFF</span></b><span>「本日は提案ではなく、御社で"時間が溶けている作業"を探しに来ました」。会社説明を長くしない。リモートでは長い自己紹介＝離脱の合図です。</span></div></div>
+    <div class="tl-row"><div class="tl-t">6-15</div><div class="tl-c"><b>事前回答のお礼と確認<span class="share off">共有 OFF</span></b><span>ここが事前シートの効果が出る場所。<b>質問し直さず、数字を復唱して確認するだけ</b>にします。「医薬品が7割、調査票が月15件、とのことでしたが——」。相手は「読んでくれている」と感じ、ここで一気に距離が縮まります。</span></div></div>
+    <div class="tl-row"><div class="tl-t">15-35</div><div class="tl-c"><b>深掘り ── 山場その1<span class="share off">共有 OFF</span></b><span>Q3から入り、相手が語り出した流れに乗る。共有していないので、手元のシナリオを見ながら話せます。<b>ここでメモを取る音を立てない</b>（マイクが拾います）。相槌は普段より大きく。</span></div></div>
+    <div class="tl-row"><div class="tl-t">35-50</div><div class="tl-c"><b>画面共有 → 業務フロー図を描く ── 山場その2<span class="share on">共有 ON</span></b><span>「いまお聞きした流れを、画面に出しながら整理させてください」と言って共有開始。<b>受注 → 生産計画 → 製造 → 検査 → 出荷 → 書類対応</b>を横に並べ、各工程に「誰が」「何を使って」「何回入力するか」を書き込んでいきます。<b>訂正されるほど良い</b>ので、「ここ、合っていますか」を繰り返す。</span></div></div>
+    <div class="tl-row"><div class="tl-t">50-56</div><div class="tl-c"><b>数量化 → 3段階の説明<span class="share on">共有 ON</span></b><span>図の中で一番重い工程に数字を入れる。画面上で計算して見せる（08章）。そのまま09章の3段階へ接続します。</span></div></div>
+    <div class="tl-row"><div class="tl-t">56-60</div><div class="tl-c"><b>次回の合意 ── 共有を切ってから言う<span class="share off">共有 OFF</span></b><span><b>ここで必ず画面共有を止める。</b>顔を見て「棚卸をさせてください」と言う。資料を映したまま依頼すると、その資料に対する返事になってしまいます。日程はその場で押さえる。</span></div></div>
+  </div>
+
+  <h3>リモート特有の作法（5つ）</h3>
+  <div class="grid g2">
+    <div class="panel">
+      <b>1. 沈黙を、対面の1.5倍待つ</b>
+      <p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">回線の遅延に加え、リモートでは相手が話し出すきっかけを掴みにくい。3秒黙られても割り込まない。<b>焦って埋めた沈黙の向こうに、一番大事な本音があります。</b></p>
+    </div>
+    <div class="panel">
+      <b>2. 受け取ったことを、声で示す</b>
+      <p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">頷きは画面では伝わりません。話し終わりに「ありがとうございます」と明示的に受け取る。これがないと相手は話し続けてよいのか判断できず、口が重くなります。</p>
+    </div>
+    <div class="panel">
+      <b>3. 共有中は「違和感ありませんか」を2〜3回</b>
+      <p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">共有中は相手の顔が見えません。<b>反応が分からないまま15分進むのがリモート最大の事故</b>です。定期的に止めて確認を入れる。</p>
+    </div>
+    <div class="panel">
+      <b>4. 名前を呼ぶ</b>
+      <p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">「岡井様、この工程は——」。リモートでは誰に聞いているかが曖昧になります。複数名がご参加の場合は必須。</p>
+    </div>
+    <div class="panel">
+      <b>5. 終了5分前に必ず巻く</b>
+      <p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">リモートは次の予定が直後に入っていることが多く、対面のような延長は効きません。<b>56分の時点で次回日程の話に入る</b>と決めておく。</p>
+    </div>
+    <div class="panel">
+      <b>6. シナリオは読み上げない</b>
+      <p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">目線が落ち続けるとカンペだと分かります。<b>質問の頭2〜3語だけ拾って、あとは自分の言葉で</b>。画面の脇より、印刷して手元に置くほうが目線は自然に見えます。</p>
+    </div>
+  </div>
+
+  <h3>前日までの準備チェック</h3>
+  <ul class="checklist">
+    <li>相手が使うツールの確認（Zoom／Teams／Google Meet）と、接続テスト</li>
+    <li><b>図を描くファイルを白紙で開いておく。</b>当日その場で探さない。PowerPointの白紙でもメモ帳でも構いません。きれいさは不要で、その場で動いていることに価値があります</li>
+    <li>カメラ位置・照明・マイク。シナリオを置く位置を<b>カメラの近く</b>に決めておく</li>
+    <li>事前回答が届いていたら、数字を04章の仮説に当てて<b>優先順位を組み直す</b></li>
+    <li>07章の質問から、当日聞く分に絞り込み、<b>優先3問に印をつける</b>（全部は聞けません）</li>
+    <li>録画する場合の保存先と、社内共有範囲を決めておく</li>
+  </ul>
+
+  <div class="call warn" style="margin-top:20px">
+    <span class="ct">事前回答が返ってこなかった場合</span>
+    <p>焦らないでください。冒頭6〜15分を口頭での事実確認に充てます。ただし<b>7問すべては聞かない</b>こと。取材に見えて空気が硬くなります。<b>4番（使用システム）と5番（調査票の頻度）の2つだけ</b>を必ず取る。この2つが無いと次回の提案が作れません。残りは会話の流れで拾えたものだけで十分です。</p>
+  </div>
+</section>
+
+<section id="s7">
+  <span class="h2num">07</span>
   <h2>質問集</h2>
-  <p class="lede">そのまま口に出せる形にしてあります。<span class="tag t-hot">桃色の帯</span>が付いた質問が今回の勝負どころ。順番より、相手が語り出した流れに乗ることを優先してください。</p>
+  <p class="lede">そのまま口に出せる形にしてあります。<span class="tag t-hot">桃色の帯</span>が付いた質問が今回の勝負どころ。順番より、相手が語り出した流れに乗ることを優先してください。<br><b>Q2・Q4・Q8・Q10・Q13は事前メールで先に取ります</b>（05章）。当日は事実確認ではなく<b>確認の復唱</b>に留め、浮いた時間を深掘りに回してください。60分では全問は聞けないので、<b>優先3問を決めてから臨むこと</b>。</p>
 
   <h3>導入 — 全体をつかむ</h3>
   <div class="qset">
@@ -544,8 +751,8 @@ footer a:hover{color:var(--blue)}
   </div>
 </section>
 
-<section id="s7">
-  <span class="h2num">07</span>
+<section id="s8">
+  <span class="h2num">08</span>
   <h2>痛みの数量化 — 3点セット</h2>
   <p class="lede">困りごとを聞くだけでは提案になりません。<b>1つでいいので数字にして帰る</b>。この3問を、相手が語った作業にそのまま当ててください。</p>
   <div class="grid g3">
@@ -586,8 +793,8 @@ footer a:hover{color:var(--blue)}
 td.lane{white-space:nowrap;font-size:12.5px;font-weight:500}
 </style>
 
-<section id="s8">
-  <span class="h2num">08</span>
+<section id="s9">
+  <span class="h2num">09</span>
   <h2>提案の3段階</h2>
   <p class="lede">御社の提供メニュー（コンサルから入って受託開発、ハマれば既存プロダクトのカスタマイズ、AI領域はPoC伴走）は、そのまま<b>相手のリスクを段階的に下げる順序</b>として語れます。23名の会社にいきなり開発の見積を出すと話は止まりますが、この順序なら止まりません。<b>初回面談で取りにいくのは STEP 1 の合意だけ</b>です。</p>
 
@@ -630,8 +837,8 @@ td.lane{white-space:nowrap;font-size:12.5px;font-weight:500}
   </div>
 </section>
 
-<section id="s9">
-  <span class="h2num">09</span>
+<section id="s10">
+  <span class="h2num">10</span>
   <h2>仮説 → 打ち手 早見表</h2>
   <p class="lede">相手が食いついた困りごとに対して、<b>どのレーンで受けるか</b>まで含めた対応表です。当日その場で全部を語る必要はありません。食いついた1つだけ、初手の小ささまで伝えれば十分です。</p>
   <div class="tablewrap">
@@ -665,8 +872,8 @@ td.lane{white-space:nowrap;font-size:12.5px;font-weight:500}
   </div>
 </section>
 
-<section id="s10">
-  <span class="h2num">10</span>
+<section id="s11">
+  <span class="h2num">11</span>
   <h2>その場の台本</h2>
   <p class="lede">初回面談で必ず来る場面と、そのまま口に出せる返し。<b>覚えるのは最初の2つだけ</b>で構いません。</p>
 
@@ -713,8 +920,8 @@ td.lane{white-space:nowrap;font-size:12.5px;font-weight:500}
   </div>
 </section>
 
-<section id="s11">
-  <span class="h2num">11</span>
+<section id="s12">
+  <span class="h2num">12</span>
   <h2>踏んではいけない地雷</h2>
   <div class="grid g2">
     <div class="panel">
@@ -741,12 +948,12 @@ td.lane{white-space:nowrap;font-size:12.5px;font-weight:500}
   </div>
 </section>
 
-<section id="s12">
-  <span class="h2num">12</span>
+<section id="s13">
+  <span class="h2num">13</span>
   <h2>面談後にやること</h2>
   <h3>24時間以内</h3>
   <ol class="steps">
-    <li><b>その場で描いた業務フロー図を清書して送る。</b>これが最大の差別化になります。「議事録」ではなく「図」を送ること。相手の社内で回覧され、勝手に営業してくれます。</li>
+    <li><b>画面共有で描いた業務フロー図を、その日のうちに送る。</b>清書は翌日でも構いませんが、<b>描いたそのものを終了直後に送る</b>とスピード感が伝わります。「議事録」ではなく「図」を送ること。相手の社内で回覧され、勝手に営業してくれます。</li>
     <li><b>数量化できた痛みを1行で再確認する。</b>「◯◯の作業に月◯時間、というお話でしたが合っていますか」——次回提案の前提を文書で固定します。</li>
     <li><b>業務棚卸の進め方を、A4一枚で送る。</b>期間・訪問回数・こちらが見せてほしい資料・成果物。提案書ではなく<b>段取り表</b>の体裁にすると、社内稟議に載せやすくなります。</li>
     <li><b>次回日程が未確定なら、この時点で候補日を3つ出す。</b></li>
