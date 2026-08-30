@@ -157,6 +157,9 @@ td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:now
   overflow:hidden}
 .tl-row{display:grid;grid-template-columns:78px 1fr;gap:0;border-bottom:1px solid var(--line)}
 .tl-row:last-child{border-bottom:0}
+.tl.clock .tl-row{grid-template-columns:112px 1fr}
+@media(max-width:520px){.tl.clock .tl-row{grid-template-columns:1fr}
+  .tl.clock .tl-t{border-right:0;border-bottom:1px solid var(--line);padding:9px 14px}}
 .tl-t{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;color:var(--blue);
   background:var(--surface-2);padding:13px 12px;border-right:1px solid var(--line);font-weight:600}
 .tl-c{padding:13px 16px;font-size:13.5px}
@@ -521,7 +524,7 @@ footer a:hover{color:var(--blue)}
 お世話になっております。
 株式会社〇〇の〇〇と申します。
 
-9月2日(火)〇時より、オンラインにてお時間をいただき、
+9月2日(火)は、オンラインにてお時間をいただき、
 誠にありがとうございます。
 
 当日は限られたお時間ですので、
@@ -635,21 +638,21 @@ TEL / MAIL
 <section id="s6">
   <span class="h2num">06</span>
   <h2>リモート面談の進め方</h2>
-  <p class="lede">9月2日(火)・オンライン・60分想定。リモートは対面より情報密度が落ちます。<b>事前シートで冒頭15分を浮かせ、その15分を「一緒に図を描く時間」に回す</b>——これが今回の設計の核です。</p>
+  <p class="lede">9月2日(火) <b>11:00〜12:00</b>・オンライン。リモートは対面より情報密度が落ちます。<b>事前シートで冒頭15分を浮かせ、その15分を「一緒に図を描く時間」に回す</b>——これが今回の設計の核です。</p>
 
   <div class="call">
     <span class="ct">設計の要 ／ 画面共有のON・OFFを意図的に切り替える</span>
     <p><b>前半は共有しない。</b>相手の顔を見て聞くことに専念します。シナリオは共有していないので、手元の紙かサブディスプレイに置いて自由に見られます。<b>後半だけ共有する。</b>業務フロー図をその場で描くためです。対面でA3に描く行為の代替であり、リモートで「一緒に作った」感覚を生む唯一の方法です。<b>ずっと共有しっぱなしにするのが最悪</b>で、相手の顔が見えないまま一方的に話す時間が生まれます。</p>
   </div>
 
-  <div class="tl" style="margin-top:18px">
-    <div class="tl-row"><div class="tl-t">0-3</div><div class="tl-c"><b>接続確認・録画の許可<span class="share off">共有 OFF</span></b><span>「議事録用に録画させていただいてもよろしいでしょうか。社内での共有以外には使いません」——理由と用途をセットで言えば、まず断られません。断られたら素直に引く。</span></div></div>
-    <div class="tl-row"><div class="tl-t">3-6</div><div class="tl-c"><b>自己紹介は3分で切る＋目的の明言<span class="share off">共有 OFF</span></b><span>「本日は提案ではなく、御社で"時間が溶けている作業"を探しに来ました」。会社説明を長くしない。リモートでは長い自己紹介＝離脱の合図です。</span></div></div>
-    <div class="tl-row"><div class="tl-t">6-15</div><div class="tl-c"><b>事前回答のお礼と確認<span class="share off">共有 OFF</span></b><span>ここが事前シートの効果が出る場所。<b>質問し直さず、数字を復唱して確認するだけ</b>にします。「医薬品が7割、調査票が月15件、とのことでしたが——」。相手は「読んでくれている」と感じ、ここで一気に距離が縮まります。</span></div></div>
-    <div class="tl-row"><div class="tl-t">15-35</div><div class="tl-c"><b>深掘り ── 山場その1<span class="share off">共有 OFF</span></b><span>Q3から入り、相手が語り出した流れに乗る。共有していないので、手元のシナリオを見ながら話せます。<b>ここでメモを取る音を立てない</b>（マイクが拾います）。相槌は普段より大きく。</span></div></div>
-    <div class="tl-row"><div class="tl-t">35-50</div><div class="tl-c"><b>画面共有 → 業務フロー図を描く ── 山場その2<span class="share on">共有 ON</span></b><span>「いまお聞きした流れを、画面に出しながら整理させてください」と言って共有開始。<b>受注 → 生産計画 → 製造 → 検査 → 出荷 → 書類対応</b>を横に並べ、各工程に「誰が」「何を使って」「何回入力するか」を書き込んでいきます。<b>訂正されるほど良い</b>ので、「ここ、合っていますか」を繰り返す。</span></div></div>
-    <div class="tl-row"><div class="tl-t">50-56</div><div class="tl-c"><b>数量化 → 3段階の説明<span class="share on">共有 ON</span></b><span>図の中で一番重い工程に数字を入れる。画面上で計算して見せる（08章）。そのまま09章の3段階へ接続します。</span></div></div>
-    <div class="tl-row"><div class="tl-t">56-60</div><div class="tl-c"><b>次回の合意 ── 共有を切ってから言う<span class="share off">共有 OFF</span></b><span><b>ここで必ず画面共有を止める。</b>顔を見て「棚卸をさせてください」と言う。資料を映したまま依頼すると、その資料に対する返事になってしまいます。日程はその場で押さえる。</span></div></div>
+  <div class="tl clock" style="margin-top:18px">
+    <div class="tl-row"><div class="tl-t">11:00–11:03</div><div class="tl-c"><b>接続確認・録画の許可<span class="share off">共有 OFF</span></b><span>「議事録用に録画させていただいてもよろしいでしょうか。社内での共有以外には使いません」——理由と用途をセットで言えば、まず断られません。断られたら素直に引く。</span></div></div>
+    <div class="tl-row"><div class="tl-t">11:03–11:06</div><div class="tl-c"><b>自己紹介は3分で切る＋目的の明言<span class="share off">共有 OFF</span></b><span>「本日は提案ではなく、御社で"時間が溶けている作業"を探しに来ました」。会社説明を長くしない。リモートでは長い自己紹介＝離脱の合図です。</span></div></div>
+    <div class="tl-row"><div class="tl-t">11:06–11:15</div><div class="tl-c"><b>事前回答のお礼と確認<span class="share off">共有 OFF</span></b><span>ここが事前シートの効果が出る場所。<b>質問し直さず、数字を復唱して確認するだけ</b>にします。「医薬品が7割、調査票が月15件、とのことでしたが——」。相手は「読んでくれている」と感じ、ここで一気に距離が縮まります。</span></div></div>
+    <div class="tl-row"><div class="tl-t">11:15–11:35</div><div class="tl-c"><b>深掘り ── 山場その1<span class="share off">共有 OFF</span></b><span>Q3から入り、相手が語り出した流れに乗る。共有していないので、手元のシナリオを見ながら話せます。<b>ここでメモを取る音を立てない</b>（マイクが拾います）。相槌は普段より大きく。</span></div></div>
+    <div class="tl-row"><div class="tl-t">11:35–11:50</div><div class="tl-c"><b>画面共有 → 業務フロー図を描く ── 山場その2<span class="share on">共有 ON</span></b><span>「いまお聞きした流れを、画面に出しながら整理させてください」と言って共有開始。<b>受注 → 生産計画 → 製造 → 検査 → 出荷 → 書類対応</b>を横に並べ、各工程に「誰が」「何を使って」「何回入力するか」を書き込んでいきます。<b>訂正されるほど良い</b>ので、「ここ、合っていますか」を繰り返す。</span></div></div>
+    <div class="tl-row"><div class="tl-t">11:50–11:56</div><div class="tl-c"><b>数量化 → 3段階の説明<span class="share on">共有 ON</span></b><span>図の中で一番重い工程に数字を入れる。画面上で計算して見せる（08章）。そのまま09章の3段階へ接続します。</span></div></div>
+    <div class="tl-row"><div class="tl-t">11:56–12:00</div><div class="tl-c"><b>次回の合意 ── 共有を切ってから言う<span class="share off">共有 OFF</span></b><span><b>ここで必ず画面共有を止める。</b>顔を見て「棚卸をさせてください」と言う。資料を映したまま依頼すると、その資料に対する返事になってしまいます。日程はその場で押さえる。</span></div></div>
   </div>
 
   <h3>リモート特有の作法（5つ）</h3>
@@ -672,7 +675,7 @@ TEL / MAIL
     </div>
     <div class="panel">
       <b>5. 終了5分前に必ず巻く</b>
-      <p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">リモートは次の予定が直後に入っていることが多く、対面のような延長は効きません。<b>56分の時点で次回日程の話に入る</b>と決めておく。</p>
+      <p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">リモートは次の予定が直後に入っていることが多く、対面のような延長は効きません。<b>11:56 の時点で次回日程の話に入る</b>と決めておく。</p>
     </div>
     <div class="panel">
       <b>6. シナリオは読み上げない</b>
@@ -682,7 +685,7 @@ TEL / MAIL
 
   <h3>前日までの準備チェック</h3>
   <ul class="checklist">
-    <li>相手が使うツールの確認（Zoom／Teams／Google Meet）と、接続テスト</li>
+    <li>相手が使うツールの確認（Zoom／Teams／Google Meet）と、接続テスト。<b>10:55 には入室しておく</b></li>
     <li><b>図を描くファイルを白紙で開いておく。</b>当日その場で探さない。PowerPointの白紙でもメモ帳でも構いません。きれいさは不要で、その場で動いていることに価値があります</li>
     <li>カメラ位置・照明・マイク。シナリオを置く位置を<b>カメラの近く</b>に決めておく</li>
     <li>事前回答が届いていたら、数字を04章の仮説に当てて<b>優先順位を組み直す</b></li>
