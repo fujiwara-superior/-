@@ -241,9 +241,11 @@ footer a:hover{color:var(--blue)}
       <li><a href="#s5"><span class="n">05</span>当日の進め方</a></li>
       <li><a href="#s6"><span class="n">06</span>質問集</a></li>
       <li><a href="#s7"><span class="n">07</span>痛みの数量化</a></li>
-      <li><a href="#s8"><span class="n">08</span>打ち手 早見表</a></li>
-      <li><a href="#s9"><span class="n">09</span>地雷</a></li>
-      <li><a href="#s10"><span class="n">10</span>面談後</a></li>
+      <li><a href="#s8"><span class="n">08</span>提案の3段階</a></li>
+      <li><a href="#s9"><span class="n">09</span>打ち手 早見表</a></li>
+      <li><a href="#s10"><span class="n">10</span>その場の台本</a></li>
+      <li><a href="#s11"><span class="n">11</span>地雷</a></li>
+      <li><a href="#s12"><span class="n">12</span>面談後</a></li>
     </ol>
   </div>
 </nav>
@@ -483,7 +485,7 @@ footer a:hover{color:var(--blue)}
     <div class="tl-row"><div class="tl-t">25-55</div><div class="tl-c"><b>業務の流れを一緒に描く ← 山場</b><span>A3に「受注 → 生産計画 → 製造 → 検査 → 出荷 → 監査・書類対応」を横に描き、各工程で「誰が」「何を使って」「何回入力するか」を書き込んでいく。相手に描かせず、こちらが描いて確認を取る形が速い。</span></div></div>
     <div class="tl-row"><div class="tl-t">55-70</div><div class="tl-c"><b>痛みの数量化</b><span>フロー図の中で一番顔が曇った工程に戻り、07章の3点セットを当てる。数字が出たらその場でメモに丸をつけて共有する。</span></div></div>
     <div class="tl-row"><div class="tl-t">70-80</div><div class="tl-c"><b>現場を見せてもらう依頼</b><span>「見せられる工場」を標榜する会社なので、見学の打診はむしろ喜ばれる可能性が高い。ここで紙の記録・掲示物・端末の有無が一目で分かる。時間が押したら次回でもよい。</span></div></div>
-    <div class="tl-row"><div class="tl-t">80-90</div><div class="tl-c"><b>次につなげる</b><span>「今日伺った◯◯について、実際にどう変わるかを次回お見せします」と宿題を1つ持ち帰り、<b>その場で次回日程を押さえる</b>。ここを口頭の「また連絡します」で終わらせない。</span></div></div>
+    <div class="tl-row"><div class="tl-t">80-90</div><div class="tl-c"><b>次につなげる ── 求める合意は「棚卸をさせてください」の一点</b><span>提案でも見積でもなく、<b>業務棚卸の場をもらうこと</b>だけをこの日のゴールにする。「今日伺った◯◯を、2〜3回に分けて工数と金額まで落とさせてください」と言い、<b>その場で次回日程を押さえる</b>。口頭の「また連絡します」で終わらせない。</span></div></div>
   </div>
 </section>
 
@@ -557,35 +559,162 @@ footer a:hover{color:var(--blue)}
   </div>
 </section>
 
+<style>
+.flow{display:grid;gap:13px}
+@media(min-width:860px){.flow{grid-template-columns:repeat(3,1fr)}}
+.step{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--blue);
+  border-radius:3px;padding:18px 19px;display:grid;gap:9px;align-content:start}
+.step.accent{border-top-color:var(--rose)}
+.step .sn{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.step h4{margin:0;font-size:15.5px;font-weight:700;line-height:1.5}
+.step .meta{font-family:var(--mono);font-size:11.5px;color:var(--blue);font-variant-numeric:tabular-nums;
+  letter-spacing:.03em}
+.step.accent .meta{color:var(--rose)}
+.step p{font-size:13.5px;color:var(--ink-2);margin:0;line-height:1.72}
+.step dl{margin:2px 0 0;font-size:13px;color:var(--ink-2)}
+.step dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--muted);margin-top:9px}
+.step dd{margin:3px 0 0;line-height:1.7}
+.say{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--moss);
+  border-radius:3px;padding:16px 18px;margin-bottom:13px}
+.say .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);display:block;margin-bottom:8px}
+.say .line{font-size:14.5px;line-height:1.85;display:block;color:var(--ink)}
+.say .note{font-size:12.5px;color:var(--muted);margin:10px 0 0;line-height:1.7;
+  padding-top:9px;border-top:1px solid var(--line)}
+.say.dont{border-left-color:var(--rose)}
+td.lane{white-space:nowrap;font-size:12.5px;font-weight:500}
+</style>
+
 <section id="s8">
   <span class="h2num">08</span>
-  <h2>仮説 → 打ち手 早見表</h2>
-  <p class="lede">当日その場で全部を語る必要はありません。相手が食いついた1つだけ、初手の小ささまで含めて口頭で伝えれば十分です。</p>
-  <div class="tablewrap">
-    <table>
-      <thead><tr><th>ID</th><th>聞けたら、こう返す</th><th>打ち手の型</th><th>初手の大きさ</th></tr></thead>
-      <tbody>
-        <tr><td class="id">A1</td><td>過去の回答・規格書・手順書をまとめて検索できるようにして、調査票の下書きまでを自動で作る</td><td>社内文書の検索基盤＋回答ドラフト生成</td><td class="num">既存文書30〜50点／4週間</td></tr>
-        <tr><td class="id">A2</td><td>監査でよく聞かれる質問に、根拠文書へのリンク付きで即答できる状態を作る</td><td>監査準備アシスタント</td><td class="num">想定問答50問から</td></tr>
-        <tr><td class="id">A3・D3</td><td>作業を撮った動画から手順書の下書きを起こし、改訂履歴と教育記録を1か所に</td><td>動画→手順書生成＋版管理</td><td class="num">1工程・1本から</td></tr>
-        <tr><td class="id">A4・C2</td><td>紙の記録を撮るだけで検索できるようにする。紙の運用は変えない</td><td>OCR＋構造化＋類似事例検索</td><td class="num">1帳票・過去1年分</td></tr>
-        <tr><td class="id">B1</td><td>FAX・メールの注文を読み取って、入力済みの状態で渡す</td><td>受注文書の自動読取→CSV／基幹連携</td><td class="num">主要3社の帳票から</td></tr>
-        <tr><td class="id">B2</td><td>2社が同じ在庫・納期の画面を見られるようにする</td><td>在庫・進捗の共有ダッシュボード</td><td class="num">主要品目20点から</td></tr>
-        <tr><td class="id">B3・F1</td><td>モールの受注をまとめ、商品説明とレビュー分析を自動で回す</td><td>多販路受注集約＋販促支援</td><td class="num">1商品・1販路から</td></tr>
-        <tr><td class="id">B4</td><td>「この包装なら乾燥剤は何g」の一次回答を社内の誰でも出せるようにする</td><td>選定計算＋技術問い合わせ支援</td><td class="num">既存の計算ルールを移植</td></tr>
-        <tr><td class="id">C1</td><td>段取り順の判断基準を書き出して、計画のたたき台を自動生成する</td><td>生産計画のたたき台生成</td><td class="num">まず判断基準の言語化のみ</td></tr>
-        <tr><td class="id">E1・E2</td><td>日報と手順書を双方向に翻訳し、現地から日本語で相談できるようにする</td><td>多言語共有＋翻訳付き日報</td><td class="num">日報1フォーマットから</td></tr>
-      </tbody>
-    </table>
+  <h2>提案の3段階</h2>
+  <p class="lede">御社の提供メニュー（コンサルから入って受託開発、ハマれば既存プロダクトのカスタマイズ、AI領域はPoC伴走）は、そのまま<b>相手のリスクを段階的に下げる順序</b>として語れます。23名の会社にいきなり開発の見積を出すと話は止まりますが、この順序なら止まりません。<b>初回面談で取りにいくのは STEP 1 の合意だけ</b>です。</p>
+
+  <div class="flow">
+    <div class="step">
+      <span class="sn">Step 1 ／ 初回面談で取りにいく</span>
+      <h4>業務棚卸・要件定義</h4>
+      <span class="meta">コンサル ／ 2〜4週・訪問2〜3回</span>
+      <p>面談で描いた業務フローを精緻化し、工数と金額に置き換える。対象業務を<b>1つに絞り込む</b>ところまでをこの段階で終わらせます。</p>
+      <dl>
+        <dt>成果物</dt><dd>業務フロー図／作業別の工数一覧／優先順位と投資対効果の試算／次段階の設計書</dd>
+        <dt>相手にとっての意味</dt><dd>この時点では開発の約束が要らない。断る余地が残っているから、始められる。</dd>
+      </dl>
+    </div>
+    <div class="step accent">
+      <span class="sn">Step 2 ／ AI領域</span>
+      <h4>PoC伴走</h4>
+      <span class="meta">4〜8週・実データで測る</span>
+      <p>実際の調査票・帳票・手順書で作って測る。精度だけでなく、<b>どこまでAIに任せ、どこから人が確認するか</b>の線引きを一緒に決めます。</p>
+      <dl>
+        <dt>成果物</dt><dd>動くもの／精度と削減工数の実測値／本開発の要否判断</dd>
+        <dt>この会社に伴走型が要る理由</dt><dd>医薬品メーカーが顧客なので、責任分界と記録の残し方を<b>社内で合意する工程</b>が不可欠。作って渡すだけでは現場で使われずに終わります。</dd>
+      </dl>
+    </div>
+    <div class="step">
+      <span class="sn">Step 3 ／ 効果が出たものだけ</span>
+      <h4>本開発</h4>
+      <span class="meta">受託開発 ／ プロダクト＋カスタマイズ</span>
+      <p>PoCで数字が出たものだけを作る。既存プロダクトがハマる領域は<b>カスタマイズで期間と費用を圧縮</b>します。</p>
+      <dl>
+        <dt>使い分けの基準</dt><dd>業務の独自性が高い（監査対応・製造記録・2社間連携）→ 受託開発。一般的な業務（受注管理・多販路在庫・文書共有）→ プロダクト＋カスタマイズ。</dd>
+        <dt>相手への伝え方</dt><dd>「作らずに済むものは作りません」。受託が本業だからこそ、この一言が効きます。</dd>
+      </dl>
+    </div>
   </div>
-  <div class="call warn" style="margin-top:18px">
-    <span class="ct">医薬品顧客がいる会社で、最初に言うべきひとこと</span>
-    <p>「AIが自動で提出する」形は<b>提案しません</b>。作るのは<b>人が確認する下書きまで</b>で、最終責任は必ず人が持つ。根拠になった文書へのリンクを必ず添える。記録は残し、誰がいつ何を承認したかを追える形にする——この線引きを<b>こちらから先に言う</b>と、品質保証の方の警戒が一気に下がります。相手が気にする前に言うのがコツです。</p>
+
+  <div class="call" style="margin-top:18px">
+    <span class="ct">この3段階を、面談の最後に30秒で言う</span>
+    <p>「まず<b>棚卸して数字にする</b>。効果が出そうなものだけ<b>小さく試す</b>。試して効果が出たものだけ<b>作る</b>。この順番でやらせていただいています」——初対面の中小企業に対して、これ以上に警戒を解く説明はありません。<b>3段階を言えたら、その日の商談設計は成功</b>です。</p>
   </div>
 </section>
 
 <section id="s9">
   <span class="h2num">09</span>
+  <h2>仮説 → 打ち手 早見表</h2>
+  <p class="lede">相手が食いついた困りごとに対して、<b>どのレーンで受けるか</b>まで含めた対応表です。当日その場で全部を語る必要はありません。食いついた1つだけ、初手の小ささまで伝えれば十分です。</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>ID</th><th>聞けたら、こう返す</th><th>打ち手の型</th><th>受け方</th><th>初手</th></tr></thead>
+      <tbody>
+        <tr><td class="id">A1</td><td>過去の回答・規格書・手順書をまとめて検索できるようにして、調査票の下書きまでを自動で作る</td><td>社内文書の検索基盤＋回答ドラフト生成</td><td class="lane">PoC伴走 → 受託</td><td class="num">文書30〜50点／4週</td></tr>
+        <tr><td class="id">A2</td><td>監査でよく聞かれる質問に、根拠文書へのリンク付きで即答できる状態を作る</td><td>監査準備アシスタント</td><td class="lane">PoC伴走</td><td class="num">想定問答50問</td></tr>
+        <tr><td class="id">A3・D3</td><td>作業を撮った動画から手順書の下書きを起こし、改訂履歴と教育記録を1か所に</td><td>動画→手順書生成＋版管理</td><td class="lane">プロダクト＋カスタマイズ</td><td class="num">1工程・動画1本</td></tr>
+        <tr><td class="id">A4・C2</td><td>紙の記録を撮るだけで検索できるようにする。紙の運用は変えない</td><td>OCR＋構造化＋類似事例検索</td><td class="lane">PoC伴走（精度検証が必須）</td><td class="num">1帳票・過去1年分</td></tr>
+        <tr><td class="id">B1</td><td>FAX・メールの注文を読み取って、入力済みの状態で渡す</td><td>受注文書の自動読取→CSV／基幹連携</td><td class="lane">PoC伴走 → 受託</td><td class="num">主要3社の帳票</td></tr>
+        <tr><td class="id">B2</td><td>2社が同じ在庫・納期の画面を見られるようにする</td><td>在庫・進捗の共有ダッシュボード</td><td class="lane">コンサル → 受託（AI不要）</td><td class="num">主要品目20点</td></tr>
+        <tr><td class="id">B3・F1</td><td>モールの受注をまとめ、商品説明とレビュー分析を自動で回す</td><td>多販路受注集約＋販促支援</td><td class="lane">プロダクト＋カスタマイズ</td><td class="num">1商品・1販路</td></tr>
+        <tr><td class="id">B4</td><td>「この包装なら乾燥剤は何g」の一次回答を社内の誰でも出せるようにする</td><td>選定計算＋技術問い合わせ支援</td><td class="lane">受託（小規模）</td><td class="num">既存の計算ルール移植</td></tr>
+        <tr><td class="id">C1</td><td>段取り順の判断基準を書き出して、計画のたたき台を自動生成する</td><td>生産計画のたたき台生成</td><td class="lane">コンサル先行（言語化が9割）</td><td class="num">判断基準の棚卸のみ</td></tr>
+        <tr><td class="id">E1・E2</td><td>日報と手順書を双方向に翻訳し、現地から日本語で相談できるようにする</td><td>多言語共有＋翻訳付き日報</td><td class="lane">PoC伴走</td><td class="num">日報1フォーマット</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>この表の使い方</h3>
+  <ul class="plain">
+    <li><b>「受け方」列がコンサル先行になっているものは、その場でAIの話をしない。</b>B2とC1は本質的にAIの問題ではありません。ここで無理にAIを乗せると、次回提案が破綻します。</li>
+    <li><b>プロダクト＋カスタマイズで受けられるものは、初回では出さない。</b>棚卸の結果「ハマる」と分かってから出すほうが、圧倒的に強く見えます（10章参照）。</li>
+    <li><b>PoC伴走を提案するのはA1・A2が理想。</b>効果が「件数×時間」で測れるため、PoCの成否判定が明確で、本開発への移行判断が揉めません。</li>
+  </ul>
+
+  <div class="call warn" style="margin-top:18px">
+    <span class="ct">医薬品顧客がいる会社で、最初に言うべきひとこと</span>
+    <p>「AIが自動で提出する」形は<b>提案しません</b>。作るのは<b>人が確認する下書きまで</b>で、最終責任は必ず人が持つ。根拠になった文書へのリンクを必ず添える。誰がいつ何を承認したかを追える形で記録を残す——この線引きを<b>こちらから先に言う</b>と、品質保証の方の警戒が一気に下がります。相手が気にする前に言うのがコツです。PoC伴走という形式そのものが、この合意形成の場になります。</p>
+  </div>
+</section>
+
+<section id="s10">
+  <span class="h2num">10</span>
+  <h2>その場の台本</h2>
+  <p class="lede">初回面談で必ず来る場面と、そのまま口に出せる返し。<b>覚えるのは最初の2つだけ</b>で構いません。</p>
+
+  <div class="say">
+    <span class="lbl">場面 01 ／ 困りごとを話してもらえた直後</span>
+    <span class="line">「ありがとうございます。その作業、技術的にはおそらく十分に減らせます。ただ、いまこの場で"できます"とお答えするのは無責任なので——まず御社の業務を2〜3回に分けて棚卸させてください。そこで工数と削減額を数字にして、効果が出そうなものだけ小さく試す。試して効果が出たものだけ作る。この順番でやらせていただいています。」</span>
+    <p class="note">「できます」と即答しないことが、この規模の会社には最も効きます。ここで08章の3段階に自然に接続できます。</p>
+  </div>
+
+  <div class="say">
+    <span class="lbl">場面 02 ／ 費用を聞かれたら</span>
+    <span class="line">「棚卸の段階は規模が小さいので、金額でつまずくことはまずありません。その先は対象業務の広さで変わるので、棚卸が終わった時点で正確にお出しします。今日の段階で金額を申し上げると、たいてい高すぎるか安すぎるかのどちらかになってしまうので、そこは次回にさせてください。」</span>
+    <p class="note">数字を言わないことが誠実さになる場面です。ただし<b>「桁感」を粘って聞かれたときの答えだけは、社内で事前に決めておく</b>こと。ここで黙ると逆効果になります。</p>
+  </div>
+
+  <div class="say">
+    <span class="lbl">場面 03 ／「AIで何ができるんですか」と聞かれたら</span>
+    <span class="line">「御社の場合でいうと、"前に一度答えたことを、もう一度探して書き直す"作業が一番効きます。品質調査票とか、監査の資料とか。ゼロから考える仕事はAIには向きませんが、"どこかに答えがあるのに探すのが大変"という仕事は得意です。」</span>
+    <p class="note">抽象論に付き合わない。一般論を返した瞬間に、相手の中で「よくいるIT業者」に分類されます。必ず相手の業務語に翻訳して返す。</p>
+  </div>
+
+  <div class="say">
+    <span class="lbl">場面 04 ／「うちみたいな規模でも意味ありますか」</span>
+    <span class="line">「むしろ20名台の会社のほうが効きます。100人の会社なら人を増やして解決できますが、御社は増やせない。おひとりが抱えている仕事を軽くするほうが、投資対効果ははっきり出ます。」</span>
+    <p class="note">謙遜の裏に「うちには早い」という不安があります。規模を弱みではなく理由に変換して返す。</p>
+  </div>
+
+  <div class="say">
+    <span class="lbl">場面 05 ／ 補助金の話が出たら</span>
+    <span class="line">「補助金は使えます。ただ、補助金ありきで対象を決めると要らないものまで買うことになるので、まず何をやるかを決めて、それに合う制度を探す順番でご提案しています。」</span>
+    <p class="note"><b>補助金の話は相手が費用に触れてから。</b>こちらから先に出すと「補助金を消化させたい業者」に見えます。制度は年度で内容が変わるため、補助率・上限・公募時期の具体は次回までに最新を確認してから出すこと。</p>
+  </div>
+
+  <h3>初回でやってはいけない2つ</h3>
+  <div class="say dont">
+    <span class="lbl">禁止 01</span>
+    <span class="line">見積を出す</span>
+    <p class="note">業務を知らずに出した見積は、必ず外れます。外れた見積は「この会社は分かっていない」の証拠として社内で回覧されます。</p>
+  </div>
+  <div class="say dont">
+    <span class="lbl">禁止 02</span>
+    <span class="line">既存プロダクトのデモを見せる</span>
+    <p class="note">「これを売りに来たんだな」と即座に見抜かれます。プロダクトは、棚卸で<b>ハマると分かってから</b>出すことで初めて「御社のためにこれを選びました」になる。カスタマイズで応えられるのは強い武器なので、<b>温存してください</b>。</p>
+  </div>
+</section>
+
+<section id="s11">
+  <span class="h2num">11</span>
   <h2>踏んではいけない地雷</h2>
   <div class="grid g2">
     <div class="panel">
@@ -608,29 +737,31 @@ footer a:hover{color:var(--blue)}
   </div>
   <div class="call" style="margin-top:14px">
     <span class="ct">先回りして用意しておく答え</span>
-    <p>「入力した情報が外部で学習に使われるのでは」という懸念は、ほぼ確実に出ます。<b>学習に使わせない設定、データの保存先、アクセス権限、退社時の扱い</b>——この4点を、聞かれる前に一息で説明できる状態にしておいてください。ここで詰まると、その日の話は全部止まります。</p>
+    <p>「入力した情報が外部で学習に使われるのでは」という懸念は、ほぼ確実に出ます。<b>学習に使わせない設定、データの保存先、アクセス権限、退職時の扱い</b>——この4点を、聞かれる前に一息で説明できる状態にしておいてください。ここで詰まると、その日の話は全部止まります。PoC伴走を提案する以上、実データを預かる前提の説明は必須です。</p>
   </div>
 </section>
 
-<section id="s10">
-  <span class="h2num">10</span>
+<section id="s12">
+  <span class="h2num">12</span>
   <h2>面談後にやること</h2>
   <h3>24時間以内</h3>
   <ol class="steps">
     <li><b>その場で描いた業務フロー図を清書して送る。</b>これが最大の差別化になります。「議事録」ではなく「図」を送ること。相手の社内で回覧され、勝手に営業してくれます。</li>
     <li><b>数量化できた痛みを1行で再確認する。</b>「◯◯の作業に月◯時間、というお話でしたが合っていますか」——次回提案の前提を文書で固定します。</li>
+    <li><b>業務棚卸の進め方を、A4一枚で送る。</b>期間・訪問回数・こちらが見せてほしい資料・成果物。提案書ではなく<b>段取り表</b>の体裁にすると、社内稟議に載せやすくなります。</li>
     <li><b>次回日程が未確定なら、この時点で候補日を3つ出す。</b></li>
   </ol>
 
   <h3>次回までに埋める未確認リスト</h3>
   <ul class="checklist">
-    <li>基幹システム（販売・生産・在庫）の有無と製品名 ── <b>最重要</b></li>
+    <li>基幹システム（販売・生産・在庫）の有無と製品名 ── <b>最重要</b>。既存プロダクトがハマるかの判断がここで決まる</li>
     <li>ISO9001・JIS Z 0701・食品添加物製造業許可の現況と、取得主体が山仁薬品か山仁産業か</li>
     <li>グループ全体の人数と、2社間の業務分担の実態</li>
     <li>顧客構成の比率（医薬品／食品／工業／BtoC）</li>
     <li>カンボジア工場の規模・現地スタッフ数・日本との連携頻度</li>
     <li>決裁プロセスと投資の判断基準、これまでのIT投資の履歴</li>
-    <li>補助金活用の意向（IT導入補助金・中小企業省力化投資補助金などが射程）</li>
+    <li>PoCで預かれるデータの範囲と、社外持ち出しの可否（顧客との守秘契約の縛りを確認）</li>
+    <li>補助金の適合可否 ── 相手が費用に反応した場合のみ、次回までに制度を精査</li>
   </ul>
 </section>
 
@@ -651,5 +782,5 @@ footer a:hover{color:var(--blue)}
     <li><a href="https://www.makuake.com/project/katamaraan/">調味料専用乾燥剤「カタマラーーン」（Makuake）</a></li>
     <li><a href="https://el.e-shops.jp/local/nsh/0359384925.html">山仁産業株式会社（e-shops）</a></li>
   </ul>
-  <p class="disclaim">本資料は公開情報にもとづく<b>面談準備用の仮説</b>であり、山仁産業株式会社および山仁薬品株式会社が確認した内容ではありません。「困りごと仮説」はすべて未検証の推測です。事実として断定してよいのは03章で「確定」とした項目のみで、それ以外は必ず面談で確認してください。人物・企業に関する記述は公開されたインタビュー記事等にもとづきます。</p>
+  <p class="disclaim">本資料は公開情報にもとづく<b>面談準備用の仮説</b>であり、山仁産業株式会社および山仁薬品株式会社が確認した内容ではありません。「困りごと仮説」はすべて未検証の推測です。事実として断定してよいのは03章で「確定」とした項目のみで、それ以外は必ず面談で確認してください。08〜10章の期間・進め方は一般的な想定であり、実際の条件は自社の標準に置き換えてください。補助金制度は年度ごとに内容が変わるため、提案前に最新の公募要領を確認してください。人物・企業に関する記述は公開されたインタビュー記事等にもとづきます。</p>
 </footer>
