@@ -1,0 +1,655 @@
+<title>山仁産業 初回面談ノート</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Shippori+Mincho:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+:root{
+  --paper:#EAEFF1; --surface:#FFFFFF; --surface-2:#F2F6F7; --sunk:#E1E8EB;
+  --ink:#0F1A20; --ink-2:#3C4A54; --muted:#6C7C88;
+  --line:#D2DCE1; --line-strong:#B2C1C9;
+  --blue:#15467E; --blue-soft:#DCE8F4;
+  --rose:#A2415E; --rose-soft:#F5DFE6;
+  --moss:#3F6A54; --moss-soft:#DDEAE2;
+  --amber:#7E5A16; --amber-soft:#F2E6CB;
+  --shadow:0 1px 2px rgba(15,26,32,.06), 0 8px 24px -16px rgba(15,26,32,.28);
+  --serif:"Shippori Mincho",'Hiragino Mincho ProN','Yu Mincho',serif;
+  --sans:"Zen Kaku Gothic New",'Hiragino Sans','Yu Gothic',system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C1317; --surface:#141D23; --surface-2:#19232A; --sunk:#101A1F;
+    --ink:#E7EEF1; --ink-2:#B6C4CC; --muted:#8296A2;
+    --line:#25333B; --line-strong:#37484F;
+    --blue:#8CB8E8; --blue-soft:#152839;
+    --rose:#E7A0B4; --rose-soft:#361D26;
+    --moss:#8CC0A5; --moss-soft:#16291F;
+    --amber:#DCB877; --amber-soft:#2C2211;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C1317; --surface:#141D23; --surface-2:#19232A; --sunk:#101A1F;
+  --ink:#E7EEF1; --ink-2:#B6C4CC; --muted:#8296A2;
+  --line:#25333B; --line-strong:#37484F;
+  --blue:#8CB8E8; --blue-soft:#152839;
+  --rose:#E7A0B4; --rose-soft:#361D26;
+  --moss:#8CC0A5; --moss-soft:#16291F;
+  --amber:#DCB877; --amber-soft:#2C2211;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.75;
+  font-feature-settings:"palt" 1;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:2px}
+
+.wrap{max-width:1000px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+.prose{max-width:70ch}
+
+/* ---- masthead ---- */
+header.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.masthead{display:flex;flex-direction:column;gap:18px;padding:clamp(32px,6vw,56px) 0 28px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+h1{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5.2vw,46px);line-height:1.28;
+  margin:0;text-wrap:balance;letter-spacing:.01em}
+h1 .sub{display:block;font-size:clamp(14px,2.2vw,17px);font-family:var(--sans);font-weight:500;
+  color:var(--ink-2);margin-top:12px;line-height:1.7}
+.thesis{border-left:3px solid var(--rose);padding:2px 0 2px 18px;max-width:62ch;
+  font-size:clamp(15px,2.3vw,17px);color:var(--ink-2)}
+.thesis b{color:var(--ink);font-weight:700}
+
+/* ---- nav ---- */
+nav.jump{position:sticky;top:0;z-index:20;background:var(--surface);
+  border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:thin}
+nav.jump ol{display:flex;gap:2px;list-style:none;margin:0;padding:0;white-space:nowrap}
+nav.jump a{display:block;padding:11px 13px;font-size:12.5px;color:var(--muted);text-decoration:none;
+  border-bottom:2px solid transparent;font-weight:500}
+nav.jump a:hover{color:var(--ink);border-bottom-color:var(--line-strong);background:var(--surface-2)}
+nav.jump .n{font-family:var(--mono);font-size:10.5px;color:var(--line-strong);margin-right:6px}
+
+/* ---- sections ---- */
+main{padding-bottom:80px}
+section{padding:clamp(40px,7vw,68px) 0 0;scroll-margin-top:52px}
+h2{font-family:var(--serif);font-weight:700;font-size:clamp(21px,3.4vw,28px);line-height:1.4;
+  margin:0 0 6px;text-wrap:balance}
+.h2num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--rose);
+  display:block;margin-bottom:10px;font-weight:600}
+.lede{color:var(--ink-2);margin:0 0 26px;max-width:66ch;font-size:15px}
+h3{font-size:15px;font-weight:700;margin:34px 0 12px;letter-spacing:.02em;
+  display:flex;align-items:baseline;gap:10px}
+h3::before{content:"";width:14px;height:1px;background:var(--line-strong);flex:none;
+  transform:translateY(-4px)}
+p{margin:0 0 14px}
+
+/* ---- cards / panels ---- */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:3px;
+  padding:clamp(18px,3vw,26px);box-shadow:var(--shadow)}
+.grid{display:grid;gap:14px}
+@media(min-width:720px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}}
+
+/* summary bullets */
+ul.tight{list-style:none;margin:0;padding:0;display:grid;gap:11px}
+ul.tight>li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:baseline;font-size:14.5px}
+ul.tight>li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--blue);
+  transform:translateY(-3px)}
+ul.tight>li b{font-weight:700}
+
+/* ---- structure diagram ---- */
+.org{display:grid;gap:12px;font-size:13px}
+.org-row{display:grid;gap:12px}
+@media(min-width:640px){.org-row.two{grid-template-columns:1fr 1fr}}
+.node{background:var(--surface);border:1px solid var(--line-strong);border-radius:3px;padding:14px 16px}
+.node.me{border-color:var(--rose);border-width:2px;background:var(--rose-soft)}
+.node .role{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);display:block;margin-bottom:5px}
+.node .nm{font-weight:700;font-size:15px;display:block;margin-bottom:4px}
+.node .dt{color:var(--ink-2);font-size:12.5px;line-height:1.65}
+.org .link{text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);
+  letter-spacing:.1em;padding:2px 0}
+.customers{display:flex;flex-wrap:wrap;gap:8px}
+.customers span{background:var(--sunk);border:1px solid var(--line);border-radius:2px;
+  padding:5px 10px;font-size:12.5px;color:var(--ink-2)}
+
+/* ---- tables ---- */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:13.5px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{background:var(--surface-2);font-size:11px;font-family:var(--mono);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-weight:600;color:var(--rose);white-space:nowrap}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink-2)}
+
+/* ---- confidence tags ---- */
+.tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  padding:2px 7px;border-radius:2px;font-weight:600;white-space:nowrap;border:1px solid transparent}
+.t-fact{background:var(--moss-soft);color:var(--moss);border-color:var(--moss)}
+.t-likely{background:var(--blue-soft);color:var(--blue);border-color:var(--blue)}
+.t-guess{background:var(--amber-soft);color:var(--amber);border-color:var(--amber)}
+.t-hot{background:var(--rose-soft);color:var(--rose);border-color:var(--rose)}
+
+/* ---- hypothesis cards ---- */
+.hyp{display:grid;gap:12px}
+@media(min-width:760px){.hyp{grid-template-columns:1fr 1fr}}
+.hcard{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:16px 18px;
+  display:grid;gap:9px;align-content:start}
+.hcard.pri{border-left:3px solid var(--rose)}
+.hhead{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.hid{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--rose);
+  background:var(--rose-soft);padding:2px 7px;border-radius:2px}
+.htitle{font-weight:700;font-size:14.5px;line-height:1.5}
+.hbody{font-size:13.5px;color:var(--ink-2);line-height:1.72}
+.hbody dt{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-top:9px}
+.hbody dd{margin:2px 0 0}
+.hbody dl{margin:0}
+
+/* ---- group heading for hypotheses ---- */
+.hgroup{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);
+  border-top:1px solid var(--line-strong);padding-top:10px;margin:30px 0 13px;
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.hgroup b{color:var(--ink);font-family:var(--sans);font-size:14px;letter-spacing:.02em}
+
+/* ---- timeline ---- */
+.tl{display:grid;gap:0;border:1px solid var(--line);border-radius:3px;background:var(--surface);
+  overflow:hidden}
+.tl-row{display:grid;grid-template-columns:78px 1fr;gap:0;border-bottom:1px solid var(--line)}
+.tl-row:last-child{border-bottom:0}
+.tl-t{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;color:var(--blue);
+  background:var(--surface-2);padding:13px 12px;border-right:1px solid var(--line);font-weight:600}
+.tl-c{padding:13px 16px;font-size:13.5px}
+.tl-c b{display:block;font-size:14px;margin-bottom:3px}
+.tl-c span{color:var(--ink-2);font-size:13px}
+
+/* ---- questions ---- */
+.qset{counter-reset:none;display:grid;gap:0;border:1px solid var(--line);border-radius:3px;
+  background:var(--surface);overflow:hidden;margin-bottom:8px}
+.q{display:grid;grid-template-columns:44px 1fr;border-bottom:1px solid var(--line)}
+.q:last-child{border-bottom:0}
+.q-n{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--muted);
+  padding:15px 0 0 14px}
+.q-b{padding:14px 16px 15px 4px}
+.q-t{font-size:14.5px;font-weight:500;line-height:1.7;margin:0 0 5px}
+.q-w{font-size:12.5px;color:var(--muted);line-height:1.65;margin:0;
+  display:grid;grid-template-columns:auto 1fr;gap:7px;align-items:baseline}
+.q-w::before{content:"→";color:var(--rose);font-family:var(--mono);font-size:11px}
+.q.key .q-t{color:var(--ink)}
+.q.key{background:linear-gradient(90deg,var(--rose-soft) 0 3px,transparent 3px)}
+
+/* ---- callouts ---- */
+.call{border:1px solid var(--line);border-left:3px solid var(--blue);background:var(--surface);
+  border-radius:3px;padding:16px 18px;font-size:14px}
+.call.warn{border-left-color:var(--rose)}
+.call .ct{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);display:block;margin-bottom:7px}
+.call p:last-child{margin-bottom:0}
+
+ol.steps{margin:0;padding-left:0;list-style:none;counter-reset:s;display:grid;gap:12px}
+ol.steps>li{counter-increment:s;display:grid;grid-template-columns:26px 1fr;gap:12px;font-size:14px}
+ol.steps>li::before{content:counter(s);font-family:var(--mono);font-size:11px;font-weight:600;
+  color:var(--blue);background:var(--blue-soft);border-radius:2px;height:20px;display:grid;
+  place-items:center;transform:translateY(3px)}
+
+ul.plain{margin:0;padding-left:1.15em;font-size:14px}
+ul.plain li{margin-bottom:8px}
+
+.checklist{display:grid;gap:9px;list-style:none;margin:0;padding:0;font-size:14px}
+.checklist li{display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:baseline}
+.checklist li::before{content:"";width:11px;height:11px;border:1.5px solid var(--line-strong);
+  border-radius:2px;transform:translateY(1px)}
+
+footer{border-top:1px solid var(--line);margin-top:60px;padding:28px 0 60px;
+  font-size:12.5px;color:var(--muted)}
+footer h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  margin:0 0 10px;color:var(--muted)}
+footer ul{margin:0;padding-left:1.1em;display:grid;gap:5px}
+footer a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-strong)}
+footer a:hover{color:var(--blue)}
+.disclaim{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);line-height:1.7;max-width:70ch}
+
+@media print{
+  nav.jump{display:none}
+  body{background:#fff}
+  section{page-break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap masthead">
+    <div class="eyebrow">
+      <span>初回面談ノート</span><span>|</span>
+      <span>山仁産業株式会社</span><span>|</span>
+      <span>法人番号 9120001091324</span>
+    </div>
+    <h1>湿気を止める会社の、<br>時間の漏れを探しにいく
+      <span class="sub">ヒアリング前提の公開情報リサーチ ＋ 困りごと仮説 ＋ 当日の質問設計</span>
+    </h1>
+    <p class="thesis">同じ敷地に<b>販売会社と製造会社が並び</b>、医薬品メーカーの<b>供給者監査に耐える工程管理そのものが商品価値</b>になっている会社。つまり本業の中核が「記録・文書・証明」であり、そこが最も人手を食っている可能性が高い。<b>提案の入口は「AI」ではなく「探す時間・書く時間」</b>。</p>
+  </div>
+</header>
+
+<nav class="jump" aria-label="セクション">
+  <div class="wrap">
+    <ol>
+      <li><a href="#s1"><span class="n">01</span>30秒サマリ</a></li>
+      <li><a href="#s2"><span class="n">02</span>会社の全体像</a></li>
+      <li><a href="#s3"><span class="n">03</span>事実と推定</a></li>
+      <li><a href="#s4"><span class="n">04</span>困りごと仮説</a></li>
+      <li><a href="#s5"><span class="n">05</span>当日の進め方</a></li>
+      <li><a href="#s6"><span class="n">06</span>質問集</a></li>
+      <li><a href="#s7"><span class="n">07</span>痛みの数量化</a></li>
+      <li><a href="#s8"><span class="n">08</span>打ち手 早見表</a></li>
+      <li><a href="#s9"><span class="n">09</span>地雷</a></li>
+      <li><a href="#s10"><span class="n">10</span>面談後</a></li>
+    </ol>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="s1">
+  <span class="h2num">01</span>
+  <h2>面談直前の30秒サマリ</h2>
+  <p class="lede">エレベーターの中で読む用。ここだけ頭に入っていれば会話は成立します。</p>
+  <div class="panel">
+    <ul class="tight">
+      <li><b>相手は「グループの製造会社」</b>。山仁グループは <b>山仁薬品（1955年創業・販売／代表 関谷康子氏＝3代目）</b> と <b>山仁産業（1982年設立・製造）</b> の2社体制で、本店所在地は同一。今回の面談相手は製造側です。</li>
+      <li><b>商材はシリカゲル乾燥剤「ドライヤーン®」</b>。分包品・錠剤型・シートなど。主要顧客は<b>医薬品メーカー</b>で、食品・工業用途と一般消費者向けにも展開。</li>
+      <li><b>売りは「見せられる工場」</b>。顧客の監査に来てもらう前提で工程管理・品質管理・人材育成に力を入れている、と自社で説明しています。＝記録と文書が事業の生命線。</li>
+      <li><b>海外拠点あり</b>。2014年にカンボジア工場が稼働（現地初の乾燥剤工場として報道）。日本のノウハウを海外に移植する構図。</li>
+      <li><b>BtoCもやっている</b>。調味料専用乾燥剤「カタマラーーン」をMakuake発で商品化し、アスクル・モノタロウ・ヨドバシ・Yahoo!など複数モールで流通。</li>
+      <li><b>規模は約23名</b>（雇用保険被保険者数ベース）。この人数で製造・品質・監査対応・海外・BtoCまで回している＝<b>一人多役と属人化はほぼ確実</b>。</li>
+      <li><b>今日の勝ち筋</b>：「品質調査票・監査準備・製造記録」のどれかで、<b>月に何時間溶けているか</b>を相手の口から言わせること。それができれば提案は次回で通ります。</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s2">
+  <span class="h2num">02</span>
+  <h2>会社の全体像</h2>
+  <p class="lede">「御社は製造、山仁薬品さんが販売、という理解で合っていますか？」と確認から入れるだけで、下調べの本気度が伝わります。</p>
+
+  <div class="org">
+    <div class="org-row two">
+      <div class="node">
+        <span class="role">販売・企画</span>
+        <span class="nm">山仁薬品株式会社</span>
+        <span class="dt">1955年設立／代表取締役 関谷康子氏（3代目、2009年入社・同年就任）<br>ブランド「ドライヤーン®」「カタマラーーン」の企画・卸・BtoC販売</span>
+      </div>
+      <div class="node me">
+        <span class="role">今回の面談相手 ／ 製造</span>
+        <span class="nm">山仁産業株式会社</span>
+        <span class="dt">1982年設立／資本金2,400万円／約23名<br>滋賀県犬上郡甲良町大字金屋字見立野1260番地3<br>シリカゲル乾燥剤の製造・加工</span>
+      </div>
+    </div>
+    <div class="link">▼ ノウハウ移転（2014年〜）</div>
+    <div class="node">
+      <span class="role">海外生産</span>
+      <span class="nm">カンボジア工場</span>
+      <span class="dt">カンボジア初の乾燥剤工場として2014年稼働。東南アジアで製造・輸出される製品向けの湿気対策を担う</span>
+    </div>
+    <div class="link">▼ 供給先</div>
+    <div class="node">
+      <span class="role">顧客</span>
+      <div class="customers">
+        <span>医薬品メーカー（主力）</span><span>食品</span><span>工業製品・電子部品</span>
+        <span>包装・梱包資材ルート</span><span>一般消費者／EC・モール</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>この構造から読めること</h3>
+  <ul class="plain">
+    <li><b>会社間の情報の受け渡しが必ず存在する。</b>「受注は薬品、製造は産業」なら、注文・在庫・納期の情報が2社をまたいで動きます。ここは高確率で手作業です。社長インタビューでは、就任当時に製造部門と営業部門がFAXでやり取りしていた旨が語られています（現在どうかは要確認）。</li>
+    <li><b>顧客が医薬品メーカー＝要求水準が高い。</b>供給者監査、品質調査票、規格書、変更管理の事前通知。乾燥剤という単価の低い部材でも、書類の要求は完成品メーカー並みに来ます。</li>
+    <li><b>BtoCとBtoBが同じ工場に同居している。</b>ロットの考え方も納期も在庫も違う2つの事業を、23名で回している構造です。</li>
+    <li><b>「70年」は山仁薬品の話。</b>山仁産業（1982年）と混同しないこと。挨拶で「創業70年の御社」と言うと製造会社の方には微妙にズレます。</li>
+  </ul>
+</section>
+
+<section id="s3">
+  <span class="h2num">03</span>
+  <h2>事実と推定の切り分け</h2>
+  <p class="lede">面談で言い切ってよいこと／確認として聞くべきことの線引き。ここを混ぜると一気に信用を落とします。</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>項目</th><th>内容</th><th>確度</th><th>面談での扱い</th></tr></thead>
+      <tbody>
+        <tr><td>商号・法人番号・所在地</td><td>山仁産業株式会社／9120001091324／滋賀県犬上郡甲良町大字金屋字見立野1260番地3</td><td><span class="tag t-fact">確定</span></td><td>前提としてよい</td></tr>
+        <tr><td>設立・資本金・従業員数</td><td>1982年7月／2,400万円／約23名</td><td><span class="tag t-likely">DB掲載値</span></td><td>「◯◯とお聞きしていますが」と確認形で</td></tr>
+        <tr><td>事業内容</td><td>シリカゲル乾燥剤の製造・加工（無機化学製品製造）</td><td><span class="tag t-fact">ほぼ確定</span></td><td>前提としてよい</td></tr>
+        <tr><td>山仁薬品との関係</td><td>同一グループ。薬品＝販売、産業＝製造の分業</td><td><span class="tag t-fact">ほぼ確定</span></td><td>確認形で。役割分担の詳細は聞く</td></tr>
+        <tr><td>主要顧客</td><td>医薬品メーカー向けが主力。工程管理・品質管理・監査対応を訴求</td><td><span class="tag t-likely">公開情報</span></td><td>比率は必ず聞く</td></tr>
+        <tr><td>カンボジア工場</td><td>2014年稼働。現地初の乾燥剤工場</td><td><span class="tag t-likely">報道あり</span></td><td>現況・規模は要確認</td></tr>
+        <tr><td>認証</td><td>ISO9001／JIS Z 0701（包装用シリカゲル乾燥剤）／食品添加物製造業許可</td><td><span class="tag t-likely">自社発信</span></td><td>取得主体が薬品か産業か要確認</td></tr>
+        <tr><td>基幹システムの有無</td><td>不明</td><td><span class="tag t-guess">未確認</span></td><td><b>最重要の確認事項</b></td></tr>
+        <tr><td>部門間のFAX運用</td><td>社長就任当時（2009年前後）の状況として言及あり</td><td><span class="tag t-guess">過去の話</span></td><td><b>断定禁止</b>。「今は？」と聞く形でのみ</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="call warn" style="margin-top:18px">
+    <span class="ct">同名法人に注意</span>
+    <p>「山仁産業」は同名の別法人が複数存在します（徳島県鳴門市の水産業「山仁産業有限会社」など）。検索結果を混ぜないよう、法人番号 9120001091324 で特定してください。</p>
+  </div>
+</section>
+
+<section id="s4">
+  <span class="h2num">04</span>
+  <h2>困りごと仮説マップ</h2>
+  <p class="lede">当てにいく順に並べています。全部聞こうとしないこと。<b>Aグループが取れたらその日は勝ち</b>、と決めて臨むのが正解です。各IDは後半の質問集・打ち手表と対応しています。</p>
+
+  <div class="hgroup"><b>A ／ 品質・監査 — 本丸</b><span>優先度 最高・当てにいく</span></div>
+  <div class="hyp">
+    <div class="hcard pri">
+      <div class="hhead"><span class="hid">A1</span><span class="tag t-hot">最有力</span></div>
+      <div class="htitle">顧客からの品質調査票・アンケート回答が終わらない</div>
+      <div class="hbody"><dl>
+        <dt>仮説</dt><dd>医薬品・食品顧客から届く規格書、成分・アレルゲン・BSE・RoHS・REACH等の調査票に、少人数で都度手作業回答している。内容の8割は毎回同じ。</dd>
+        <dt>根拠</dt><dd>医薬品メーカーを主要顧客とする部材サプライヤーの典型。23名規模で専任は置けない。</dd>
+        <dt>確かめる質問</dt><dd>Q8・Q11・Q12</dd>
+      </dl></div>
+    </div>
+    <div class="hcard pri">
+      <div class="hhead"><span class="hid">A2</span><span class="tag t-hot">最有力</span></div>
+      <div class="htitle">顧客の供給者監査の準備が毎回ゼロから</div>
+      <div class="hbody"><dl>
+        <dt>仮説</dt><dd>監査対応を強みとして掲げている＝監査の頻度が高い。そのたびに資料を集め直し、特定の人が数日潰れている。</dd>
+        <dt>根拠</dt><dd>「外部から監査に来られるお客様に安心いただける製造現場」を自社で訴求している。</dd>
+        <dt>確かめる質問</dt><dd>Q10・Q11</dd>
+      </dl></div>
+    </div>
+    <div class="hcard">
+      <div class="hhead"><span class="hid">A3</span><span class="tag t-likely">有力</span></div>
+      <div class="htitle">手順書の版管理と教育記録が紐づいていない</div>
+      <div class="hbody"><dl>
+        <dt>仮説</dt><dd>SOPの改訂と「誰がその版で教育を受けたか」の記録が別管理。監査で必ず突かれる箇所。</dd>
+        <dt>確かめる質問</dt><dd>Q17</dd>
+      </dl></div>
+    </div>
+    <div class="hcard">
+      <div class="hhead"><span class="hid">A4</span><span class="tag t-likely">有力</span></div>
+      <div class="htitle">過去の逸脱・苦情・変更の記録が探せない</div>
+      <div class="hbody"><dl>
+        <dt>仮説</dt><dd>「前に似た事象があったはず」を人の記憶で辿っている。紙とファイルサーバに散在。</dd>
+        <dt>確かめる質問</dt><dd>Q11・Q13</dd>
+      </dl></div>
+    </div>
+  </div>
+
+  <div class="hgroup"><b>B ／ 受注から出荷まで</b><span>優先度 高・効果が数字で出やすい</span></div>
+  <div class="hyp">
+    <div class="hcard pri">
+      <div class="hhead"><span class="hid">B1</span><span class="tag t-hot">有力</span></div>
+      <div class="htitle">注文が紙とメールで届き、何度も転記している</div>
+      <div class="hbody"><dl>
+        <dt>仮説</dt><dd>FAX・メール・電話が混在。受注→生産指示→出荷伝票→請求で同じ情報を複数回入力。</dd>
+        <dt>確かめる質問</dt><dd>Q4・Q5</dd>
+      </dl></div>
+    </div>
+    <div class="hcard">
+      <div class="hhead"><span class="hid">B2</span><span class="tag t-likely">有力</span></div>
+      <div class="htitle">販売会社と製造会社の間で在庫・納期が見えない</div>
+      <div class="hbody"><dl>
+        <dt>仮説</dt><dd>2社体制ゆえの構造的な壁。営業が在庫を確認するのに製造へ電話している。</dd>
+        <dt>確かめる質問</dt><dd>Q6</dd>
+      </dl></div>
+    </div>
+    <div class="hcard">
+      <div class="hhead"><span class="hid">B3</span><span class="tag t-guess">中</span></div>
+      <div class="htitle">BtoCの受注・在庫がモールごとにバラバラ</div>
+      <div class="hbody"><dl>
+        <dt>仮説</dt><dd>自社EC＋アスクル＋モノタロウ＋ヨドバシ＋Yahoo!。件数は少なくても手間は販路数に比例する。</dd>
+        <dt>確かめる質問</dt><dd>Q7</dd>
+      </dl></div>
+    </div>
+    <div class="hcard">
+      <div class="hhead"><span class="hid">B4</span><span class="tag t-guess">中</span></div>
+      <div class="htitle">見積・仕様の問い合わせ対応が営業を止めている</div>
+      <div class="hbody"><dl>
+        <dt>仮説</dt><dd>「この包装なら乾燥剤は何g必要か」といった技術寄りの問い合わせが、特定の人に集中している。</dd>
+        <dt>確かめる質問</dt><dd>Q9・Q19</dd>
+      </dl></div>
+    </div>
+  </div>
+
+  <div class="hgroup"><b>C ／ 製造現場</b><span>優先度 中・現場を見せてもらえたら深掘り</span></div>
+  <div class="hyp">
+    <div class="hcard">
+      <div class="hhead"><span class="hid">C1</span><span class="tag t-likely">有力</span></div>
+      <div class="htitle">生産計画がベテランの頭の中にある</div>
+      <div class="hbody"><dl>
+        <dt>仮説</dt><dd>多品種小ロット＋受注生産と見込生産の混在。段取り順序の判断が属人化。</dd>
+        <dt>確かめる質問</dt><dd>Q14・Q15</dd>
+      </dl></div>
+    </div>
+    <div class="hcard">
+      <div class="hhead"><span class="hid">C2</span><span class="tag t-likely">有力</span></div>
+      <div class="htitle">紙のチェックシートを誰かが打ち直している</div>
+      <div class="hbody"><dl>
+        <dt>仮説</dt><dd>製造記録・温湿度・秤量記録が紙。保管は法令・顧客要求で必要だが、集計のために別途入力している。</dd>
+        <dt>確かめる質問</dt><dd>Q13</dd>
+      </dl></div>
+    </div>
+  </div>
+
+  <div class="hgroup"><b>D・E・F ／ 人・海外・事業開発</b><span>優先度 中〜低・関係構築の材料として</span></div>
+  <div class="hyp">
+    <div class="hcard">
+      <div class="hhead"><span class="hid">D1</span><span class="tag t-likely">有力</span></div>
+      <div class="htitle">一人多役で、担当者が休むと止まる</div>
+      <div class="hbody"><dl>
+        <dt>根拠</dt><dd>23名で製造・品質・監査・海外・BtoCを回している。社長は人材育成を経営の柱に挙げている＝関心が高い領域。</dd>
+        <dt>確かめる質問</dt><dd>Q2・Q9・Q16</dd>
+      </dl></div>
+    </div>
+    <div class="hcard">
+      <div class="hhead"><span class="hid">E1</span><span class="tag t-guess">中</span></div>
+      <div class="htitle">カンボジア工場との情報共有に言語の壁</div>
+      <div class="hbody"><dl>
+        <dt>仮説</dt><dd>日報・品質情報・手順書の翻訳が発生。技能伝承を人の往復で行っている。</dd>
+        <dt>確かめる質問</dt><dd>Q18</dd>
+      </dl></div>
+    </div>
+    <div class="hcard">
+      <div class="hhead"><span class="hid">D3</span><span class="tag t-guess">中</span></div>
+      <div class="htitle">マニュアル・教育コンテンツを作る時間がない</div>
+      <div class="hbody"><dl>
+        <dt>仮説</dt><dd>必要性は認識しているが、作るのはいつも「手が空いたら」。結果、口伝が残る。</dd>
+        <dt>確かめる質問</dt><dd>Q16・Q17</dd>
+      </dl></div>
+    </div>
+    <div class="hcard">
+      <div class="hhead"><span class="hid">F1</span><span class="tag t-guess">低</span></div>
+      <div class="htitle">BtoC商品の販促を回しきれていない</div>
+      <div class="hbody"><dl>
+        <dt>仮説</dt><dd>Makuake発の商品を多販路に載せたが、商品説明・広告文・レビュー分析まで手が回らない。</dd>
+        <dt>確かめる質問</dt><dd>Q7</dd>
+      </dl></div>
+    </div>
+  </div>
+</section>
+
+<section id="s5">
+  <span class="h2num">05</span>
+  <h2>当日の進め方（90分想定）</h2>
+  <p class="lede">60分なら「会社・事業の確認」を5分に圧縮し、業務フローを描く時間を死守してください。<b>提案スライドは持っていかない</b>のが正解です。持っていくのは白紙のA3とペン。</p>
+  <div class="tl">
+    <div class="tl-row"><div class="tl-t">0-5</div><div class="tl-c"><b>名刺交換・アイスブレイク</b><span>甲良町・湖東の話、創業70年、「ドライヤーン」というネーミングの由来。相手の商品の話から入る。</span></div></div>
+    <div class="tl-row"><div class="tl-t">5-10</div><div class="tl-c"><b>こちらの自己紹介は3分で切る</b><span>「今日は提案に来たのではなく、御社で"時間が溶けている作業"を探しに来ました」と目的を明言。売り込まれる警戒を最初に解く。</span></div></div>
+    <div class="tl-row"><div class="tl-t">10-25</div><div class="tl-c"><b>事業の確認（調べてきた前提のすり合わせ）</b><span>02章の理解をぶつけて訂正してもらう。この15分で「この人は分かっている」と思わせられるかが全体を決める。</span></div></div>
+    <div class="tl-row"><div class="tl-t">25-55</div><div class="tl-c"><b>業務の流れを一緒に描く ← 山場</b><span>A3に「受注 → 生産計画 → 製造 → 検査 → 出荷 → 監査・書類対応」を横に描き、各工程で「誰が」「何を使って」「何回入力するか」を書き込んでいく。相手に描かせず、こちらが描いて確認を取る形が速い。</span></div></div>
+    <div class="tl-row"><div class="tl-t">55-70</div><div class="tl-c"><b>痛みの数量化</b><span>フロー図の中で一番顔が曇った工程に戻り、07章の3点セットを当てる。数字が出たらその場でメモに丸をつけて共有する。</span></div></div>
+    <div class="tl-row"><div class="tl-t">70-80</div><div class="tl-c"><b>現場を見せてもらう依頼</b><span>「見せられる工場」を標榜する会社なので、見学の打診はむしろ喜ばれる可能性が高い。ここで紙の記録・掲示物・端末の有無が一目で分かる。時間が押したら次回でもよい。</span></div></div>
+    <div class="tl-row"><div class="tl-t">80-90</div><div class="tl-c"><b>次につなげる</b><span>「今日伺った◯◯について、実際にどう変わるかを次回お見せします」と宿題を1つ持ち帰り、<b>その場で次回日程を押さえる</b>。ここを口頭の「また連絡します」で終わらせない。</span></div></div>
+  </div>
+</section>
+
+<section id="s6">
+  <span class="h2num">06</span>
+  <h2>質問集</h2>
+  <p class="lede">そのまま口に出せる形にしてあります。<span class="tag t-hot">桃色の帯</span>が付いた質問が今回の勝負どころ。順番より、相手が語り出した流れに乗ることを優先してください。</p>
+
+  <h3>導入 — 全体をつかむ</h3>
+  <div class="qset">
+    <div class="q"><div class="q-n">Q1</div><div class="q-b"><p class="q-t">まず、御社がいま一番力を入れておられることを教えていただけますか。</p><p class="q-w">最初の一問で相手の関心の中心を取る。ここで出た言葉を最後まで使い回す。</p></div></div>
+    <div class="q"><div class="q-n">Q2</div><div class="q-b"><p class="q-t">23名ほどとお聞きしていますが、製造・品質保証・事務でおおよそ何名ずつでしょうか。</p><p class="q-w">人の配分＝コストの配分。品質保証が1〜2名なら、A1・A2の痛みはほぼ確定する。</p></div></div>
+    <div class="q key"><div class="q-n">Q3</div><div class="q-b"><p class="q-t">1日の中で「これは付加価値を生んでいないな」と感じる作業があるとしたら、何でしょうか。</p><p class="q-w">最強の一問。相手の言葉で困りごとが出てくる。ここで出たものを最優先で深掘りする。</p></div></div>
+  </div>
+
+  <h3>受注から出荷まで <span class="tag t-likely" style="margin-left:auto">B1-B4</span></h3>
+  <div class="qset">
+    <div class="q"><div class="q-n">Q4</div><div class="q-b"><p class="q-t">ご注文はどんな形で届きますか。FAX・メール・EDI・電話、だいたいの比率でいうと。</p><p class="q-w">FAXが残っていれば読取自動化の即効ネタ。EDIが主なら別の攻め口に切り替える。</p></div></div>
+    <div class="q key"><div class="q-n">Q5</div><div class="q-b"><p class="q-t">注文が届いてから出荷までの間に、同じ情報を何回入力されていますか。</p><p class="q-w">転記回数はそのまま削減効果の見積根拠になる。「3回」と言われたらその場で年間工数を計算する。</p></div></div>
+    <div class="q"><div class="q-n">Q6</div><div class="q-b"><p class="q-t">山仁薬品さんとの間で、在庫や納期のやり取りはどのようにされていますか。</p><p class="q-w">2社体制の継ぎ目。電話・メール・口頭ならB2が生きている。</p></div></div>
+    <div class="q"><div class="q-n">Q7</div><div class="q-b"><p class="q-t">カタマラーーンのような一般消費者向けの商品は、どのモールで、受注や在庫はどうまとめておられますか。</p><p class="q-w">商品名を出すと確実に喜ばれる。同時にB3・F1の確認になる。</p></div></div>
+  </div>
+
+  <h3>品質・監査 — 本丸 <span class="tag t-hot" style="margin-left:auto">A1-A4</span></h3>
+  <div class="qset">
+    <div class="q key"><div class="q-n">Q8</div><div class="q-b"><p class="q-t">お客様からの品質調査票やアンケートは、月にどのくらい届きますか。1件あたり、どれくらい時間がかかりますか。</p><p class="q-w">件数×時間が出た瞬間に、提案の金額根拠が手に入る。この2つの数字は絶対に持ち帰る。</p></div></div>
+    <div class="q"><div class="q-n">Q9</div><div class="q-b"><p class="q-t">その回答は、どなたが作られますか。その方が不在のときは止まりますか。</p><p class="q-w">属人化の確認。「止まります」と言われたら、コストではなくリスクの話に切り替えられる。</p></div></div>
+    <div class="q key"><div class="q-n">Q10</div><div class="q-b"><p class="q-t">お客様の監査は年に何回ほどありますか。1回の準備に、実質どのくらいかかりますか。</p><p class="q-w">監査対応を強みにしている会社ほど、この工数は大きい。誇りと負担が同居している領域。</p></div></div>
+    <div class="q key"><div class="q-n">Q11</div><div class="q-b"><p class="q-t">過去の回答や記録を探すとき、どこを見に行かれますか。ファイルサーバですか、紙の綴りですか。</p><p class="q-w">「探す場所」の数がそのまま検索基盤の必要性になる。3か所以上なら提案は確実に刺さる。</p></div></div>
+    <div class="q key"><div class="q-n">Q12</div><div class="q-b"><p class="q-t">「これ、前にも同じことを答えた気がする」と感じることはありますか。</p><p class="q-w">技術の話をせずに困りごとを自覚させる質問。うなずかれたら、そこが提案の入口。</p></div></div>
+  </div>
+
+  <h3>製造現場 <span class="tag t-likely" style="margin-left:auto">C1-C2</span></h3>
+  <div class="qset">
+    <div class="q"><div class="q-n">Q13</div><div class="q-b"><p class="q-t">製造記録やチェックシートは紙でしょうか、システムでしょうか。記録したあと、どなたかが別途打ち直しておられますか。</p><p class="q-w">「紙をなくす」提案は禁物。打ち直しの有無だけを確認する。</p></div></div>
+    <div class="q"><div class="q-n">Q14</div><div class="q-b"><p class="q-t">生産計画はどなたが、どうやって立てておられますか。</p><p class="q-w">「Excelで◯◯さんが」と名前が出たら、C1とD1が同時に確認できる。</p></div></div>
+    <div class="q"><div class="q-n">Q15</div><div class="q-b"><p class="q-t">品目数はどのくらいありますか。よく出るものと、たまにしか出ないものの比率は。</p><p class="q-w">多品種小ロットの度合い。段取り替えの負荷が読める。</p></div></div>
+  </div>
+
+  <h3>人と教育 <span class="tag t-likely" style="margin-left:auto">D1-D3</span></h3>
+  <div class="qset">
+    <div class="q"><div class="q-n">Q16</div><div class="q-b"><p class="q-t">新しく入られた方が一人前になるまで、どのくらいかかりますか。</p><p class="q-w">社長が人材育成を経営の柱にしている会社。この話題は温度が上がりやすい。</p></div></div>
+    <div class="q"><div class="q-n">Q17</div><div class="q-b"><p class="q-t">手順を教えるとき、何を使っておられますか。手順書ですか、隣について見せる形ですか。</p><p class="q-w">A3（版管理）とD3（教育コンテンツ）を同時に確認できる。</p></div></div>
+  </div>
+
+  <h3>海外 <span class="tag t-guess" style="margin-left:auto">E1-E2</span></h3>
+  <div class="qset">
+    <div class="q"><div class="q-n">Q18</div><div class="q-b"><p class="q-t">カンボジアの工場とは、日々どんな情報をやり取りされていますか。言葉の面で苦労される場面はありますか。</p><p class="q-w">海外拠点を持つ23名の会社は珍しい。関心を示すこと自体が関係構築になる。</p></div></div>
+  </div>
+
+  <h3>締め — 次につなげる</h3>
+  <div class="qset">
+    <div class="q key"><div class="q-n">Q19</div><div class="q-b"><p class="q-t">もし明日から書類仕事が半分になったとしたら、空いた時間で何をされたいですか。</p><p class="q-w">提案の"のりしろ"を作る質問。ここで語られたことが、次回提案の冒頭スライドになる。</p></div></div>
+    <div class="q"><div class="q-n">Q20</div><div class="q-b"><p class="q-t">こういった取り組みは、最終的にどなたと相談して決められる形になりますか。</p><p class="q-w">決裁ルートの確認。グループ2社体制なので、山仁薬品側の関与を必ず押さえる。</p></div></div>
+    <div class="q"><div class="q-n">Q21</div><div class="q-b"><p class="q-t">これまでにITやAIで試されたこと、あるいは途中でやめられたことはありますか。</p><p class="q-w">過去の失敗＝地雷の在り処。同じ地雷を踏む提案を次回持っていかずに済む。</p></div></div>
+  </div>
+</section>
+
+<section id="s7">
+  <span class="h2num">07</span>
+  <h2>痛みの数量化 — 3点セット</h2>
+  <p class="lede">困りごとを聞くだけでは提案になりません。<b>1つでいいので数字にして帰る</b>。この3問を、相手が語った作業にそのまま当ててください。</p>
+  <div class="grid g3">
+    <div class="panel"><div class="eyebrow" style="margin-bottom:8px">その1</div><b>誰がやっていますか</b><p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">担当が1人なら、コストの話がリスクの話に変わる。</p></div>
+    <div class="panel"><div class="eyebrow" style="margin-bottom:8px">その2</div><b>月に何時間くらいですか</b><p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">「だいたいで結構です」を添える。正確さより桁が大事。</p></div>
+    <div class="panel"><div class="eyebrow" style="margin-bottom:8px">その3</div><b>それが無くなったら、何をされますか</b><p style="font-size:13.5px;color:var(--ink-2);margin-top:8px">削減額ではなく、生まれる価値を相手に語らせる。</p></div>
+  </div>
+  <div class="call" style="margin-top:18px">
+    <span class="ct">その場でやる計算</span>
+    <p>月◯時間 × 12か月 × 人件費単価（中小製造業の事務・品質職なら概ね3,000〜4,000円/時で置く）＝ <b>年間◯◯万円</b>。これをメモに書いて相手に見せる。「この数字、合ってますか？」と確認を取れば、その数字は相手のものになります。次回提案の投資対効果は、この数字を分母に組み立てます。</p>
+  </div>
+</section>
+
+<section id="s8">
+  <span class="h2num">08</span>
+  <h2>仮説 → 打ち手 早見表</h2>
+  <p class="lede">当日その場で全部を語る必要はありません。相手が食いついた1つだけ、初手の小ささまで含めて口頭で伝えれば十分です。</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>ID</th><th>聞けたら、こう返す</th><th>打ち手の型</th><th>初手の大きさ</th></tr></thead>
+      <tbody>
+        <tr><td class="id">A1</td><td>過去の回答・規格書・手順書をまとめて検索できるようにして、調査票の下書きまでを自動で作る</td><td>社内文書の検索基盤＋回答ドラフト生成</td><td class="num">既存文書30〜50点／4週間</td></tr>
+        <tr><td class="id">A2</td><td>監査でよく聞かれる質問に、根拠文書へのリンク付きで即答できる状態を作る</td><td>監査準備アシスタント</td><td class="num">想定問答50問から</td></tr>
+        <tr><td class="id">A3・D3</td><td>作業を撮った動画から手順書の下書きを起こし、改訂履歴と教育記録を1か所に</td><td>動画→手順書生成＋版管理</td><td class="num">1工程・1本から</td></tr>
+        <tr><td class="id">A4・C2</td><td>紙の記録を撮るだけで検索できるようにする。紙の運用は変えない</td><td>OCR＋構造化＋類似事例検索</td><td class="num">1帳票・過去1年分</td></tr>
+        <tr><td class="id">B1</td><td>FAX・メールの注文を読み取って、入力済みの状態で渡す</td><td>受注文書の自動読取→CSV／基幹連携</td><td class="num">主要3社の帳票から</td></tr>
+        <tr><td class="id">B2</td><td>2社が同じ在庫・納期の画面を見られるようにする</td><td>在庫・進捗の共有ダッシュボード</td><td class="num">主要品目20点から</td></tr>
+        <tr><td class="id">B3・F1</td><td>モールの受注をまとめ、商品説明とレビュー分析を自動で回す</td><td>多販路受注集約＋販促支援</td><td class="num">1商品・1販路から</td></tr>
+        <tr><td class="id">B4</td><td>「この包装なら乾燥剤は何g」の一次回答を社内の誰でも出せるようにする</td><td>選定計算＋技術問い合わせ支援</td><td class="num">既存の計算ルールを移植</td></tr>
+        <tr><td class="id">C1</td><td>段取り順の判断基準を書き出して、計画のたたき台を自動生成する</td><td>生産計画のたたき台生成</td><td class="num">まず判断基準の言語化のみ</td></tr>
+        <tr><td class="id">E1・E2</td><td>日報と手順書を双方向に翻訳し、現地から日本語で相談できるようにする</td><td>多言語共有＋翻訳付き日報</td><td class="num">日報1フォーマットから</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="call warn" style="margin-top:18px">
+    <span class="ct">医薬品顧客がいる会社で、最初に言うべきひとこと</span>
+    <p>「AIが自動で提出する」形は<b>提案しません</b>。作るのは<b>人が確認する下書きまで</b>で、最終責任は必ず人が持つ。根拠になった文書へのリンクを必ず添える。記録は残し、誰がいつ何を承認したかを追える形にする——この線引きを<b>こちらから先に言う</b>と、品質保証の方の警戒が一気に下がります。相手が気にする前に言うのがコツです。</p>
+  </div>
+</section>
+
+<section id="s9">
+  <span class="h2num">09</span>
+  <h2>踏んではいけない地雷</h2>
+  <div class="grid g2">
+    <div class="panel">
+      <h3 style="margin-top:0">聞かないこと</h3>
+      <ul class="plain">
+        <li><b>顧客である医薬品メーカーの社名</b>。守秘義務があります。聞くなら「医薬品・食品・工業のおよその比率」まで。</li>
+        <li><b>監査での指摘内容の詳細</b>。「準備にどれくらいかかるか」は工数の話なので聞けますが、指摘の中身は踏み込まない。</li>
+        <li><b>製品の処方・仕様の詳細</b>。技術的な興味で聞きたくなりますが、初回では取りません。</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3 style="margin-top:0">言わないこと</h3>
+      <ul class="plain">
+        <li><b>「紙をやめましょう」</b>。記録の保管は法令と顧客要求です。正解は「紙は残したまま、探す時間だけ減らす」。</li>
+        <li><b>「DXしましょう」「AIを活用しましょう」</b>から入らない。作業名から入る。「調査票の回答」「監査の準備」。</li>
+        <li><b>「創業70年の御社」</b>。それは山仁薬品（1955年）の話。山仁産業は1982年設立です。</li>
+        <li><b>「FAXでやり取りされているそうですね」</b>。社長就任当時の話であって、現在の話ではありません。必ず「今は？」の形で。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="call" style="margin-top:14px">
+    <span class="ct">先回りして用意しておく答え</span>
+    <p>「入力した情報が外部で学習に使われるのでは」という懸念は、ほぼ確実に出ます。<b>学習に使わせない設定、データの保存先、アクセス権限、退社時の扱い</b>——この4点を、聞かれる前に一息で説明できる状態にしておいてください。ここで詰まると、その日の話は全部止まります。</p>
+  </div>
+</section>
+
+<section id="s10">
+  <span class="h2num">10</span>
+  <h2>面談後にやること</h2>
+  <h3>24時間以内</h3>
+  <ol class="steps">
+    <li><b>その場で描いた業務フロー図を清書して送る。</b>これが最大の差別化になります。「議事録」ではなく「図」を送ること。相手の社内で回覧され、勝手に営業してくれます。</li>
+    <li><b>数量化できた痛みを1行で再確認する。</b>「◯◯の作業に月◯時間、というお話でしたが合っていますか」——次回提案の前提を文書で固定します。</li>
+    <li><b>次回日程が未確定なら、この時点で候補日を3つ出す。</b></li>
+  </ol>
+
+  <h3>次回までに埋める未確認リスト</h3>
+  <ul class="checklist">
+    <li>基幹システム（販売・生産・在庫）の有無と製品名 ── <b>最重要</b></li>
+    <li>ISO9001・JIS Z 0701・食品添加物製造業許可の現況と、取得主体が山仁薬品か山仁産業か</li>
+    <li>グループ全体の人数と、2社間の業務分担の実態</li>
+    <li>顧客構成の比率（医薬品／食品／工業／BtoC）</li>
+    <li>カンボジア工場の規模・現地スタッフ数・日本との連携頻度</li>
+    <li>決裁プロセスと投資の判断基準、これまでのIT投資の履歴</li>
+    <li>補助金活用の意向（IT導入補助金・中小企業省力化投資補助金などが射程）</li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <h4>出典（公開情報）</h4>
+  <ul>
+    <li><a href="https://yamani-g.co.jp/company/">山仁薬品株式会社 企業情報・製品情報（yamani-g.co.jp）</a></li>
+    <li><a href="https://www.wantedly.com/companies/yamani-g/about">山仁薬品株式会社／山仁産業株式会社 会社紹介（Wantedly）</a></li>
+    <li><a href="https://baseconnect.in/companies/71eb1c33-b510-46d8-86d2-cb3fa0eb2613">山仁産業株式会社 会社概要（Baseconnect）</a></li>
+    <li><a href="https://salesnow.jp/db/companies/8120001091366">山仁薬品株式会社 会社概要（SalesNow DB）</a></li>
+    <li><a href="http://www.akaruinews.com/modules/blog/details.php?bid=1256">カンボジア初の乾燥剤工場／関谷康子社長（日本一明るい経済新聞）</a></li>
+    <li><a href="https://business.nikkei.com/atcl/seminar/19nv/120500136/090401112/">山仁薬品・関谷社長「中小企業の社風、社長が率先垂範して一新」（日経ビジネス）</a></li>
+    <li><a href="https://bizhint.jp/report/985789">「クレームに応じすぎると過剰品質につながる」旧弊に立ち向かった3代目の挑戦（BizHint）</a></li>
+    <li><a href="https://kenja-succession.com/articles/strategy/interview-yamani-1/">「シリカゲル」のパイオニア、滋賀県の乾燥剤メーカーを引き継いだ3代目社長（賢者の選択サクセッション）</a></li>
+    <li><a href="https://www.atpress.ne.jp/news/341227">創業70年 老舗乾燥剤メーカーが調味料専用乾燥剤を一般発売（@Press）</a></li>
+    <li><a href="https://www.makuake.com/project/katamaraan/">調味料専用乾燥剤「カタマラーーン」（Makuake）</a></li>
+    <li><a href="https://el.e-shops.jp/local/nsh/0359384925.html">山仁産業株式会社（e-shops）</a></li>
+  </ul>
+  <p class="disclaim">本資料は公開情報にもとづく<b>面談準備用の仮説</b>であり、山仁産業株式会社および山仁薬品株式会社が確認した内容ではありません。「困りごと仮説」はすべて未検証の推測です。事実として断定してよいのは03章で「確定」とした項目のみで、それ以外は必ず面談で確認してください。人物・企業に関する記述は公開されたインタビュー記事等にもとづきます。</p>
+</footer>
