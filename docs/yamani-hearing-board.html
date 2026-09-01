@@ -1,0 +1,328 @@
+<title>山仁産業様 現状整理シート</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Shippori+Mincho:wght@600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+:root{
+  --paper:#EDF1F3; --surface:#FFFFFF; --surface-2:#F3F7F8; --sunk:#E4EBEE;
+  --ink:#101B21; --ink-2:#3E4C56; --muted:#6E7E8A;
+  --line:#D4DDE2; --line-strong:#B3C2CA;
+  --blue:#15467E; --blue-soft:#DEE9F5;
+  --rose:#A2415E; --rose-soft:#F6E1E8;
+  --moss:#3F6A54; --moss-soft:#DEEAE3;
+  --serif:"Shippori Mincho",'Hiragino Mincho ProN','Yu Mincho',serif;
+  --sans:"Zen Kaku Gothic New",'Hiragino Sans','Yu Gothic',system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0C1317; --surface:#141D23; --surface-2:#19232A; --sunk:#101A20;
+  --ink:#E8EFF2; --ink-2:#B7C5CD; --muted:#8397A3;
+  --line:#26343C; --line-strong:#3A4B53;
+  --blue:#8FBAE9; --blue-soft:#152839;
+  --rose:#E7A0B4; --rose-soft:#371E27;
+  --moss:#8CC0A5; --moss-soft:#16291F;
+}}
+:root[data-theme="dark"]{
+  --paper:#0C1317; --surface:#141D23; --surface-2:#19232A; --sunk:#101A20;
+  --ink:#E8EFF2; --ink-2:#B7C5CD; --muted:#8397A3;
+  --line:#26343C; --line-strong:#3A4B53;
+  --blue:#8FBAE9; --blue-soft:#152839;
+  --rose:#E7A0B4; --rose-soft:#371E27;
+  --moss:#8CC0A5; --moss-soft:#16291F;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.7;
+  font-feature-settings:"palt" 1;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:0 clamp(14px,3.5vw,32px)}
+:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+
+header{background:var(--surface);border-bottom:1px solid var(--line);
+  padding:clamp(22px,4vw,34px) 0 22px;margin-bottom:26px}
+.brow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);
+  display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:12px}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(22px,4vw,32px);margin:0;line-height:1.35}
+.note{margin:14px 0 0;color:var(--ink-2);font-size:14px;max-width:64ch;
+  border-left:3px solid var(--blue);padding-left:15px}
+
+section{margin-bottom:30px}
+h2{font-size:16px;font-weight:700;margin:0 0 4px;display:flex;align-items:baseline;gap:11px}
+h2 .k{font-family:var(--mono);font-size:12px;color:var(--rose);font-weight:600}
+.sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:18px 20px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:13.5px}
+th,td{text-align:left;padding:0;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+th:last-child,td:last-child{border-right:0}
+tbody tr:last-child td{border-bottom:0}
+thead th{background:var(--surface-2);font-size:11.5px;color:var(--muted);font-weight:600;
+  padding:10px 12px;white-space:nowrap;letter-spacing:.03em}
+td.rowhead{background:var(--surface-2);font-weight:700;padding:10px 12px;white-space:nowrap;font-size:13px}
+
+input[type=text],input[type=number],textarea{
+  width:100%;border:0;background:transparent;font-family:var(--sans);font-size:13.5px;
+  color:var(--ink);padding:10px 12px;line-height:1.6;resize:vertical}
+input:focus,textarea:focus{background:var(--blue-soft);outline:none}
+input::placeholder,textarea::placeholder{color:var(--line-strong)}
+textarea{min-height:64px;display:block}
+input[type=number]{font-family:var(--mono);font-variant-numeric:tabular-nums;
+  background:var(--sunk);border:1px solid var(--line-strong);border-radius:2px;
+  width:82px;padding:6px 8px;text-align:right;font-size:14px}
+
+.given{display:grid;gap:9px}
+@media(min-width:700px){.given{grid-template-columns:1fr 1fr}}
+.g{display:grid;grid-template-columns:132px 1fr;gap:12px;font-size:13.5px;
+  background:var(--moss-soft);border:1px solid var(--moss);border-radius:3px;padding:9px 13px}
+.g>span:first-child{font-size:11.5px;color:var(--moss);font-weight:700;padding-top:2px}
+
+.flow{display:grid;gap:10px}
+@media(min-width:900px){.flow{grid-template-columns:repeat(4,1fr)}}
+.stepbox{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--blue);
+  border-radius:3px;overflow:hidden}
+.stepbox h3{margin:0;padding:11px 13px 10px;font-size:13.5px;font-weight:700;
+  background:var(--surface-2);border-bottom:1px solid var(--line)}
+.stepbox h3 em{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--blue);margin-right:7px}
+.f{border-bottom:1px solid var(--line)}
+.f:last-child{border-bottom:0}
+.f label{display:block;font-size:10.5px;letter-spacing:.06em;color:var(--muted);
+  padding:8px 12px 0;font-weight:600}
+.f input,.f textarea{padding-top:2px}
+
+.calc{display:grid;gap:11px}
+.calcrow{display:flex;flex-wrap:wrap;align-items:center;gap:9px;background:var(--surface);
+  border:1px solid var(--line);border-radius:3px;padding:13px 15px;font-size:13.5px}
+.calcrow .lbl{font-weight:700;min-width:96px}
+.calcrow .op{color:var(--muted);font-family:var(--mono);font-size:12px}
+.out{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:600;
+  background:var(--blue-soft);color:var(--blue);border-radius:2px;padding:5px 11px;font-size:14px}
+.total{background:var(--rose-soft);border-color:var(--rose);border-width:2px}
+.total .lbl{font-size:15px}
+.total .out{background:transparent;color:var(--rose);font-size:22px;padding:0}
+
+.bar{display:flex;flex-wrap:wrap;gap:9px;margin:26px 0 40px}
+button{font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;
+  background:var(--surface);color:var(--ink);border:1px solid var(--line-strong);
+  border-radius:3px;padding:9px 17px}
+button:hover{background:var(--surface-2);border-color:var(--blue);color:var(--blue)}
+#outbox{width:100%;min-height:300px;font-family:var(--mono);font-size:12px;line-height:1.75;
+  background:var(--surface);border:1px solid var(--line-strong);border-radius:3px;padding:15px;
+  margin-bottom:40px;color:var(--ink)}
+.hint{font-size:12.5px;color:var(--muted);margin:9px 0 0}
+@media print{
+  .bar,#outbox{display:none!important}
+  body{background:#fff}
+  section{page-break-inside:avoid}
+  input,textarea{background:transparent!important}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header>
+  <div class="wrap">
+    <div class="brow"><span>2026.09.02（水）11:00–12:00</span><span>ONLINE</span><span>株式会社スペリオル</span></div>
+    <h1>山仁産業株式会社 様　現状整理シート</h1>
+    <p class="note">本日うかがった内容を、この場で一緒に整理させていただくためのシートです。<b>空欄はこれから一緒に埋めていきます。</b>提案の資料ではありません。</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section>
+  <h2><span class="k">A</span>事前にご回答いただいた内容</h2>
+  <p class="sub">先日いただいたご回答です。認識に相違がないか、まずご確認ください。</p>
+  <div class="given">
+    <div class="g"><span>導入システム</span><span>生産管理システム（在庫管理を含む）</span></div>
+    <div class="g"><span>稼働時期</span><span>2年ほど前から</span></div>
+    <div class="g"><span>手作業で残る業務</span><span>製造記録用紙の記入／製品検査記録の記入／機械点検記録の記入</span></div>
+    <div class="g"><span>お客様の監査</span><span>年間 10 件ほど</span></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="k">B</span>3つの記録について</h2>
+  <p class="sub">それぞれ、どのくらいの量があって、書かれたあとどうなるのかをうかがわせてください。</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th style="width:150px">記録の種類</th><th style="width:110px">1日の枚数</th><th style="width:130px">記入される方</th>
+        <th>記入されたあと、どうなりますか</th><th style="width:110px">保管期間</th><th style="width:110px">確認印の数</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="rowhead">製造記録用紙</td>
+          <td><input type="text" data-k="製造記録:枚数" placeholder="—"></td>
+          <td><input type="text" data-k="製造記録:記入者" placeholder="—"></td>
+          <td><input type="text" data-k="製造記録:記入後" placeholder="—"></td>
+          <td><input type="text" data-k="製造記録:保管" placeholder="—"></td>
+          <td><input type="text" data-k="製造記録:確認印" placeholder="—"></td></tr>
+        <tr><td class="rowhead">製品検査記録</td>
+          <td><input type="text" data-k="検査記録:枚数" placeholder="—"></td>
+          <td><input type="text" data-k="検査記録:記入者" placeholder="—"></td>
+          <td><input type="text" data-k="検査記録:記入後" placeholder="—"></td>
+          <td><input type="text" data-k="検査記録:保管" placeholder="—"></td>
+          <td><input type="text" data-k="検査記録:確認印" placeholder="—"></td></tr>
+        <tr><td class="rowhead">機械点検記録</td>
+          <td><input type="text" data-k="点検記録:枚数" placeholder="—"></td>
+          <td><input type="text" data-k="点検記録:記入者" placeholder="—"></td>
+          <td><input type="text" data-k="点検記録:記入後" placeholder="—"></td>
+          <td><input type="text" data-k="点検記録:保管" placeholder="—"></td>
+          <td><input type="text" data-k="点検記録:確認印" placeholder="—"></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card" style="margin-top:11px">
+    <label style="font-size:11px;letter-spacing:.06em;color:var(--muted);font-weight:600">書かれた記録を、あとから見返されるのはどんなときですか</label>
+    <textarea data-k="記録:見返す場面" placeholder="—"></textarea>
+  </div>
+</section>
+
+<section>
+  <h2><span class="k">C</span>お客様の監査への対応（年10件）</h2>
+  <p class="sub">監査のご連絡が来てから終わるまで、どんな流れになるかを教えてください。</p>
+  <div class="flow">
+    <div class="stepbox"><h3><em>01</em>ご連絡が来る</h3>
+      <div class="f"><label>どなたが受ける</label><input type="text" data-k="監査1:誰" placeholder="—"></div>
+      <div class="f"><label>何をする</label><textarea data-k="監査1:内容" placeholder="—"></textarea></div>
+      <div class="f"><label>かかる時間</label><input type="text" data-k="監査1:時間" placeholder="—"></div></div>
+    <div class="stepbox"><h3><em>02</em>準備</h3>
+      <div class="f"><label>どなたが</label><input type="text" data-k="監査2:誰" placeholder="—"></div>
+      <div class="f"><label>何をする</label><textarea data-k="監査2:内容" placeholder="—"></textarea></div>
+      <div class="f"><label>かかる時間</label><input type="text" data-k="監査2:時間" placeholder="—"></div></div>
+    <div class="stepbox"><h3><em>03</em>監査 当日</h3>
+      <div class="f"><label>どなたが</label><input type="text" data-k="監査3:誰" placeholder="—"></div>
+      <div class="f"><label>何をする</label><textarea data-k="監査3:内容" placeholder="—"></textarea></div>
+      <div class="f"><label>かかる時間</label><input type="text" data-k="監査3:時間" placeholder="—"></div></div>
+    <div class="stepbox"><h3><em>04</em>終わったあと</h3>
+      <div class="f"><label>どなたが</label><input type="text" data-k="監査4:誰" placeholder="—"></div>
+      <div class="f"><label>何をする</label><textarea data-k="監査4:内容" placeholder="—"></textarea></div>
+      <div class="f"><label>かかる時間</label><input type="text" data-k="監査4:時間" placeholder="—"></div></div>
+  </div>
+  <div class="card" style="margin-top:11px">
+    <label style="font-size:11px;letter-spacing:.06em;color:var(--muted);font-weight:600">毎回作り直しになっているもの・探すのに時間がかかるもの</label>
+    <textarea data-k="監査:作り直し" placeholder="—"></textarea>
+  </div>
+</section>
+
+<section>
+  <h2><span class="k">D</span>お客様からの品質調査票・アンケート</h2>
+  <p class="sub">監査とは別に届くもの、という理解で合っておりますでしょうか。</p>
+  <div class="tablewrap">
+    <table style="min-width:560px">
+      <thead><tr><th style="width:150px">月に届く件数</th><th style="width:170px">1件あたりの所要時間</th><th>内容は毎回似ていますか／どんな項目が多いですか</th></tr></thead>
+      <tbody><tr>
+        <td><input type="text" data-k="調査票:件数" placeholder="—"></td>
+        <td><input type="text" data-k="調査票:時間" placeholder="—"></td>
+        <td><input type="text" data-k="調査票:内容" placeholder="—"></td>
+      </tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="k">E</span>年間にすると、どのくらいの時間になるか</h2>
+  <p class="sub">うかがった数字を入れると、年間の時間が出ます。ざっくりで構いません。</p>
+  <div class="calc">
+    <div class="calcrow"><span class="lbl">監査対応</span>
+      <span class="op">年</span><input type="number" id="a1" value="10" min="0" step="1"><span class="op">件 ×</span>
+      <input type="number" id="a2" min="0" step="0.5" placeholder="0"><span class="op">日 ＝</span>
+      <span class="out" id="ao">— 時間 / 年</span></div>
+    <div class="calcrow"><span class="lbl">調査票の回答</span>
+      <span class="op">月</span><input type="number" id="b1" min="0" step="1" placeholder="0"><span class="op">件 ×</span>
+      <input type="number" id="b2" min="0" step="5" placeholder="0"><span class="op">分 ＝</span>
+      <span class="out" id="bo">— 時間 / 年</span></div>
+    <div class="calcrow"><span class="lbl">記録まわり</span>
+      <span class="op">月</span><input type="number" id="c1" min="0" step="1" placeholder="0"><span class="op">時間 ＝</span>
+      <span class="out" id="co">— 時間 / 年</span></div>
+    <div class="calcrow total"><span class="lbl">年間の合計</span><span class="out" id="to">— 時間 / 年</span>
+      <span class="op" id="td"></span></div>
+  </div>
+  <p class="hint">※ 監査の1日は8時間で計算しています。</p>
+</section>
+
+<section>
+  <h2><span class="k">F</span>次のステップ</h2>
+  <div class="card">
+    <div class="f"><label>次にお話をうかがえるとよい方</label><input type="text" data-k="次:相談相手" placeholder="—"></div>
+    <div class="f"><label>その方が気にされそうなこと</label><textarea data-k="次:関心事" placeholder="—"></textarea></div>
+    <div class="f"><label>本日のまとめ・次回までにこちらでやること</label><textarea data-k="次:宿題" placeholder="—"></textarea></div>
+  </div>
+</section>
+
+<div class="bar">
+  <button type="button" id="txt">テキストで書き出す</button>
+  <button type="button" id="prt">印刷 / PDFにする</button>
+  <button type="button" id="clr">すべて消す</button>
+</div>
+<textarea id="outbox" hidden readonly></textarea>
+
+</main>
+
+<script>
+(function(){
+  var KEY='yamani-hearing-board-v1';
+  var fields=[].slice.call(document.querySelectorAll('[data-k]'));
+  var nums=['a1','a2','b1','b2','c1'].map(function(id){return document.getElementById(id)});
+  function load(){
+    try{
+      var raw=localStorage.getItem(KEY); if(!raw) return;
+      var d=JSON.parse(raw);
+      fields.forEach(function(el){ if(d[el.dataset.k]!=null) el.value=d[el.dataset.k] });
+      nums.forEach(function(el){ if(d['#'+el.id]!=null) el.value=d['#'+el.id] });
+    }catch(e){}
+  }
+  function save(){
+    try{
+      var d={};
+      fields.forEach(function(el){ d[el.dataset.k]=el.value });
+      nums.forEach(function(el){ d['#'+el.id]=el.value });
+      localStorage.setItem(KEY,JSON.stringify(d));
+    }catch(e){}
+  }
+  function n(el){ var v=parseFloat(el.value); return isFinite(v)?v:0 }
+  function fmt(h){ return h>0 ? (Math.round(h*10)/10).toLocaleString()+' 時間 / 年' : '— 時間 / 年' }
+  function calc(){
+    var a=n(nums[0])*n(nums[1])*8;
+    var b=n(nums[2])*n(nums[3])*12/60;
+    var c=n(nums[4])*12;
+    document.getElementById('ao').textContent=fmt(a);
+    document.getElementById('bo').textContent=fmt(b);
+    document.getElementById('co').textContent=fmt(c);
+    var t=a+b+c;
+    document.getElementById('to').textContent=fmt(t);
+    document.getElementById('td').textContent = t>0 ? '（'+(Math.round(t/8*10)/10)+' 日分）' : '';
+  }
+  fields.concat(nums).forEach(function(el){
+    el.addEventListener('input',function(){ save(); calc() });
+  });
+  document.getElementById('prt').addEventListener('click',function(){ window.print() });
+  document.getElementById('clr').addEventListener('click',function(){
+    if(!confirm('入力内容をすべて消します。よろしいですか。')) return;
+    fields.forEach(function(el){ el.value='' });
+    nums.forEach(function(el){ el.value = el.id==='a1' ? '10' : '' });
+    save(); calc();
+  });
+  document.getElementById('txt').addEventListener('click',function(){
+    var box=document.getElementById('outbox');
+    if(!box.hidden){ box.hidden=true; return }
+    var L=['山仁産業株式会社 様  現状整理シート','2026年9月2日(水) 11:00-12:00 / 株式会社スペリオル',''];
+    var groups={};
+    fields.forEach(function(el){
+      var p=el.dataset.k.split(':');
+      (groups[p[0]]=groups[p[0]]||[]).push([p[1],el.value.trim()]);
+    });
+    Object.keys(groups).forEach(function(g){
+      L.push('■ '+g);
+      groups[g].forEach(function(kv){ L.push('  '+kv[0]+'：'+(kv[1]||'（未記入）')) });
+      L.push('');
+    });
+    L.push('■ 年間の時間');
+    L.push('  監査対応：年'+(nums[0].value||0)+'件 × '+(nums[1].value||0)+'日 ＝ '+document.getElementById('ao').textContent);
+    L.push('  調査票　：月'+(nums[2].value||0)+'件 × '+(nums[3].value||0)+'分 ＝ '+document.getElementById('bo').textContent);
+    L.push('  記録　　：月'+(nums[4].value||0)+'時間 ＝ '+document.getElementById('co').textContent);
+    L.push('  合計　　：'+document.getElementById('to').textContent+' '+document.getElementById('td').textContent);
+    box.value=L.join('\n');
+    box.hidden=false;
+    box.focus(); box.select();
+  });
+  load(); calc();
+})();
+</script>
