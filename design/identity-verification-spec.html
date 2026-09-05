@@ -1,0 +1,1032 @@
+<title>特別教育 本人確認システム設計書</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F4F7F7; --surface:#FFFFFF; --surface-2:#E9EFEF; --surface-3:#DFE8E8;
+  --ink:#152329; --ink-2:#485C63; --ink-3:#7A8D93;
+  --line:#D3DDDD; --line-2:#B6C4C4;
+  --brand:#12444B; --brand-2:#1D6874;
+  --accent:#BC4517; --accent-soft:#F6E4DB;
+  --ok:#26694F; --ok-soft:#DDEDE5;
+  --warn:#9C6510; --warn-soft:#F7EAD3;
+  --bad:#982C26; --bad-soft:#F6E0DE;
+  --shadow:0 1px 2px rgba(18,68,75,.06),0 6px 18px rgba(18,68,75,.05);
+  --jp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0B1214; --surface:#111C1F; --surface-2:#17252A; --surface-3:#1E3036;
+    --ink:#E4ECEC; --ink-2:#A5B8BD; --ink-3:#788B91;
+    --line:#22343A; --line-2:#31474E;
+    --brand:#79C0C9; --brand-2:#5AA5B0;
+    --accent:#E5794A; --accent-soft:#33201A;
+    --ok:#5CB58F; --ok-soft:#172A23;
+    --warn:#D7A452; --warn-soft:#2B2418;
+    --bad:#DE7069; --bad-soft:#2E1A19;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0B1214; --surface:#111C1F; --surface-2:#17252A; --surface-3:#1E3036;
+  --ink:#E4ECEC; --ink-2:#A5B8BD; --ink-3:#788B91;
+  --line:#22343A; --line-2:#31474E;
+  --brand:#79C0C9; --brand-2:#5AA5B0;
+  --accent:#E5794A; --accent-soft:#33201A;
+  --ok:#5CB58F; --ok-soft:#172A23;
+  --warn:#D7A452; --warn-soft:#2B2418;
+  --bad:#DE7069; --bad-soft:#2E1A19;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:var(--jp); font-size:15px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1220px;margin:0 auto;padding:0 24px 96px;display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:1060px){
+  .wrap{grid-template-columns:206px minmax(0,1fr);gap:56px;padding-right:40px}
+}
+
+/* ---------- masthead ---------- */
+.masthead{grid-column:1/-1;padding:64px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin:0 0 14px}
+h1{font-size:clamp(30px,4.6vw,44px);line-height:1.28;font-weight:700;margin:0 0 18px;text-wrap:balance;letter-spacing:-.01em}
+.standfirst{font-size:16px;color:var(--ink-2);max-width:62ch;margin:0 0 28px;line-height:1.9}
+.meta{display:flex;flex-wrap:wrap;gap:0 34px;font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+.meta b{display:block;font-weight:500;color:var(--ink-2);font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.meta div{padding:6px 0}
+
+/* ---------- nav ---------- */
+nav{display:none}
+@media(min-width:1060px){
+  nav{display:block;position:sticky;top:0;align-self:start;padding-top:44px;max-height:100vh;overflow-y:auto}
+}
+nav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+nav a{display:flex;gap:9px;text-decoration:none;color:var(--ink-2);font-size:12.5px;line-height:1.5;padding:5px 0;border-bottom:1px solid transparent}
+nav a:hover{color:var(--accent)}
+nav a span{font-family:var(--mono);font-size:11px;color:var(--ink-3);flex:none;padding-top:1px}
+nav a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------- sections ---------- */
+main{padding-top:44px;max-width:840px}
+section{padding:0 0 12px;margin:0 0 52px}
+section+section{border-top:1px solid var(--line);padding-top:44px}
+h2{font-size:23px;font-weight:700;margin:0 0 6px;line-height:1.4;letter-spacing:-.005em;display:flex;gap:12px;align-items:baseline}
+h2 .num{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent);flex:none}
+h3{font-size:16px;font-weight:700;margin:34px 0 10px;line-height:1.55;color:var(--brand)}
+h4{font-size:14px;font-weight:700;margin:22px 0 6px;color:var(--ink)}
+p{margin:0 0 14px;max-width:42em}
+.lede{color:var(--ink-2);margin:0 0 26px;max-width:42em}
+ul,ol{margin:0 0 16px;padding-left:1.35em;max-width:42em}
+li{margin-bottom:5px}
+li::marker{color:var(--ink-3)}
+strong{font-weight:700}
+code{font-family:var(--mono);font-size:.875em;background:var(--surface-2);padding:1.5px 5px;border-radius:3px;color:var(--brand-2)}
+
+/* ---------- chips ---------- */
+.chip{display:inline-flex;align-items:center;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.06em;padding:2px 7px;border-radius:3px;white-space:nowrap;vertical-align:1px}
+.c-l{background:var(--brand);color:var(--surface)}
+.c-t{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent)}
+.c-ok{background:var(--ok-soft);color:var(--ok)}
+.c-warn{background:var(--warn-soft);color:var(--warn)}
+.c-bad{background:var(--bad-soft);color:var(--bad)}
+
+/* ---------- layer header ---------- */
+.layer{margin:0 0 8px;padding:26px 0 0;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.layer h3{margin:0;font-size:17px;color:var(--ink)}
+.layer .tags{display:flex;gap:5px}
+
+/* ---------- tables ---------- */
+.scroll{overflow-x:auto;margin:0 0 22px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:520px}
+th{text-align:left;font-weight:700;font-size:11.5px;letter-spacing:.05em;color:var(--ink-2);background:var(--surface-2);padding:9px 13px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:bottom}
+td{padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.65}
+tr:last-child td{border-bottom:none}
+td.mono,th.mono{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tw{min-width:640px}
+
+/* ---------- callouts ---------- */
+.note{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 20px;margin:0 0 22px;box-shadow:var(--shadow)}
+.note.crit{background:var(--bad-soft);border-color:var(--bad)}
+.note.good{background:var(--ok-soft);border-color:var(--ok)}
+.note.key{background:var(--accent-soft);border-color:var(--accent)}
+.note p:last-child,.note ul:last-child,.note ol:last-child{margin-bottom:0}
+.note .hd{font-weight:700;font-size:13.5px;margin:0 0 6px;display:flex;gap:8px;align-items:center}
+.note.crit .hd{color:var(--bad)} .note.good .hd{color:var(--ok)} .note.key .hd{color:var(--accent)}
+.note .hd .mk{font-family:var(--mono);font-size:11px;font-weight:600}
+
+/* ---------- code ---------- */
+pre{background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:16px 18px;overflow-x:auto;margin:0 0 22px;font-family:var(--mono);font-size:12px;line-height:1.75;color:var(--ink)}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+.cm{color:var(--ink-3)}
+.kw{color:var(--accent)}
+
+/* ---------- figure ---------- */
+figure{margin:0 0 24px}
+figure svg{display:block;width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+figcaption{font-size:12px;color:var(--ink-3);margin-top:8px;font-family:var(--mono)}
+
+/* ---------- def list ---------- */
+.kv{display:grid;grid-template-columns:auto 1fr;gap:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:0 0 22px;background:var(--surface)}
+.kv dt{font-family:var(--mono);font-size:11.5px;font-weight:500;color:var(--ink-2);padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--line);white-space:nowrap}
+.kv dd{margin:0;padding:9px 16px;font-size:13.5px;border-bottom:1px solid var(--line);line-height:1.7}
+.kv dt:last-of-type,.kv dd:last-of-type{border-bottom:none}
+
+footer{grid-column:1/-1;border-top:1px solid var(--line);margin-top:20px;padding-top:26px;font-size:12px;color:var(--ink-3);font-family:var(--mono);line-height:1.9}
+footer a{color:var(--brand-2)}
+a{color:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <p class="eyebrow">System Design / 詳細設計書 rev.1</p>
+  <h1>特別教育 eラーニング<br>本人確認・受講確認システム</h1>
+  <p class="standfirst">
+    労働安全衛生法の特別教育をオンラインで提供するにあたり、「受講者が受講した事実を適切に確認すること」という通達要件を、
+    運用の努力ではなく仕組みで満たすための設計書です。実装可能な粒度まで落としています。
+  </p>
+  <div class="meta">
+    <div><b>Client</b>株式会社聖建 御中</div>
+    <div><b>Author</b>株式会社スペリオル</div>
+    <div><b>Date</b>2026-09-05</div>
+    <div><b>Scope</b>学科eラーニング（実技は対象外）</div>
+    <div><b>Status</b>設計案・要件確定前</div>
+  </div>
+</header>
+
+<nav aria-label="目次">
+  <ol>
+    <li><a href="#s1"><span>1</span>設計目標と脅威モデル</a></li>
+    <li><a href="#s2"><span>2</span>全体アーキテクチャ</a></li>
+    <li><a href="#s3"><span>3</span>5層の詳細設計</a></li>
+    <li><a href="#s4"><span>4</span>顔照合の判定設計</a></li>
+    <li><a href="#s5"><span>5</span>有効視聴時間の算出</a></li>
+    <li><a href="#s6"><span>6</span>データモデル</a></li>
+    <li><a href="#s7"><span>7</span>API設計</a></li>
+    <li><a href="#s8"><span>8</span>技術選定</a></li>
+    <li><a href="#s9"><span>9</span>個人情報の取扱い</a></li>
+    <li><a href="#s10"><span>10</span>受講証明書と真正性検証</a></li>
+    <li><a href="#s11"><span>11</span>例外ケースの運用設計</a></li>
+    <li><a href="#s12"><span>12</span>実装フェーズと工数</a></li>
+    <li><a href="#s13"><span>13</span>未確定事項</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ================= 1 ================= -->
+<section id="s1">
+  <h2><span class="num">01</span>設計目標と脅威モデル</h2>
+  <p class="lede">「確実に実現できる方法」をお求めですので、まず<strong>何をもって確実とするか</strong>を定義します。ここを曖昧にしたまま作ると、達成不能な期待値を抱えたシステムになります。</p>
+
+  <div class="note key">
+    <p class="hd"><span class="mk">設計目標</span></p>
+    <p>本システムの目標は<strong>なりすましを100％防ぐことではありません。</strong>それは技術的に不可能であり、法令も要求していません。通達が求めるのは「受講者が受講した事実を<strong>適切に確認</strong>すること」です。</p>
+    <p style="margin-top:10px">したがって本設計の目標は次の2点に置きます。</p>
+    <ol style="margin-top:8px;margin-bottom:0">
+      <li><strong>合理的な確認を、受講の全区間にわたって継続的に行う</strong></li>
+      <li><strong>確認した事実を、後日第三者へ提示できる形で保全する</strong></li>
+    </ol>
+  </div>
+
+  <p>この目標に対する設計原理は<strong>多層防御</strong>です。単一の層を突破されても、他の層に痕跡が残り、事後に検出できる状態を保ちます。1つの完璧な関門を作るのではなく、5つの不完全な関門を重ねます。</p>
+
+  <h3>想定する3つの脅威</h3>
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th class="mono">ID</th><th>脅威</th><th>具体例</th><th>これを許すと何が起きるか</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="mono"><span class="chip c-t">T1</span></td>
+          <td><strong>替え玉受講</strong></td>
+          <td>本人以外が代わりに受講し、修了証だけ本人が受け取る</td>
+          <td>無資格者が現場に立つ。事故時に修了証の発行者まで責任が及ぶ</td>
+        </tr>
+        <tr>
+          <td class="mono"><span class="chip c-t">T2</span></td>
+          <td><strong>再生放置</strong></td>
+          <td>動画を再生したまま離席する。倍速で流す。タブを裏に回して別作業</td>
+          <td>法定教育時間を実質的に満たさない。教育の実効性が失われる</td>
+        </tr>
+        <tr>
+          <td class="mono"><span class="chip c-t">T3</span></td>
+          <td><strong>事後の否認</strong></td>
+          <td>事故後に「受講していない」「修了証は偽物だ」と主張される</td>
+          <td>証明手段がなく、発行者が説明責任を果たせない</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>T3が最も重要です。</strong>T1・T2は発生確率を下げる話ですが、T3は「証拠が残っているか」という二値の話であり、証拠がなければ他のすべての対策が無意味になります。本設計では記録の保全を最優先に置いています。</p>
+
+  <h3>5層と脅威の対応</h3>
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th class="mono">層</th><th>確認内容</th><th>タイミング</th><th class="mono">T1</th><th class="mono">T2</th><th class="mono">T3</th></tr></thead>
+      <tbody>
+        <tr><td class="mono"><span class="chip c-l">L1</span></td><td>身分証と顔の照合（eKYC）</td><td>アカウント登録時・1回</td><td>◎</td><td>—</td><td>◎</td></tr>
+        <tr><td class="mono"><span class="chip c-l">L2</span></td><td>受講開始時の顔照合</td><td>各章の再生開始時</td><td>◎</td><td>—</td><td>○</td></tr>
+        <tr><td class="mono"><span class="chip c-l">L3</span></td><td>受講中のランダム顔照合</td><td>視聴中・予告なし</td><td>◎</td><td>◎</td><td>◎</td></tr>
+        <tr><td class="mono"><span class="chip c-l">L4</span></td><td>視聴ログと再生制御</td><td>10秒ごと・常時</td><td>—</td><td>◎</td><td>◎</td></tr>
+        <tr><td class="mono"><span class="chip c-l">L5</span></td><td>理解度テスト</td><td>章末・修了時</td><td>○</td><td>◎</td><td>○</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= 2 ================= -->
+<section id="s2">
+  <h2><span class="num">02</span>全体アーキテクチャ</h2>
+  <p class="lede">受講者の端末、アプリケーション、外部の照合サービス、そして証拠を保全する記録層。この4つの関係が設計の骨格です。</p>
+
+  <figure>
+    <svg viewBox="0 0 800 424" role="img" aria-label="システム全体構成図">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-3)"/>
+        </marker>
+      </defs>
+      <!-- client -->
+      <rect x="20" y="26" width="188" height="196" rx="6" fill="var(--surface-2)" stroke="var(--line-2)"/>
+      <text x="34" y="50" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--accent)" letter-spacing="1">CLIENT</text>
+      <text x="34" y="72" font-family="Zen Kaku Gothic New, sans-serif" font-size="13" font-weight="700" fill="var(--ink)">受講者の端末</text>
+      <text x="34" y="94" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink-2)">スマートフォン / PC</text>
+      <rect x="34" y="108" width="160" height="26" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="46" y="125" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink)">カメラ（getUserMedia）</text>
+      <rect x="34" y="140" width="160" height="26" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="46" y="157" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink)">動画プレイヤー</text>
+      <rect x="34" y="172" width="160" height="26" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="46" y="189" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink)">ハートビート送信</text>
+
+      <!-- app -->
+      <rect x="286" y="26" width="212" height="264" rx="6" fill="var(--surface-2)" stroke="var(--brand)" stroke-width="1.5"/>
+      <text x="300" y="50" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--accent)" letter-spacing="1">APPLICATION</text>
+      <text x="300" y="72" font-family="Zen Kaku Gothic New, sans-serif" font-size="13" font-weight="700" fill="var(--ink)">受講管理API</text>
+      <rect x="300" y="86" width="184" height="26" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="312" y="103" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink)">照合タイミング決定</text>
+      <rect x="300" y="118" width="184" height="26" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="312" y="135" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink)">有効視聴時間の算出</text>
+      <rect x="300" y="150" width="184" height="26" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="312" y="167" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink)">判定（合格 / 保留 / 失敗）</text>
+      <rect x="300" y="182" width="184" height="26" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="312" y="199" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink)">修了判定・証明書発行</text>
+      <rect x="300" y="214" width="184" height="26" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="312" y="231" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink)">運営レビュー画面</text>
+      <rect x="300" y="246" width="184" height="26" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="312" y="263" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink)">真正性検証エンドポイント</text>
+
+      <!-- external -->
+      <rect x="576" y="26" width="204" height="118" rx="6" fill="var(--surface-2)" stroke="var(--line-2)"/>
+      <text x="590" y="50" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--accent)" letter-spacing="1">EXTERNAL</text>
+      <text x="590" y="72" font-family="Zen Kaku Gothic New, sans-serif" font-size="13" font-weight="700" fill="var(--ink)">照合サービス</text>
+      <rect x="590" y="86" width="176" height="24" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="601" y="102" font-family="Zen Kaku Gothic New, sans-serif" font-size="10.5" fill="var(--ink)">eKYC（身分証OCR・ライブネス）</text>
+      <rect x="590" y="114" width="176" height="24" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="601" y="130" font-family="Zen Kaku Gothic New, sans-serif" font-size="10.5" fill="var(--ink)">顔照合API（1:1 比較）</text>
+
+      <!-- storage -->
+      <rect x="576" y="166" width="204" height="124" rx="6" fill="var(--surface-2)" stroke="var(--line-2)"/>
+      <text x="590" y="190" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--accent)" letter-spacing="1">STORAGE</text>
+      <rect x="590" y="200" width="176" height="24" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="601" y="216" font-family="Zen Kaku Gothic New, sans-serif" font-size="10.5" fill="var(--ink)">暗号化オブジェクトストア</text>
+      <rect x="590" y="228" width="176" height="24" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="601" y="244" font-family="Zen Kaku Gothic New, sans-serif" font-size="10.5" fill="var(--ink)">RDB（受講・照合・テスト）</text>
+      <rect x="590" y="256" width="176" height="24" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+      <text x="601" y="272" font-family="Zen Kaku Gothic New, sans-serif" font-size="10.5" fill="var(--ink)">動画配信（署名付きURL）</text>
+
+      <!-- evidence layer -->
+      <rect x="20" y="322" width="760" height="80" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+      <text x="36" y="346" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--accent)" letter-spacing="1">EVIDENCE — 事後に第三者へ提示する層</text>
+      <text x="36" y="370" font-family="Zen Kaku Gothic New, sans-serif" font-size="12" fill="var(--ink)">監査ログ（ハッシュチェーンで追記のみ）　／　受講証明書PDF　／　真正性検証ページ</text>
+      <text x="36" y="390" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink-2)">この層が T3（事後の否認）に対する唯一の防御であり、本システムの存在意義そのものです。</text>
+
+      <!-- arrows -->
+      <line x1="210" y1="124" x2="282" y2="124" stroke="var(--ink-3)" stroke-width="1.4" marker-end="url(#ar)"/>
+      <line x1="500" y1="100" x2="572" y2="100" stroke="var(--ink-3)" stroke-width="1.4" marker-end="url(#ar)"/>
+      <line x1="500" y1="228" x2="572" y2="228" stroke="var(--ink-3)" stroke-width="1.4" marker-end="url(#ar)"/>
+      <line x1="392" y1="292" x2="392" y2="318" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#ar)"/>
+    </svg>
+    <figcaption>fig.1 — 全体構成。照合タイミングの決定はサーバ側に置く（§3 L3 参照）。</figcaption>
+  </figure>
+
+  <div class="note">
+    <p class="hd">設計上の要点</p>
+    <ul style="margin-bottom:0">
+      <li><strong>照合のタイミングをクライアントに決めさせない。</strong>クライアント側のスケジューラは改変可能です。サーバがハートビートの応答で発火を指示します。</li>
+      <li><strong>有効視聴時間の算出はサーバ側で行う。</strong>クライアントが申告した秒数を信用しません。</li>
+      <li><strong>証拠層を独立させる。</strong>アプリケーションの不具合や改修で失われない場所に、追記のみで保全します。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 3 ================= -->
+<section id="s3">
+  <h2><span class="num">03</span>5層の詳細設計</h2>
+  <p class="lede">各層について、目的・処理・判定・失敗時の扱い・記録するデータを定義します。</p>
+
+  <!-- L1 -->
+  <div class="layer">
+    <span class="chip c-l">L1</span>
+    <h3>登録時の本人確認（eKYC）</h3>
+    <span class="tags"><span class="chip c-t">T1</span><span class="chip c-t">T3</span></span>
+  </div>
+  <p>アカウント登録時に一度だけ実施し、以後すべての照合の<strong>基準となる顔</strong>を確定させます。ここが崩れると後続の層がすべて無意味になるため、5層のうち最も精度を優先します。</p>
+
+  <h4>処理シーケンス</h4>
+  <ol>
+    <li>受講者が氏名（漢字・カナ）・生年月日・連絡先を入力</li>
+    <li>本人確認書類を撮影（表面・裏面・厚みの3カット）</li>
+    <li>セルフィーを撮影し、<strong>ライブネス判定</strong>（写真やディスプレイの再撮影でないことの検証）</li>
+    <li>書類のOCRで氏名・生年月日・有効期限を抽出し、入力値と突合</li>
+    <li>書類の顔写真とセルフィーを1:1照合</li>
+    <li>スコアが閾値以上かつ突合一致 → 自動承認。それ以外 → 運営レビュー</li>
+    <li>承認された顔から特徴量を抽出し、<code>face_templates</code> に基準顔として登録</li>
+  </ol>
+
+  <h4>受理する本人確認書類</h4>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>書類</th><th>撮影面</th><th>備考</th></tr></thead>
+      <tbody>
+        <tr><td>運転免許証</td><td>表・裏・厚み</td><td>最も一般的。OCR精度が高い</td></tr>
+        <tr><td>マイナンバーカード</td><td class="mono"><strong>表面のみ</strong></td><td><span class="chip c-bad">重要</span> 裏面は受理しない（後述）</td></tr>
+        <tr><td>パスポート</td><td>顔写真ページ</td><td>2020年2月以降発行分は所持人記入欄なし</td></tr>
+        <tr><td>在留カード</td><td>表・裏・厚み</td><td>外国人受講者向け。在留期限の確認が必要</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note crit">
+    <p class="hd"><span class="mk">必須</span>個人番号（マイナンバー）は絶対に取得しない</p>
+    <p>マイナンバーカードの<strong>裏面には個人番号が記載されています。</strong>個人番号の収集・保管は番号法で定められた事務に限られ、安全衛生教育はこれに該当しません。取得した時点で番号法上の義務を負い、廃棄・安全管理措置の対象になります。</p>
+    <p style="margin-top:10px">実装上の対策：</p>
+    <ul style="margin-bottom:0">
+      <li>UIで「表面のみを撮影してください」と明示し、裏面のアップロード枠を設けない</li>
+      <li>アップロード画像に個人番号のパターン（12桁の数字列）を検出したら<strong>即時に破棄</strong>し、再撮影を求める</li>
+      <li>通知カード・個人番号記載の住民票は受理しない</li>
+    </ul>
+  </div>
+
+  <h4>記録するデータ</h4>
+  <p>書類画像、セルフィー画像、OCR抽出値、ライブネススコア、照合スコア、判定結果、審査者、審査日時。書類番号は<strong>ハッシュ化して保存</strong>し、平文では持ちません（重複登録の検出には使えます）。</p>
+
+  <!-- L2 -->
+  <div class="layer">
+    <span class="chip c-l">L2</span>
+    <h3>受講開始時の照合</h3>
+    <span class="tags"><span class="chip c-t">T1</span></span>
+  </div>
+  <p>各章の再生開始時に、セルフィーを1枚撮影して基準顔と照合します。<strong>照合に合格するまで再生を開始できません。</strong></p>
+  <p>章ごとに実施する理由は、受講が複数日にまたがることを想定しているためです。1日目は本人、2日目は別人、という抜け道を塞ぎます。</p>
+
+  <!-- L3 -->
+  <div class="layer">
+    <span class="chip c-l">L3</span>
+    <h3>受講中のランダム顔照合</h3>
+    <span class="tags"><span class="chip c-t">T1</span><span class="chip c-t">T2</span><span class="chip c-t">T3</span></span>
+  </div>
+  <p>本システムの中核です。<strong>予告なく</strong>撮影することで、受講開始時だけ本人が座り、その後交代するという行動を抑止します。</p>
+
+  <h4>タイミングの決定アルゴリズム</h4>
+  <p>サーバ側で決定します。章の長さを <code>n</code> 個の区間に等分し、各区間内で一様乱数により発火時刻を1つ選びます。区間の先頭30秒と末尾30秒は除外します（章の切り替わりと重なると受講者が予測できてしまうため）。</p>
+
+  <pre><code><span class="cm"># 発火時刻の決定（サーバ側・章の再生開始時に一度だけ実行し、保存する）</span>
+<span class="kw">def</span> schedule_checks(chapter_sec, checks_per_hour=<span class="kw">3</span>):
+    n = max(<span class="kw">1</span>, round(chapter_sec / <span class="kw">3600</span> * checks_per_hour))
+    span = chapter_sec / n
+    <span class="kw">return</span> [
+        i * span + uniform(<span class="kw">30</span>, max(<span class="kw">31</span>, span - <span class="kw">30</span>))
+        <span class="kw">for</span> i <span class="kw">in</span> range(n)
+    ]</code></pre>
+
+  <div class="note">
+    <p class="hd">発火の伝え方</p>
+    <p>クライアントに「次はX秒後」を渡すと予測されます。<strong>10秒ごとのハートビート応答に <code>capture_now: true</code> を含める</strong>方式にします。クライアントは指示を受けてから撮影するため、事前に構えることができません。</p>
+  </div>
+
+  <h4>頻度の設計</h4>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>科目</th><th class="num">学科時間</th><th class="num">照合回数</th><th>内訳</th></tr></thead>
+      <tbody>
+        <tr><td>粉じん作業 / 石綿取扱</td><td class="num">4.5 h</td><td class="num">18</td><td>開始時 5 + ランダム 13</td></tr>
+        <tr><td>酸素欠乏・硫化水素（第2種）</td><td class="num">5.5 h</td><td class="num">22</td><td>開始時 6 + ランダム 16</td></tr>
+        <tr><td>足場の組立て等</td><td class="num">6.0 h</td><td class="num">24</td><td>開始時 6 + ランダム 18</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>ランダム照合は<strong>1時間あたり3回</strong>を初期値とします。これより多いと受講体験を著しく損ない、少ないと交代を許す空白が生まれます。運用開始後、離脱率と照合失敗率を見て調整します。</p>
+
+  <h4>撮影の仕様</h4>
+  <dl class="kv">
+    <dt>形式</dt><dd>静止画1枚 / JPEG / 短辺640px以上</dd>
+    <dt>UI</dt><dd>動画を一時停止し、モーダルで「本人確認中です」を表示。カウントダウン後に自動撮影</dd>
+    <dt>所要時間</dt><dd>2〜3秒。撮影後は自動で再生を再開</dd>
+    <dt>同意</dt><dd>受講開始前に「受講中、予告なく顔写真を撮影します」を明示し、明示的同意を取得</dd>
+  </dl>
+
+  <!-- L4 -->
+  <div class="layer">
+    <span class="chip c-l">L4</span>
+    <h3>視聴の実効性担保</h3>
+    <span class="tags"><span class="chip c-t">T2</span><span class="chip c-t">T3</span></span>
+  </div>
+  <p>「再生した」と「視聴した」は別物です。法定教育時間を実質的に満たしたことを、ログで示せる状態にします。</p>
+
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th>制御</th><th>実装</th><th>塞ぐ抜け道</th></tr></thead>
+      <tbody>
+        <tr><td><strong>前方シークの禁止</strong></td><td><code>max_reached_position</code> を保持し、それを超えるシーク要求を拒否。後戻りは許可</td><td>飛ばし見</td></tr>
+        <tr><td><strong>再生速度の固定</strong></td><td><code>playbackRate = 1.0</code> 固定。変更を検知したら1.0に戻す</td><td>倍速視聴による時間短縮</td></tr>
+        <tr><td><strong>タブ非アクティブ検知</strong></td><td>Page Visibility API。<code>hidden</code> になったら再生を停止</td><td>裏で流しながら別作業</td></tr>
+        <tr><td><strong>無操作検知</strong></td><td>15分間マウス／キー／タッチ操作がなければ確認ダイアログ。60秒無応答で停止</td><td>再生したまま離席</td></tr>
+        <tr><td><strong>複数タブ・複数端末の排他</strong></td><td>1つの受講登録に対し同時視聴セッションを1つに制限</td><td>複数章の同時再生</td></tr>
+        <tr><td><strong>ハートビート</strong></td><td>10秒ごとに再生位置・可視状態・再生速度を送信</td><td>すべての改変の検出</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note crit">
+    <p class="hd"><span class="mk">前提</span>動画の総尺が法定学科時間以上でなければ、修了は成立しません</p>
+    <p>有効視聴時間が法定時間に達することを修了条件にする以上、<strong>動画そのものが法定時間より短ければ、誰も修了できません。</strong>教材制作の章立て設計と本システムは、この一点で直結しています。動画の尺と、章末テストの想定所要時間の合計で法定時間を満たす設計を、制作着手前に確定させる必要があります。</p>
+  </div>
+
+  <!-- L5 -->
+  <div class="layer">
+    <span class="chip c-l">L5</span>
+    <h3>理解度の確認</h3>
+    <span class="tags"><span class="chip c-t">T2</span></span>
+  </div>
+  <ul>
+    <li><strong>章末テスト</strong> — 各章の末尾。合格しなければ次章へ進めません。「再生しているだけ」の受講を排除します</li>
+    <li><strong>修了確認テスト</strong> — 全章視聴後。合格者にのみ修了証を発行します</li>
+    <li><strong>出題のランダム化</strong> — 問題プールからシャッフルして出題。1科目あたり問題数はテスト出題数の3倍以上を用意します</li>
+    <li><strong>テスト開始時の顔照合</strong> — テストは替え玉の動機が最も強い局面のため、L2と同じ照合を実施します</li>
+    <li><strong>再受験</strong> — 不合格時は再受験可。ただし全試行を記録し、証明書には最終合格時の得点と試行回数を記載します</li>
+  </ul>
+</section>
+
+<!-- ================= 4 ================= -->
+<section id="s4">
+  <h2><span class="num">04</span>顔照合の判定設計</h2>
+  <p class="lede">実運用で最も揉めるのは、なりすましではなく<strong>誤判定</strong>です。本人なのに弾かれた受講者からのクレームが、運用コストの大半を占めます。ここの設計が事業の成否を分けます。</p>
+
+  <h3>3段階判定を採用する</h3>
+  <p>合格／不合格の二値ではなく、<strong>保留</strong>を挟みます。保留は人間が後から目視で判定します。</p>
+
+  <figure>
+    <svg viewBox="0 0 800 302" role="img" aria-label="顔照合の判定フロー">
+      <defs>
+        <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-3)"/>
+        </marker>
+      </defs>
+      <rect x="20" y="118" width="132" height="52" rx="6" fill="var(--surface-2)" stroke="var(--line-2)"/>
+      <text x="86" y="141" text-anchor="middle" font-family="Zen Kaku Gothic New, sans-serif" font-size="12" font-weight="700" fill="var(--ink)">撮影画像</text>
+      <text x="86" y="158" text-anchor="middle" font-family="Zen Kaku Gothic New, sans-serif" font-size="10.5" fill="var(--ink-2)">1:1 照合</text>
+
+      <line x1="154" y1="144" x2="196" y2="144" stroke="var(--ink-3)" stroke-width="1.4" marker-end="url(#ar2)"/>
+
+      <rect x="200" y="118" width="122" height="52" rx="6" fill="var(--surface-2)" stroke="var(--line-2)"/>
+      <text x="261" y="141" text-anchor="middle" font-family="Zen Kaku Gothic New, sans-serif" font-size="12" font-weight="700" fill="var(--ink)">照合スコア</text>
+      <text x="261" y="158" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--ink-2)">0.00 – 1.00</text>
+
+      <!-- branches -->
+      <path d="M324 138 L360 62 L390 62" fill="none" stroke="var(--ok)" stroke-width="1.5" marker-end="url(#ar2)"/>
+      <path d="M324 144 L390 144" fill="none" stroke="var(--warn)" stroke-width="1.5" marker-end="url(#ar2)"/>
+      <path d="M324 150 L360 226 L390 226" fill="none" stroke="var(--bad)" stroke-width="1.5" marker-end="url(#ar2)"/>
+
+      <rect x="394" y="36" width="176" height="52" rx="6" fill="var(--ok-soft)" stroke="var(--ok)"/>
+      <text x="410" y="58" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="var(--ok)">PASS   score ≥ 0.85</text>
+      <text x="410" y="76" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink)">そのまま受講を継続</text>
+
+      <rect x="394" y="118" width="176" height="52" rx="6" fill="var(--warn-soft)" stroke="var(--warn)"/>
+      <text x="410" y="140" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="var(--warn)">REVIEW  0.60 – 0.85</text>
+      <text x="410" y="158" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink)">受講は継続。運営が後で目視</text>
+
+      <rect x="394" y="200" width="176" height="52" rx="6" fill="var(--bad-soft)" stroke="var(--bad)"/>
+      <text x="410" y="222" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="var(--bad)">FAIL   score &lt; 0.60</text>
+      <text x="410" y="240" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink)">その場で再撮影を促す</text>
+
+      <line x1="572" y1="144" x2="612" y2="144" stroke="var(--ink-3)" stroke-width="1.4" marker-end="url(#ar2)"/>
+      <line x1="572" y1="226" x2="596" y2="226" stroke="var(--ink-3)" stroke-width="1.4"/>
+      <path d="M596 226 L596 170" fill="none" stroke="var(--ink-3)" stroke-width="1.4"/>
+      <path d="M596 170 L612 152" fill="none" stroke="var(--ink-3)" stroke-width="1.4" marker-end="url(#ar2)"/>
+
+      <rect x="616" y="100" width="164" height="88" rx="6" fill="var(--accent-soft)" stroke="var(--accent)"/>
+      <text x="630" y="124" font-family="Zen Kaku Gothic New, sans-serif" font-size="12" font-weight="700" fill="var(--accent)">修了証の発行前に</text>
+      <text x="630" y="142" font-family="Zen Kaku Gothic New, sans-serif" font-size="12" font-weight="700" fill="var(--accent)">まとめて判断</text>
+      <text x="630" y="164" font-family="Zen Kaku Gothic New, sans-serif" font-size="10.5" fill="var(--ink-2)">受講中は止めない。これが</text>
+      <text x="630" y="179" font-family="Zen Kaku Gothic New, sans-serif" font-size="10.5" fill="var(--ink-2)">クレームを防ぐ最大の要素</text>
+
+      <text x="20" y="278" font-family="Zen Kaku Gothic New, sans-serif" font-size="10.5" fill="var(--ink-3)">顔が検出できなかった場合は NO_FACE として別扱いとし、照合回数に算入せず、画角と照明の案内を出して再撮影する。</text>
+    </svg>
+    <figcaption>fig.2 — 3段階判定。REVIEW と FAIL のどちらでも、その場では受講を打ち切らない。</figcaption>
+  </figure>
+
+  <div class="note key">
+    <p class="hd"><span class="mk">最重要</span>照合に失敗しても、その場で受講を打ち切らない</p>
+    <p>照明、眼鏡、マスク、逆光、カメラの画質。本人でも照合が通らない状況は日常的に起きます。ここで「不正です」と受講を止めると、<strong>正当な受講者を怒らせ、返金と炎上を招きます。</strong></p>
+    <p style="margin-top:10px">正しい設計は次のとおりです。</p>
+    <ul style="margin-bottom:0">
+      <li>FAIL → その場で再撮影を促す（最大3回）。3回連続 FAIL で視聴を一時停止し、レビュー行きにフラグを立てる</li>
+      <li>REVIEW → 何もしない。受講はそのまま続行させる</li>
+      <li><strong>判断は修了証の発行前にまとめて行う。</strong>REVIEW/FAIL が一定割合を超えた受講者だけ、運営が画像を目視して発行可否を決める</li>
+    </ul>
+  </div>
+
+  <h3>閾値の初期値と調整</h3>
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th>用途</th><th class="num">PASS 閾値</th><th class="num">FAIL 閾値</th><th>考え方</th></tr></thead>
+      <tbody>
+        <tr><td><span class="chip c-l">L1</span> 登録時（書類 対 セルフィー）</td><td class="num">0.90</td><td class="num">0.70</td><td>1人1回のみ。誤って通す損失が大きいため厳しく</td></tr>
+        <tr><td><span class="chip c-l">L2</span> 受講開始時</td><td class="num">0.85</td><td class="num">0.60</td><td>やり直しが容易なため標準</td></tr>
+        <tr><td><span class="chip c-l">L3</span> 受講中ランダム</td><td class="num">0.80</td><td class="num">0.55</td><td>回数が多い。1回の失敗を重く見ず、全体の一致率で判断</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>スコアの尺度は採用する照合エンジンによって異なるため、上表は<strong>正規化後の目安</strong>です。運用開始前に、実際の受講者20〜30名分のサンプルでFRR（本人拒否率）を測定し、確定させます。</p>
+
+  <div class="kv" style="margin-top:22px">
+    <dt>採用指標</dt><dd>個々の照合の合否ではなく、<strong>受講全体の一致率</strong>を修了条件に用いる</dd>
+    <dt>修了条件</dt><dd>PASS 判定が全照合回数の <strong>80% 以上</strong>、かつ FAIL が連続3回に達していないこと</dd>
+    <dt>手動確認</dt><dd>上記を満たさない受講者は、運営が撮影画像を一覧で目視し、発行可否を判断</dd>
+  </div>
+</section>
+
+<!-- ================= 5 ================= -->
+<section id="s5">
+  <h2><span class="num">05</span>有効視聴時間の算出</h2>
+  <p class="lede">法定教育時間を満たしたことを示す数値です。<strong>クライアントの自己申告を一切信用せず、サーバ側でハートビートから再構成します。</strong></p>
+
+  <figure>
+    <svg viewBox="0 0 800 200" role="img" aria-label="有効視聴時間の算出イメージ">
+      <text x="20" y="26" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--accent)" letter-spacing="1">HEARTBEAT — 10s INTERVAL</text>
+      <line x1="20" y1="70" x2="780" y2="70" stroke="var(--line-2)" stroke-width="1"/>
+      <!-- valid segments -->
+      <rect x="20" y="58" width="200" height="24" rx="3" fill="var(--ok-soft)" stroke="var(--ok)"/>
+      <rect x="300" y="58" width="150" height="24" rx="3" fill="var(--ok-soft)" stroke="var(--ok)"/>
+      <rect x="560" y="58" width="220" height="24" rx="3" fill="var(--ok-soft)" stroke="var(--ok)"/>
+      <!-- invalid -->
+      <rect x="220" y="58" width="80" height="24" rx="3" fill="var(--bad-soft)" stroke="var(--bad)"/>
+      <rect x="450" y="58" width="110" height="24" rx="3" fill="var(--bad-soft)" stroke="var(--bad)"/>
+
+      <text x="120" y="75" text-anchor="middle" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ok)">加算</text>
+      <text x="260" y="75" text-anchor="middle" font-family="Zen Kaku Gothic New, sans-serif" font-size="10" fill="var(--bad)">タブ非表示</text>
+      <text x="375" y="75" text-anchor="middle" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ok)">加算</text>
+      <text x="505" y="75" text-anchor="middle" font-family="Zen Kaku Gothic New, sans-serif" font-size="10" fill="var(--bad)">位置が進まず</text>
+      <text x="670" y="75" text-anchor="middle" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ok)">加算</text>
+
+      <text x="20" y="116" font-family="Zen Kaku Gothic New, sans-serif" font-size="12" font-weight="700" fill="var(--ink)">加算する条件（連続する2つのハートビートの間）</text>
+      <text x="34" y="138" font-family="Zen Kaku Gothic New, sans-serif" font-size="11.5" fill="var(--ink-2)">① is_visible = true　かつ　② 0 &lt; Δposition ≤ Δserver_time × 1.1　かつ　③ playback_rate = 1.0</text>
+      <text x="34" y="158" font-family="Zen Kaku Gothic New, sans-serif" font-size="11.5" fill="var(--ink-2)">④ Δserver_time ≤ 20秒（欠落したハートビートの区間は加算しない）</text>
+      <text x="20" y="186" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink-3)">判定はすべてサーバ受信時刻で行う。クライアント時刻は改ざん可能なため、記録はするが判定には用いない。</text>
+    </svg>
+    <figcaption>fig.3 — 有効視聴時間は、条件を満たす区間だけを積み上げて算出する。</figcaption>
+  </figure>
+
+  <pre><code><span class="cm"># 有効視聴時間の算出（サーバ側・バッチまたは章終了時）</span>
+<span class="kw">def</span> effective_seconds(heartbeats):
+    total = <span class="kw">0</span>
+    <span class="kw">for</span> prev, cur <span class="kw">in</span> pairwise(sorted(heartbeats, key=<span class="kw">lambda</span> h: h.server_ts)):
+        dt  = (cur.server_ts - prev.server_ts).seconds
+        dpo = cur.position_sec - prev.position_sec
+        <span class="kw">if</span> dt &gt; <span class="kw">20</span>:                      <span class="cm"># ハートビート欠落 → 加算しない</span>
+            <span class="kw">continue</span>
+        <span class="kw">if</span> <span class="kw">not</span> cur.is_visible:              <span class="cm"># タブが裏 → 加算しない</span>
+            <span class="kw">continue</span>
+        <span class="kw">if</span> cur.playback_rate != <span class="kw">1.0</span>:       <span class="cm"># 倍速 → 加算しない</span>
+            <span class="kw">continue</span>
+        <span class="kw">if</span> dpo &lt;= <span class="kw">0</span> <span class="kw">or</span> dpo &gt; dt * <span class="kw">1.1</span>:   <span class="cm"># 停止 or 早送り → 加算しない</span>
+            <span class="kw">continue</span>
+        total += min(dt, dpo)
+    <span class="kw">return</span> total
+
+<span class="cm"># 修了条件： effective_seconds &gt;= enrollment.required_seconds</span>
+<span class="cm">#           required_seconds = 法定学科時間 × 3600</span></code></pre>
+
+  <p>この方式なら、倍速視聴・シーク・タブ裏での放置がすべて加算対象から外れます。同時に、<strong>「この受講者は何秒間、画面を見ながら再生していたか」を秒単位で証明できる</strong>状態になります。</p>
+</section>
+
+<!-- ================= 6 ================= -->
+<section id="s6">
+  <h2><span class="num">06</span>データモデル</h2>
+  <p class="lede">主要テーブルの定義です。PostgreSQL を想定しています。</p>
+
+  <pre><code><span class="cm">-- 受講者</span>
+learners(
+  id, email, name_kanji, name_kana, birth_date, phone,
+  kyc_status,            <span class="cm">-- unverified | pending | approved | rejected</span>
+  kyc_verified_at, created_at
+)
+
+<span class="cm">-- 本人確認書類（L1）</span>
+identity_documents(
+  id, learner_id,
+  doc_type,              <span class="cm">-- license | mynumber_front | passport | residence_card</span>
+  image_key,             <span class="cm">-- 暗号化ストレージのキー。画像そのものはRDBに置かない</span>
+  ocr_name, ocr_birth_date, ocr_expiry_date,
+  doc_number_hash,       <span class="cm">-- 平文では保存しない。重複登録の検出用</span>
+  liveness_score, doc_auth_score, match_score,
+  status,                <span class="cm">-- pending | approved | rejected</span>
+  reviewed_by, reviewed_at, created_at,
+  purge_after            <span class="cm">-- 保存期限。バッチで自動削除</span>
+)
+
+<span class="cm">-- 基準顔テンプレート</span>
+face_templates(
+  id, learner_id,
+  source,                <span class="cm">-- id_document | selfie</span>
+  embedding,             <span class="cm">-- 特徴量ベクトル（暗号化）</span>
+  vendor, model_version, <span class="cm">-- エンジン更新時の再登録判定に使う</span>
+  image_key, is_active, created_at
+)
+
+<span class="cm">-- 受講登録</span>
+enrollments(
+  id, learner_id, course_id,
+  required_seconds,      <span class="cm">-- 法定学科時間（秒）</span>
+  effective_seconds,     <span class="cm">-- 有効視聴時間の累計（サーバ算出）</span>
+  status,                <span class="cm">-- enrolled | in_progress | pending_review | completed | suspended</span>
+  started_at, completed_at, expires_at
+)
+
+<span class="cm">-- 視聴セッション / ハートビート（L4）</span>
+viewing_sessions(
+  id, enrollment_id, chapter_id, started_at, ended_at,
+  user_agent, ip_hash, device_fingerprint
+)
+viewing_heartbeats(
+  id, session_id, position_sec, playback_rate,
+  is_visible, is_focused, client_ts, server_ts
+)
+
+<span class="cm">-- 顔照合ログ（L2 / L3）</span>
+face_checks(
+  id, enrollment_id, session_id,
+  trigger_type,          <span class="cm">-- session_start | random | test_start</span>
+  scheduled_at, captured_at,
+  image_key, match_score,
+  decision,              <span class="cm">-- pass | review | fail | no_face</span>
+  vendor, model_version,
+  reviewed_by, reviewed_at, review_result,
+  purge_after
+)
+
+<span class="cm">-- テスト（L5）</span>
+test_attempts(
+  id, enrollment_id, test_type,   <span class="cm">-- chapter | final</span>
+  chapter_id, question_set_id,
+  score, passed, started_at, submitted_at
+)
+
+<span class="cm">-- 修了</span>
+completions(
+  id, enrollment_id, certificate_no,
+  issued_at, instructor_name, instructor_qualification,
+  effective_seconds, face_check_total, face_check_passed,
+  final_score, attempt_count,
+  content_hash,          <span class="cm">-- 証明書記載内容のハッシュ。真正性検証に使う</span>
+  revoked_at, revoke_reason
+)
+
+<span class="cm">-- 監査ログ（追記のみ・ハッシュチェーン）</span>
+audit_logs(
+  id, actor_type, actor_id, action,
+  target_type, target_id, payload_json,
+  prev_hash, hash,       <span class="cm">-- hash = SHA256(prev_hash + payload_json + created_at)</span>
+  created_at
+)</code></pre>
+
+  <div class="note">
+    <p class="hd">監査ログのハッシュチェーン</p>
+    <p>各レコードに直前レコードのハッシュを含めることで、途中のレコードを書き換えると以降のハッシュがすべて壊れます。<strong>「記録を後から改ざんしていない」ことを示せる</strong>ため、T3（事後の否認）への防御として機能します。実装は数十行で済み、費用対効果が非常に高い措置です。</p>
+  </div>
+</section>
+
+<!-- ================= 7 ================= -->
+<section id="s7">
+  <h2><span class="num">07</span>API設計</h2>
+  <p class="lede">主要エンドポイントです。認証は受講者向けにセッションクッキー、運営向けに別途ロールを分離します。</p>
+
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th class="mono">Method</th><th class="mono">Path</th><th>役割</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">POST</td><td class="mono">/api/kyc/documents</td><td>本人確認書類のアップロード。OCRとライブネスを実行</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/kyc/selfie</td><td>セルフィー登録と書類との1:1照合</td></tr>
+        <tr><td class="mono">GET</td><td class="mono">/api/kyc/status</td><td>審査状況の取得</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/enrollments</td><td>受講申込。<code>required_seconds</code> を科目マスタから確定</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/viewing/sessions</td><td>視聴セッション開始。L2の照合を伴う。署名付き動画URLを返す</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/viewing/heartbeat</td><td>10秒ごと。応答に <code>capture_now</code> を含む</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/face-checks</td><td>撮影画像の送信と照合実行</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/tests/{id}/submit</td><td>テスト提出・自動採点</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/completions</td><td>修了判定と証明書発行（運営承認後）</td></tr>
+        <tr><td class="mono">GET</td><td class="mono">/verify/{certificate_no}</td><td><strong>公開</strong>。証明書の真正性検証。認証不要</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>ハートビートの応答仕様</h3>
+  <pre><code><span class="cm">POST /api/viewing/heartbeat</span>
+{ "session_id":"vs_01J...", "position_sec":842, "playback_rate":1.0,
+  "is_visible":true, "is_focused":true, "client_ts":"2026-11-12T10:24:31Z" }
+
+<span class="cm">200 OK</span>
+{ "accepted":true,
+  "effective_seconds":836,        <span class="cm">// サーバ算出値。UIの進捗表示に使う</span>
+  "capture_now":true,             <span class="cm">// ← これが true のときだけ撮影する</span>
+  "capture_token":"fc_01J...",    <span class="cm">// 撮影結果はこのトークンで紐付ける</span>
+  "max_position_sec":842 }        <span class="cm">// シーク上限</span></code></pre>
+
+  <p><code>capture_token</code> には短い有効期限（60秒）を設けます。有効期限内に画像が届かない場合は <code>no_face</code> ではなく <code>timeout</code> として記録し、次のハートビートで再指示します。</p>
+</section>
+
+<!-- ================= 8 ================= -->
+<section id="s8">
+  <h2><span class="num">08</span>技術選定</h2>
+  <p class="lede">登録時と受講中で、求められる性質が違います。<strong>同じサービスを使う必要はありません。</strong>ここを分けることが費用最適化の鍵です。</p>
+
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th>用途</th><th>重視する性質</th><th>回数</th><th>推奨</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="chip c-l">L1</span> 登録時</td>
+          <td>日本の身分証のOCR精度、ライブネス、券面偽造の検知</td>
+          <td class="num">1人1回</td>
+          <td><strong>国産eKYCサービス</strong></td>
+        </tr>
+        <tr>
+          <td><span class="chip c-l">L2</span><span class="chip c-l">L3</span> 受講中</td>
+          <td>1:1照合の速度と単価。身分証の読み取りは不要</td>
+          <td class="num">1人 20〜25回</td>
+          <td><strong>汎用の顔照合API</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>L1 の候補</h3>
+  <p>国内のeKYCサービスは、運転免許証・マイナンバーカード・在留カードのOCRと券面確認に最適化されており、汎用の画像認識APIとは精度が大きく異なります。ここは国産サービスを使うべき領域です。</p>
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th>サービス</th><th>特徴</th><th>料金体系</th></tr></thead>
+      <tbody>
+        <tr><td>TRUSTDOCK</td><td>導入社数が多く、API組み込み型。人的確認をオプションで委託可能</td><td>初期費用＋月額固定＋従量</td></tr>
+        <tr><td>LIQUID eKYC</td><td>累計本人確認件数が国内最大級。AI判定による自動化率が高い</td><td>要問合せ</td></tr>
+        <tr><td>ネクスウェイ 本人確認</td><td>本人確認業務のBPOまで含めて提供</td><td>要問合せ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <p class="hd">選定にあたっての確認事項</p>
+    <ul style="margin-bottom:0">
+      <li>本件は<strong>犯罪収益移転防止法の対象ではありません。</strong>金融機関向けの厳格な方式（ホ方式等）は法的に不要です。過剰な仕様を掴まされないよう、用途を明確に伝えてください</li>
+      <li>必要なのは「書類OCR＋ライブネス＋1:1照合」の最小構成です。この構成での見積を取ってください</li>
+      <li>個人向け（一人親方）が主顧客のため、<strong>月額固定費が低く、従量単価が明快な</strong>プランが適しています</li>
+    </ul>
+  </div>
+
+  <h3>L2 / L3 の候補</h3>
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th>方式</th><th>長所</th><th>短所</th></tr></thead>
+      <tbody>
+        <tr><td>クラウドの顔照合API</td><td>従量課金で初期費用ゼロ。運用負荷が小さい</td><td>照合回数に比例して費用が増える。受講者1人あたり20〜25回</td></tr>
+        <tr><td>OSSの顔認識モデルを自社運用</td><td>従量費がゼロ。回数が増えるほど有利</td><td>精度とモデル更新の責任を自社が負う。GPU費用と運用工数</td></tr>
+        <tr><td>L1と同じeKYCサービスの照合API</td><td>ベンダーが1社で済む</td><td>単価が高い場合が多い。回数が多い用途には向かないことが多い</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>初期はクラウドAPIを推奨します。</strong>受講者数が読めない段階で自社運用に投資するのは早すぎます。月間の照合回数が一定規模を超えた時点で、OSS運用への切り替えを検討する設計にしておきます（<code>face_checks.vendor</code> と <code>model_version</code> を記録しているのはこのためです）。</p>
+
+  <div class="note crit">
+    <p class="hd"><span class="mk">要確認</span>本節の製品情報は2026年9月時点の公開情報に基づく参考です</p>
+    <p>各サービスの料金・機能・提供条件は変動します。<strong>選定は必ず個別に見積を取り、PoCで精度を確認してから決定してください。</strong>特に照合エンジンは、日本人の顔に対するFRR（本人拒否率）を実測しないと運用コストが読めません。</p>
+  </div>
+</section>
+
+<!-- ================= 9 ================= -->
+<section id="s9">
+  <h2><span class="num">09</span>個人情報の取扱い</h2>
+  <p class="lede">顔認証データは個人情報保護法上の<strong>個人識別符号</strong>に該当し、それ単体で個人情報です。外部の受講者から預かる以上、社内利用より一段厳しい設計が必要です。</p>
+
+  <h3>保存するもの・保存しないもの</h3>
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th>データ</th><th>保存</th><th>保存期間</th><th>備考</th></tr></thead>
+      <tbody>
+        <tr><td>本人確認書類の画像</td><td>する</td><td>修了から3年＋1年</td><td>暗号化。運営の閲覧は権限者のみ、閲覧自体を監査ログに記録</td></tr>
+        <tr><td>基準顔の特徴量</td><td>する</td><td>同上</td><td>暗号化。ベクトルから顔画像は復元できない</td></tr>
+        <tr><td>受講中の撮影画像</td><td>する</td><td>修了から3年＋1年</td><td>監査時に「本人が写っていた」ことを示すため必要</td></tr>
+        <tr><td>照合スコアと判定結果</td><td>する</td><td>削除しない</td><td>画像を削除した後も、統計値として保持</td></tr>
+        <tr><td class="mono"><strong>個人番号</strong></td><td class="mono"><span class="chip c-bad">絶対にしない</span></td><td>—</td><td>番号法。取得した時点で義務が発生する</td></tr>
+        <tr><td>書類番号の平文</td><td>しない</td><td>—</td><td>ハッシュのみ保存</td></tr>
+        <tr><td>受講記録・修了記録</td><td>する</td><td>3年以上</td><td>労働安全衛生規則第38条</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>保存期間を「3年＋1年」としているのは、安衛則第38条の3年間保存義務に対し、期限直前の照会に応じられる余裕を持たせるためです。期間経過後は<strong>画像のみを自動削除</strong>し、スコアと判定結果は統計として残します。</p>
+
+  <h3>実装すべき措置</h3>
+  <ul>
+    <li><strong>暗号化</strong> — 保存時（オブジェクトストアのサーバサイド暗号化＋アプリ層での追加暗号化）、転送時（TLS 1.2以上）</li>
+    <li><strong>アクセス制御</strong> — 画像の閲覧権限を運営の特定ロールに限定。閲覧操作そのものを <code>audit_logs</code> に記録</li>
+    <li><strong>署名付きURL</strong> — 画像へのアクセスは有効期限付きURL経由。直接参照可能なURLを発行しない</li>
+    <li><strong>自動削除バッチ</strong> — <code>purge_after</code> を日次で走査し、期限到来分を削除。削除も監査ログに記録</li>
+    <li><strong>委託先管理</strong> — eKYCベンダー・照合APIは個人データの取扱いの委託にあたるため、契約と監督が必要</li>
+    <li><strong>越境移転の確認</strong> — 照合APIのリージョンが国外の場合、外国にある第三者への提供にあたる可能性があります。<strong>国内リージョンを選択してください</strong></li>
+  </ul>
+
+  <h3>受講者から取得する同意</h3>
+  <p>利用規約とは別に、受講開始前に明示的な同意画面を設けます。文言に含めるべき事項：</p>
+  <ol>
+    <li>顔写真および本人確認書類を取得すること、その利用目的（受講者の本人確認および受講事実の記録）</li>
+    <li><strong>受講中、予告なく顔写真を撮影すること</strong></li>
+    <li>保存期間と、期間経過後に削除すること</li>
+    <li>本人確認および照合の処理を外部サービスに委託すること</li>
+    <li>元請等から照会があった場合に修了の事実を回答する場合があること（第三者提供にあたるため、同意が必要）</li>
+  </ol>
+  <p>5番目は見落とされがちですが、<strong>本サービスの価値の中心にある機能</strong>です。同意なしに元請へ回答すると第三者提供の問題になります。設計段階で必ず組み込んでください。</p>
+</section>
+
+<!-- ================= 10 ================= -->
+<section id="s10">
+  <h2><span class="num">10</span>受講証明書と真正性検証</h2>
+  <p class="lede">ここまでの4層は、すべてこの1枚を出すための仕組みです。<strong>証明書の説得力が、そのまま商品の価値になります。</strong></p>
+
+  <h3>受講証明書PDFの記載項目</h3>
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th>区分</th><th>項目</th></tr></thead>
+      <tbody>
+        <tr><td>受講者</td><td>氏名（漢字・カナ）、生年月日</td></tr>
+        <tr><td>科目</td><td>業務の名称、法定学科時間、根拠法令（安全衛生特別教育規程の該当条）</td></tr>
+        <tr><td><strong>受講の実績</strong></td><td>受講開始日時、修了日時、<strong>有効視聴時間（時分秒）</strong></td></tr>
+        <tr><td><strong>本人確認の実績</strong></td><td>本人確認の方法、<strong>顔照合の実施回数と一致回数</strong></td></tr>
+        <tr><td>理解度</td><td>修了確認テストの得点、試行回数</td></tr>
+        <tr><td>講師</td><td>講師（監修者）氏名、保有資格</td></tr>
+        <tr><td>実技の扱い</td><td><strong>「学科のみ。実技は受講者の所属事業者が実施すること」を明記</strong></td></tr>
+        <tr><td>発行</td><td>発行者名、発行日、証明書番号、検証用QRコード</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note key">
+    <p class="hd"><span class="mk">差別化</span>QRコードによる真正性検証</p>
+    <p>証明書に検証URLのQRコードを印字します。<strong>元請の担当者がスマートフォンで読み取ると、その証明書が本物か、失効していないかを即座に確認できます。</strong></p>
+    <p style="margin-top:10px">検証ページに表示する内容（第三者提供にあたるため、表示は最小限に留めます）：</p>
+    <ul style="margin-bottom:0">
+      <li>証明書番号、科目名、修了日、発行者</li>
+      <li>受講者氏名は<strong>一部マスク</strong>（例：山田 太○）</li>
+      <li>有効／失効の別</li>
+      <li>有効視聴時間と顔照合の一致率</li>
+    </ul>
+  </div>
+
+  <p>この機能は、実装コストが小さいわりに営業上の効果が大きい部分です。「この修了証で本当に現場に入れるのか」という受講者の不安と、「この修了証は信用できるのか」という元請の不安を、同時に解消します。<strong>他社の紙の修了証にはできないことです。</strong></p>
+
+  <h3>失効の扱い</h3>
+  <p>発行後に不正が判明した場合、<code>completions.revoked_at</code> を設定します。検証ページは即座に「失効」と表示するようになります。証明書を回収する必要がありません。</p>
+
+  <h3>実技の扱いの明記</h3>
+  <div class="note crit">
+    <p class="hd"><span class="mk">必須</span>「学科のみ」であることを証明書に明記する</p>
+    <p>フルハーネスやテールゲートリフターなど実技を伴う科目では、<strong>学科だけでは特別教育は修了しません。</strong>証明書にこれを明記しないと、受講者が「これで修了した」と誤認し、実技未実施のまま現場に立つ危険があります。</p>
+    <p style="margin-top:10px">記載例：<br>
+    <code>本証明書は学科教育の修了を証明するものです。実技教育（1.5時間以上）は、受講者が所属する事業者において別途実施される必要があります。</code></p>
+  </div>
+</section>
+
+<!-- ================= 11 ================= -->
+<section id="s11">
+  <h2><span class="num">11</span>例外ケースの運用設計</h2>
+  <p class="lede">机上の設計はここで壊れます。<strong>想定される例外に、あらかじめ answer を用意しておくかどうかで、運用コストが桁違いに変わります。</strong></p>
+
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th>ケース</th><th>対応</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>カメラのない端末</strong><br>デスクトップPCなど</td>
+          <td>受講開始前に端末チェックを実施し、カメラがなければ受講を開始させない。スマートフォンでの受講を案内する。<strong>途中で気づかせるのが最悪</strong>なので、申込画面の前に置く</td>
+        </tr>
+        <tr>
+          <td><strong>照合が何度も通らない</strong><br>照明・逆光・眼鏡</td>
+          <td>3回連続FAILで視聴を一時停止し、画角と照明のガイドを表示。それでも通らない場合は運営へのお問い合わせ導線を出し、<strong>目視確認で手動承認できる経路</strong>を必ず用意する</td>
+        </tr>
+        <tr>
+          <td><strong>マスク・ヘルメット着用</strong></td>
+          <td>撮影時のUIで「マスクと帽子を外してください」を明示。それでも顔が検出できない場合は <code>no_face</code> として再撮影を促す（照合回数に算入しない）</td>
+        </tr>
+        <tr>
+          <td><strong>双子・血縁者による誤一致</strong></td>
+          <td>顔照合だけでは原理的に防げない。<strong>ログイン認証（メール＋パスワード）との二要素で担保</strong>する。この限界は利用規約に明記しておく</td>
+        </tr>
+        <tr>
+          <td><strong>身分証の有効期限切れ</strong></td>
+          <td>OCRで有効期限を抽出し、期限切れは自動で差し戻し。受講期間中に期限が到来する場合は警告を表示</td>
+        </tr>
+        <tr>
+          <td><strong>外国人受講者</strong></td>
+          <td>在留カードに対応。氏名のアルファベット表記と漢字表記の突合ルールを別途定義。<strong>教材の日本語難易度も課題</strong>になるため、字幕の付与を検討</td>
+        </tr>
+        <tr>
+          <td><strong>通信断・アプリ強制終了</strong></td>
+          <td>ハートビートが途絶えた区間は有効視聴時間に加算しない。再開時は最後に確認できた位置から再生。<strong>進捗が消えない</strong>ことをUIで明示（最大の不安要素）</td>
+        </tr>
+        <tr>
+          <td><strong>受講者からの削除請求</strong></td>
+          <td>個人情報保護法上の利用停止・消去請求。ただし<strong>安衛則第38条の記録保存義務がある期間は、修了記録は削除できない</strong>。画像のみ先行削除する運用を定義し、規約に明記</td>
+        </tr>
+        <tr>
+          <td><strong>照合エンジンの更新</strong></td>
+          <td>ベンダーがモデルを更新するとスコア分布が変わる。<code>model_version</code> を記録し、更新時は閾値を再検証。受講中の受講者には旧バージョンを適用し続ける</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note good">
+    <p class="hd">手動承認の経路を必ず残す</p>
+    <p>完全自動化を目指すと、必ず「システムが通してくれない正当な受講者」が生まれます。<strong>運営が目視で承認できる経路を最初から設計に入れてください。</strong>その操作はすべて監査ログに残るので、証明力は損なわれません。これが受講者の満足度と運用コストの両方を守ります。</p>
+  </div>
+</section>
+
+<!-- ================= 12 ================= -->
+<section id="s12">
+  <h2><span class="num">12</span>実装フェーズと工数</h2>
+  <p class="lede">本人確認まわりに限った工数です。動画配信、決済、企業管理ポータルは含みません。</p>
+
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th>フェーズ</th><th>実装範囲</th><th class="num">工数目安</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">P1</td><td>eKYC組み込み（<span class="chip c-l">L1</span>）— ベンダー選定、書類アップロードUI、OCR突合、審査画面</td><td class="num">15〜22 人日</td></tr>
+        <tr><td class="mono">P1</td><td>顔照合基盤（<span class="chip c-l">L2</span><span class="chip c-l">L3</span>）— 撮影UI、照合API連携、3段階判定、スケジューラ</td><td class="num">18〜26 人日</td></tr>
+        <tr><td class="mono">P1</td><td>視聴ログ（<span class="chip c-l">L4</span>）— ハートビート、シーク制御、有効視聴時間の算出</td><td class="num">12〜18 人日</td></tr>
+        <tr><td class="mono">P1</td><td>テスト（<span class="chip c-l">L5</span>）— 出題、採点、進行制御</td><td class="num">8〜12 人日</td></tr>
+        <tr><td class="mono">P1</td><td>証明書発行＋真正性検証ページ</td><td class="num">10〜14 人日</td></tr>
+        <tr><td class="mono">P1</td><td>運営レビュー画面（保留分の一括目視・手動承認）</td><td class="num">8〜12 人日</td></tr>
+        <tr><td class="mono">P2</td><td>個人情報の自動削除バッチ、監査ログのハッシュチェーン</td><td class="num">6〜9 人日</td></tr>
+        <tr><td class="mono">P2</td><td>閾値のPoC（実受講者20〜30名でFRR測定・調整）</td><td class="num">5〜8 人日</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>合計 <strong>82〜121人日</strong>。要件定義、テスト、インフラ構築は別途です。上表は本人確認・受講確認に絞った実装工数であり、<strong>概算見積シートの「フェーズ1」に対応</strong>します。</p>
+
+  <div class="note">
+    <p class="hd">先にやるべきこと</p>
+    <p><strong>P2の閾値PoCは、本番リリース前に必ず実施してください。</strong>閾値が甘ければ替え玉を通し、厳しければ正当な受講者を弾きます。この数値だけは机上で決められず、実測が要ります。20〜30名分のサンプルがあれば十分な精度で決まります。</p>
+  </div>
+</section>
+
+<!-- ================= 13 ================= -->
+<section id="s13">
+  <h2><span class="num">13</span>未確定事項</h2>
+  <p class="lede">本設計を確定させるために、聖建様および所轄機関に確認が必要な事項です。</p>
+
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th class="mono">#</th><th>確認事項</th><th>確認先</th><th>影響</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">1</td><td><strong>本設計の確認方法で「受講した事実の適切な確認」として認められるか</strong></td><td>半田労働基準監督署</td><td>設計の根幹。無料で相談できる</td></tr>
+        <tr><td class="mono">2</td><td>バーチャル講師による教材で、講師要件を満たすと整理してよいか</td><td>同上</td><td>教材制作の方式そのもの</td></tr>
+        <tr><td class="mono">3</td><td>照合の頻度（1時間3回）と閾値（80%一致）が妥当な水準か</td><td>同上／実測</td><td>受講体験と運用コスト</td></tr>
+        <tr><td class="mono">4</td><td>eKYCサービスの選定と実費</td><td>各ベンダー</td><td>初期費用と受講者1人あたりの原価</td></tr>
+        <tr><td class="mono">5</td><td>顔照合APIの単価と国内リージョンの有無</td><td>各ベンダー</td><td>原価と越境移転の可否</td></tr>
+        <tr><td class="mono">6</td><td>元請への照会対応をサービスとして提供するか</td><td>聖建様</td><td>同意文言と検証ページの仕様</td></tr>
+        <tr><td class="mono">7</td><td>個人情報保護方針・利用規約・特定商取引法表記の整備</td><td>聖建様</td><td>個人向け提供には必須</td></tr>
+        <tr><td class="mono">8</td><td>運営レビューを日々担当されるのはどなたか</td><td>聖建様</td><td>保留分の滞留が修了証の発行遅延に直結</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note key">
+    <p class="hd"><span class="mk">推奨</span>1番から着手してください</p>
+    <p>特別教育には登録・認可の制度がなく、事前にお墨付きを得る窓口は存在しません。しかし<strong>相談は無料で受けられます。</strong>本設計書を持って所轄の監督署に相談し、その記録を残すことが、実務上とりうる最善のリスク低減策です。同時に、「監督署に相談済み」という事実そのものが、他社にはない営業材料になります。</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>株式会社聖建 御中 ／ 特別教育 eラーニング 本人確認・受講確認システム 詳細設計書 rev.1 ／ 2026-09-05 ／ 株式会社スペリオル</p>
+  <p>本書は要件確定前の設計案です。閾値・工数・製品情報は2026年9月時点の想定であり、確定値ではありません。<br>
+  根拠法令：労働安全衛生法第59条第3項、労働安全衛生規則第36条・第38条、安全衛生特別教育規程（昭和47年労働省告示第92号）、<br>
+  インターネット等を介したeラーニング等による安全衛生教育の実施について（令和3年1月25日 基安安発0125第2号 ほか）、個人情報保護法、番号法。</p>
+</footer>
+
+</div>
