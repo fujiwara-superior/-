@@ -474,6 +474,71 @@ a{color:var(--accent)}
     <dt>同意</dt><dd>受講開始前に「受講中、予告なく顔写真を撮影します」を明示し、明示的同意を取得</dd>
   </dl>
 
+  <h4>端末側の制約 — ブラウザは受講者の端末を自由に制御できない</h4>
+  <p>本層を設計するうえで最も重要な前提です。<strong>Webアプリケーションから受講者の端末を意のままに操作することはできません。</strong></p>
+
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th>できること</th><th>できないこと</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>カメラ映像の取得（<code>getUserMedia</code>）<br><span style="color:var(--ink-3);font-size:12px">ただし受講者の許可が必須</span></td>
+          <td><strong>受講者に気づかれずに撮影すること</strong><br><span style="color:var(--ink-3);font-size:12px">ブラウザとOSがカメラ使用中の表示を常時出し、これは隠せない</span></td>
+        </tr>
+        <tr>
+          <td>任意のタイミングで静止画を1枚切り出す<br><span style="color:var(--ink-3);font-size:12px">許可済みでストリーム保持中なら即座に可能</span></td>
+          <td>カメラの許可を強制すること<br><span style="color:var(--ink-3);font-size:12px">受講者はいつでも拒否・取り消しができる</span></td>
+        </tr>
+        <tr>
+          <td>許可の状態を監視し、失われたら再生を止める</td>
+          <td>タブが背面・画面ロック中・別アプリ使用中の撮影<br><span style="color:var(--ink-3);font-size:12px">ストリームがOSによって停止される</span></td>
+        </tr>
+        <tr>
+          <td>再生とシークの制御、視聴ログの取得</td>
+          <td>スクリーンショット・画面録画の禁止<br><span style="color:var(--ink-3);font-size:12px">Webでは技術的に不可能</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note key">
+    <p class="hd"><span class="mk">重要</span>それでも設計は成立します</p>
+    <p><strong>抑止力の源泉は「気づかれないこと」ではなく、「いつ来るか分からないこと」だからです。</strong>受講者は撮影が来ること自体は知っていますが、時刻を予測できないため、結局カメラの前に座り続けるほかありません。撮影時にモーダルが表示されることは、抑止力を何ら弱めません。</p>
+    <p style="margin-top:10px">したがって本システムの性格は次のとおりです。</p>
+    <p style="margin-top:6px"><strong>隠し撮りではなく、「同意に基づく撮影」と「応じなければ進捗が進まない」という構造による強制。</strong></p>
+  </div>
+
+  <h4>許可の扱いと、失われたときの挙動</h4>
+  <div class="kv">
+    <dt>取得のタイミング</dt><dd>受講申込の<strong>前</strong>に端末チェックを行い、カメラ許可まで取得する。受講開始後に発覚させない</dd>
+    <dt>拒否された場合</dt><dd>受講を開始させない。理由を説明し、別端末（スマートフォン）での受講を案内する</dd>
+    <dt>受講中に取り消された場合</dt><dd><strong>直ちに再生を停止</strong>し、有効視聴時間の加算を止める。復旧するまで進捗は進まない</dd>
+    <dt>監視方法</dt><dd><code>navigator.permissions.query({name:'camera'})</code> の <code>onchange</code>、および MediaStreamTrack の <code>ended</code> / <code>mute</code> イベントを購読する</dd>
+    <dt>ストリームの保持</dt><dd>受講中は取得したストリームを保持し続ける（撮影のたびに取り直すと、iOSで失敗・遅延が起きやすいため）。カメラ使用中の表示は出たままになるが、これは<strong>隠さずUI上でも明示する</strong></dd>
+  </div>
+
+  <h4>モバイル固有の挙動</h4>
+  <ul>
+    <li><strong>他アプリへの切り替え・画面ロックでストリームが停止する。</strong>これは <span class="chip c-l">L4</span> のタブ非アクティブ検知と挙動が一致するため、「画面を離れたら視聴も止まる」という一貫した仕様として扱えます</li>
+    <li>復帰時はストリームの再取得が必要。取得できるまで再生を再開しない</li>
+    <li>低電力モードでは、動画再生とカメラの同時利用が不安定になる端末があります。端末チェックで警告を出します</li>
+    <li>HTTPSでの配信が必須です（<code>getUserMedia</code> はセキュアコンテキストでのみ動作）</li>
+  </ul>
+
+  <div class="note">
+    <p class="hd">ネイティブアプリにしても、この制約は変わりません</p>
+    <p>「アプリ化すれば端末を制御できるのでは」という発想が出やすい部分ですが、<strong>iOS・Androidともにカメラ権限はOSが管理し、受講者が拒否できます。</strong>バックグラウンドでのカメラ利用は厳しく制限され、使用中インジケータの表示も義務です。<strong>開発費と審査対応が増えるだけで、得られる統制はほぼ変わりません。</strong>本件はWebで実装すべきです。</p>
+  </div>
+
+  <h4>この方式で防げないこと</h4>
+  <p>正直に限界を記します。これらは受け入れたうえで、<span class="chip c-l">L4</span><span class="chip c-l">L5</span> と記録の保全で補う設計です。</p>
+  <ul>
+    <li><strong>画面外に別人がいること</strong> — カメラの画角外は分かりません</li>
+    <li><strong>別端末で動画を流し、カメラの前には本人が座る</strong> — ただし視聴ログは本人の端末に残らないため、有効視聴時間が積み上がらず、結果として修了できません</li>
+    <li><strong>仮想カメラによる偽装</strong> — OBS等で録画映像を流す手口。ライブネス検出である程度は検知できますが、完全ではありません</li>
+    <li><strong>本人が座ったまま、内容を理解していない</strong> — <span class="chip c-l">L5</span> の理解度テストで補います</li>
+  </ul>
+
   <!-- L4 -->
   <div class="layer">
     <span class="chip c-l">L4</span>
@@ -963,6 +1028,14 @@ audit_logs(
         <tr>
           <td><strong>カメラのない端末</strong><br>デスクトップPCなど</td>
           <td>受講開始前に端末チェックを実施し、カメラがなければ受講を開始させない。スマートフォンでの受講を案内する。<strong>途中で気づかせるのが最悪</strong>なので、申込画面の前に置く</td>
+        </tr>
+        <tr>
+          <td><strong>カメラの許可を拒否された</strong></td>
+          <td>受講を開始させない。「なぜ必要か」を1文で説明し、許可の付け方を端末別に案内する。<strong>ここでの離脱が最も多い</strong>ため、説明文とタイミングは実データを見て改善する</td>
+        </tr>
+        <tr>
+          <td><strong>受講中に許可を取り消された</strong></td>
+          <td>即座に再生を停止し、有効視聴時間の加算を止める。<code>permissions.query</code> の <code>onchange</code> とトラックの <code>ended</code> / <code>mute</code> を監視。復旧するまで進捗は進まない</td>
         </tr>
         <tr>
           <td><strong>照合が何度も通らない</strong><br>照明・逆光・眼鏡</td>
