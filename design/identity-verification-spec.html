@@ -141,6 +141,47 @@ footer{grid-column:1/-1;border-top:1px solid var(--line);margin-top:20px;padding
 footer a{color:var(--brand-2)}
 a{color:var(--accent)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- print / PDF ---------- */
+@page{size:A4;margin:15mm 14mm 16mm}
+@media print{
+  :root{
+    --ground:#FFFFFF; --surface:#FFFFFF; --surface-2:#F1F5F5; --surface-3:#E6EDED;
+    --ink:#0F1B21; --ink-2:#3C4E55; --ink-3:#697B81;
+    --line:#C6D2D2; --line-2:#A8B9B9; --shadow:none;
+  }
+  body{background:#fff;font-size:9.6pt;line-height:1.72;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{display:block;max-width:none;padding:0}
+  nav{display:none!important}
+  main{max-width:none;padding-top:0}
+  .masthead{padding:0 0 16pt;break-after:avoid}
+  h1{font-size:21pt;margin-bottom:12pt}
+  .standfirst{font-size:10pt;max-width:none;margin-bottom:16pt}
+  .meta{gap:0 22pt;font-size:8pt}
+  h2{font-size:13.5pt;break-after:avoid;margin-bottom:4pt}
+  h3{font-size:11.5pt;margin:16pt 0 6pt;break-after:avoid}
+  h4{font-size:10pt;margin:12pt 0 4pt;break-after:avoid}
+  .layer{break-after:avoid;padding-top:14pt}
+  .layer h3{font-size:12pt;margin:0}
+  section{margin:0 0 14pt;padding-bottom:0}
+  section+section{padding-top:14pt}
+  p,ul,ol,.lede{max-width:none}
+  p{margin-bottom:8pt}
+  .note,figure,.kv,pre,.scroll,tr,footer{break-inside:avoid}
+  .note{padding:10pt 13pt;margin-bottom:12pt}
+  .scroll{overflow:visible;margin-bottom:12pt}
+  table,table.tw{min-width:0!important;font-size:8.2pt}
+  th{padding:5pt 7pt;font-size:7.6pt}
+  td{padding:5pt 7pt;line-height:1.5}
+  td.mono,th.mono{font-size:7.8pt}
+  pre{font-size:7.6pt;line-height:1.6;padding:10pt 12pt;margin-bottom:12pt}
+  .kv dt{font-size:8pt;padding:5pt 9pt}
+  .kv dd{font-size:9pt;padding:5pt 10pt}
+  figcaption{font-size:8pt}
+  .chip{font-size:7.6pt}
+  a{color:inherit;text-decoration:none}
+  footer{margin-top:14pt;padding-top:12pt;font-size:7.6pt}
+}
 </style>
 
 <div class="wrap">
