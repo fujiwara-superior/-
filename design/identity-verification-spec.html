@@ -861,66 +861,104 @@ audit_logs(
 <!-- ================= 8 ================= -->
 <section id="s8">
   <h2><span class="num">08</span>技術選定</h2>
-  <p class="lede">登録時と受講中で、求められる性質が違います。<strong>同じサービスを使う必要はありません。</strong>ここを分けることが費用最適化の鍵です。</p>
+  <p class="lede">結論から記します。<strong>eKYC専門ベンダーの採用は必須ではありません。</strong>立ち上げ期はむしろ採用すべきでないと考えます。理由と、段階的な育て方を示します。</p>
 
-  <div class="scroll">
-    <table class="tw">
-      <thead><tr><th>用途</th><th>重視する性質</th><th>回数</th><th>推奨</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><span class="chip c-l">L1</span> 登録時</td>
-          <td>日本の身分証のOCR精度、ライブネス、券面偽造の検知</td>
-          <td class="num">1人1回</td>
-          <td><strong>国産eKYCサービス</strong></td>
-        </tr>
-        <tr>
-          <td><span class="chip c-l">L2</span><span class="chip c-l">L3</span> 受講中</td>
-          <td>1:1照合の速度と単価。身分証の読み取りは不要</td>
-          <td class="num">1人 20〜25回</td>
-          <td><strong>汎用の顔照合API</strong></td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="note key">
+    <p class="hd"><span class="mk">前提</span>本件は犯罪収益移転防止法の対象外です</p>
+    <p>eKYC専門ベンダーは、銀行・暗号資産交換業・携帯キャリア向けに、犯収法が定める厳格な確認方式（ホ方式等）を満たすために作られています。<strong>特別教育の受講に、その水準は法的に要求されていません。</strong>用途を伝えずに引き合いを出すと、金融機関向けの過剰な仕様と価格が提示されます。</p>
   </div>
 
-  <h3>L1 の候補</h3>
-  <p>国内のeKYCサービスは、運転免許証・マイナンバーカード・在留カードのOCRと券面確認に最適化されており、汎用の画像認識APIとは精度が大きく異なります。ここは国産サービスを使うべき領域です。</p>
+  <h3>L1 で本当に必要な機能を分解する</h3>
   <div class="scroll">
     <table class="tw">
-      <thead><tr><th>サービス</th><th>特徴</th><th>料金体系</th></tr></thead>
+      <thead><tr><th>機能</th><th>必要度</th><th>判断の理由</th></tr></thead>
       <tbody>
-        <tr><td>TRUSTDOCK</td><td>導入社数が多く、API組み込み型。人的確認をオプションで委託可能</td><td>初期費用＋月額固定＋従量</td></tr>
-        <tr><td>LIQUID eKYC</td><td>累計本人確認件数が国内最大級。AI判定による自動化率が高い</td><td>要問合せ</td></tr>
-        <tr><td>ネクスウェイ 本人確認</td><td>本人確認業務のBPOまで含めて提供</td><td>要問合せ</td></tr>
+        <tr><td><strong>身分証の顔写真とセルフィーの1:1照合</strong></td><td><span class="chip c-bad">必須</span></td><td>替え玉を防ぐ唯一の手段。ここだけは省けない</td></tr>
+        <tr><td><strong>ライブネス判定</strong></td><td><span class="chip c-warn">必須に近い</span></td><td>他人の顔写真やディスプレイをかざす手口を防ぐ</td></tr>
+        <tr><td>氏名・生年月日のOCR</td><td><span class="chip c-ok">あると良い</span></td><td>手入力＋運営の目視突合で代替できる</td></tr>
+        <tr><td>身分証の券面真贋判定</td><td><span class="chip c-ok">ほぼ不要</span></td><td>受講料1万円のために身分証を偽造する動機がない</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="note">
-    <p class="hd">選定にあたっての確認事項</p>
-    <ul style="margin-bottom:0">
-      <li>本件は<strong>犯罪収益移転防止法の対象ではありません。</strong>金融機関向けの厳格な方式（ホ方式等）は法的に不要です。過剰な仕様を掴まされないよう、用途を明確に伝えてください</li>
-      <li>必要なのは「書類OCR＋ライブネス＋1:1照合」の最小構成です。この構成での見積を取ってください</li>
-      <li>個人向け（一人親方）が主顧客のため、<strong>月額固定費が低く、従量単価が明快な</strong>プランが適しています</li>
-    </ul>
+    <p class="hd">ここが選定の分岐点です</p>
+    <p>実務上の脅威は「偽造身分証」ではなく、<strong>「同僚が本人の身分証を借りて代わりに受講する」</strong>です。これは券面の真贋判定では防げず、<strong>顔照合でしか防げません。</strong>つまり、eKYC専門ベンダーの最大の強みである真贋判定は、本事業ではほとんど価値を持ちません。</p>
   </div>
 
-  <h3>L2 / L3 の候補</h3>
+  <h3>3つの選択肢</h3>
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th></th><th>A. eKYC専門ベンダー</th><th>B. 汎用クラウドAIの組合せ</th><th>C. 半自動（人手併用）</th></tr></thead>
+      <tbody>
+        <tr><td><strong>構成</strong></td><td>TRUSTDOCK / LIQUID eKYC 等に一括委託</td><td>顔照合・ライブネス・OCRを個別に組み合わせる</td><td>顔照合とライブネスのみ自動。氏名の突合は運営が目視</td></tr>
+        <tr><td><strong>初期費用</strong></td><td>20〜50万円</td><td>0円（実装工数のみ）</td><td>0円</td></tr>
+        <tr><td><strong>月額固定</strong></td><td>3〜10万円</td><td class="mono"><strong>0円</strong></td><td class="mono"><strong>0円</strong></td></tr>
+        <tr><td><strong>従量</strong></td><td>100〜300円／件</td><td>約10円／件</td><td>約5円／件＋人件費</td></tr>
+        <tr><td><strong>実装工数</strong></td><td>小</td><td>中（+15〜25人日）</td><td class="mono"><strong>最小</strong></td></tr>
+        <tr><td><strong>身分証OCR精度</strong></td><td>◎ 日本の券面に最適化</td><td>○ 氏名・生年月日は実用範囲</td><td>― 受講者が手入力</td></tr>
+        <tr><td><strong>券面真贋判定</strong></td><td>◎</td><td>✕</td><td>✕</td></tr>
+        <tr><td><strong>運営の手間</strong></td><td>ほぼなし</td><td>ほぼなし</td><td>1件あたり2〜3分</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>年間300人での費用比較</h3>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>案</th><th>内訳</th><th class="num">年間</th></tr></thead>
+      <tbody>
+        <tr><td>A. eKYC専門ベンダー</td><td>初期30万 ＋ 月額5万×12 ＋ 従量200円×300</td><td class="num">約 96万円</td></tr>
+        <tr><td>B. 汎用クラウドAI</td><td>実装20〜30万（初年度のみ） ＋ 従量10円×300</td><td class="num">約 30万円</td></tr>
+        <tr><td>C. 半自動</td><td>従量5円×300 ＋ 人件費 約15時間</td><td class="num">数万円</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>月額固定費が、受講者数の読めない立ち上げ期に重くのしかかります。</strong>上表の金額は相場からの推定であり、確定値ではありません。</p>
+
+  <h3>推奨：C から始め、B へ育てる</h3>
+  <div class="kv">
+    <dt>フェーズ 1<br>〜年300人</dt>
+    <dd><strong>案C。</strong>受講者が氏名・生年月日を手入力し、身分証画像とセルフィーをアップロード。顔照合とライブネスだけAPIで自動化し、氏名の突合は運営が目視で承認する。<br>
+    この段階は<strong>むしろ人が見たほうがよい</strong>。どんな身分証が来るか、どこで受講者が躓くかという実データが手に入る。その知見なしにOCRの自動化を設計しても外す</dd>
+    <dt>フェーズ 2<br>年300〜2,000人</dt>
+    <dd><strong>案B。</strong>目視が回らなくなった時点で、OCRと自動突合を追加する。ここで初めて自動化に投資する</dd>
+    <dt>フェーズ 3<br>年2,000人〜</dt>
+    <dd>案Aを検討。ただし<strong>Bで足りるケースがほとんど</strong></dd>
+  </div>
+
+  <div class="note good">
+    <p class="hd">案Cは手抜きではありません</p>
+    <p>顔照合とライブネスという<strong>核心部分は自動化したうえで、判断の柔軟性が要る部分だけ人が見る</strong>という設計です。誤判定への対応（§04）でも、結局は人の目が必要になります。最初からその経路を主戦力として設計しておくほうが、運用は安定します。</p>
+  </div>
+
+  <h3>eKYC専門ベンダーが必要になる条件</h3>
+  <p>次のいずれかに該当したら、採用を検討します。現時点ではいずれも該当しません。</p>
+  <ul>
+    <li>元請や発注元から、<strong>eKYCの導入を要件として指定された</strong>場合</li>
+    <li>受講者が年間数千人規模になり、券面の真贋判定を求められるようになった場合</li>
+    <li>運営に人手を一切割けない場合</li>
+    <li>営業上、「eKYC採用」を明示することに価値がある場合</li>
+  </ul>
+
+  <h3>L2 / L3 — 受講中の照合</h3>
+  <p>こちらは受講者1人あたり20〜25回と回数が多いため、<strong>単価がそのまま原価を決めます。</strong>身分証の読み取りは不要で、1:1の顔照合ができれば足ります。</p>
   <div class="scroll">
     <table class="tw">
       <thead><tr><th>方式</th><th>長所</th><th>短所</th></tr></thead>
       <tbody>
-        <tr><td>クラウドの顔照合API</td><td>従量課金で初期費用ゼロ。運用負荷が小さい</td><td>照合回数に比例して費用が増える。受講者1人あたり20〜25回</td></tr>
+        <tr><td>クラウドの顔照合API<br><span style="color:var(--ink-3);font-size:12px">Amazon Rekognition 等</span></td><td>従量課金で初期費用ゼロ。東京リージョンで提供され、越境移転の問題が生じない</td><td>照合回数に比例して費用が増える</td></tr>
         <tr><td>OSSの顔認識モデルを自社運用</td><td>従量費がゼロ。回数が増えるほど有利</td><td>精度とモデル更新の責任を自社が負う。GPU費用と運用工数</td></tr>
-        <tr><td>L1と同じeKYCサービスの照合API</td><td>ベンダーが1社で済む</td><td>単価が高い場合が多い。回数が多い用途には向かないことが多い</td></tr>
+        <tr><td>L1と同じeKYCサービスの照合API</td><td>ベンダーが1社で済む</td><td>単価が高い場合が多く、回数の多い用途には向かないことが多い</td></tr>
       </tbody>
     </table>
   </div>
-  <p><strong>初期はクラウドAPIを推奨します。</strong>受講者数が読めない段階で自社運用に投資するのは早すぎます。月間の照合回数が一定規模を超えた時点で、OSS運用への切り替えを検討する設計にしておきます（<code>face_checks.vendor</code> と <code>model_version</code> を記録しているのはこのためです）。</p>
+  <p><strong>初期はクラウドAPIを推奨します。</strong>受講者数が読めない段階で自社運用に投資するのは早すぎます。月間の照合回数が一定規模を超えた時点で切り替えを検討できるよう、<code>face_checks.vendor</code> と <code>model_version</code> を記録する設計にしています。</p>
 
   <div class="note crit">
-    <p class="hd"><span class="mk">要確認</span>本節の製品情報は2026年9月時点の公開情報に基づく参考です</p>
+    <p class="hd"><span class="mk">要確認</span>本節の製品情報・価格は2026年9月時点の公開情報に基づく参考です</p>
     <p>各サービスの料金・機能・提供条件は変動します。<strong>選定は必ず個別に見積を取り、PoCで精度を確認してから決定してください。</strong>特に照合エンジンは、日本人の顔に対するFRR（本人拒否率）を実測しないと運用コストが読めません。</p>
+    <p style="margin-top:10px">ベンダーへの引き合い時は、<strong>「犯罪収益移転防止法の対象外」「必要なのは1:1の顔照合とライブネスのみ」</strong>と明示してください。用途を伝えないと、金融機関向けの過剰な構成が提案されます。</p>
   </div>
 </section>
 
