@@ -137,6 +137,17 @@ figcaption{font-size:12px;color:var(--ink-3);margin-top:8px;font-family:var(--mo
 .kv dd{margin:0;padding:9px 16px;font-size:13.5px;border-bottom:1px solid var(--line);line-height:1.7}
 .kv dt:last-of-type,.kv dd:last-of-type{border-bottom:none}
 
+/* ---------- ui copy mock ---------- */
+.uicopy{background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:14px 17px;margin:0 0 12px;max-width:42em}
+.uicopy .sid{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);letter-spacing:.08em;display:block;margin-bottom:7px}
+.uicopy .h{font-weight:700;font-size:14.5px;line-height:1.55;margin-bottom:6px;color:var(--ink)}
+.uicopy .b{font-size:12.5px;color:var(--ink-2);line-height:1.8}
+.uicopy .b ul{margin:6px 0 0;padding-left:1.2em;max-width:none}
+.uicopy .b li{margin-bottom:2px;font-size:12px}
+.uicopy .btn{display:inline-block;margin-top:10px;background:var(--brand);color:var(--surface);font-size:12px;font-weight:700;padding:6px 18px;border-radius:4px}
+.uicopy .btn2{display:inline-block;margin:10px 0 0 8px;background:transparent;color:var(--brand-2);font-size:12px;font-weight:700;padding:6px 14px;border-radius:4px;border:1px solid var(--line-2)}
+.uicopy .sub{font-size:11px;color:var(--ink-3);margin-top:8px;line-height:1.7}
+@media print{.uicopy{break-inside:avoid;padding:10pt 13pt;margin-bottom:9pt}.uicopy .h{font-size:10.5pt}.uicopy .b{font-size:9pt}}
 footer{grid-column:1/-1;border-top:1px solid var(--line);margin-top:20px;padding-top:26px;font-size:12px;color:var(--ink-3);font-family:var(--mono);line-height:1.9}
 footer a{color:var(--brand-2)}
 a{color:var(--accent)}
@@ -207,16 +218,17 @@ a{color:var(--accent)}
     <li><a href="#s1"><span>1</span>設計目標と脅威モデル</a></li>
     <li><a href="#s2"><span>2</span>全体アーキテクチャ</a></li>
     <li><a href="#s3"><span>3</span>5層の詳細設計</a></li>
-    <li><a href="#s4"><span>4</span>顔照合の判定設計</a></li>
-    <li><a href="#s5"><span>5</span>有効視聴時間の算出</a></li>
-    <li><a href="#s6"><span>6</span>データモデル</a></li>
-    <li><a href="#s7"><span>7</span>API設計</a></li>
-    <li><a href="#s8"><span>8</span>技術選定</a></li>
-    <li><a href="#s9"><span>9</span>個人情報の取扱い</a></li>
-    <li><a href="#s10"><span>10</span>受講証明書と真正性検証</a></li>
-    <li><a href="#s11"><span>11</span>例外ケースの運用設計</a></li>
-    <li><a href="#s12"><span>12</span>実装フェーズと工数</a></li>
-    <li><a href="#s13"><span>13</span>未確定事項</a></li>
+    <li><a href="#s4"><span>4</span>本人確認画面の文言と遷移</a></li>
+    <li><a href="#s5"><span>5</span>顔照合の判定設計</a></li>
+    <li><a href="#s6"><span>6</span>有効視聴時間の算出</a></li>
+    <li><a href="#s7"><span>7</span>データモデル</a></li>
+    <li><a href="#s8"><span>8</span>API設計</a></li>
+    <li><a href="#s9"><span>9</span>技術選定</a></li>
+    <li><a href="#s10"><span>10</span>個人情報の取扱い</a></li>
+    <li><a href="#s11"><span>11</span>受講証明書と真正性検証</a></li>
+    <li><a href="#s12"><span>12</span>例外ケースの運用設計</a></li>
+    <li><a href="#s13"><span>13</span>実装フェーズと工数</a></li>
+    <li><a href="#s14"><span>14</span>未確定事項</a></li>
   </ol>
 </nav>
 
@@ -636,7 +648,274 @@ a{color:var(--accent)}
 
 <!-- ================= 4 ================= -->
 <section id="s4">
-  <h2><span class="num">04</span>顔照合の判定設計</h2>
+  <h2><span class="num">04</span>本人確認画面の文言と遷移</h2>
+  <p class="lede">受講者が最も多く離脱するのが、この本人確認の工程です。<strong>文言の一語一語が、そのまま完了率を左右します。</strong>実装にそのまま使える形で記します。</p>
+
+  <h3>この画面を設計する三原則</h3>
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th class="mono">#</th><th>原則</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">1</td><td><strong>なぜ必要かを、最初に1文で言う</strong></td><td>理由の説明なく身分証を求められると、人は手を止めます。しかも<strong>「不正防止のため」では逆効果</strong>です。疑われていると感じさせます。<strong>受講者自身の利益に結びつけて説明します</strong></td></tr>
+        <tr><td class="mono">2</td><td><strong>1画面1動作</strong></td><td>対象は建設現場で働く方であり、ITに不慣れな層を含みます。1つの画面で複数の指示を出すと、必ずどれかが読み飛ばされます</td></tr>
+        <tr><td class="mono">3</td><td><strong>失敗を責めない</strong></td><td>「認証に失敗しました」は、正当な受講者を敵に回します。<strong>次に何をすればよいかだけを伝えます</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>画面遷移</h3>
+  <figure>
+    <svg viewBox="0 0 800 452" role="img" aria-label="本人確認の画面遷移図">
+      <defs>
+        <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-3)"/>
+        </marker>
+      </defs>
+
+      <text x="34" y="26" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--accent)" letter-spacing="1">STEP 1 — 準備</text>
+      <g font-family="Zen Kaku Gothic New, sans-serif">
+        <rect x="34" y="38" width="168" height="60" rx="5" fill="var(--surface-2)" stroke="var(--line-2)"/>
+        <text x="48" y="60" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--accent)">S1</text>
+        <text x="48" y="80" font-size="12.5" font-weight="700" fill="var(--ink)">本人確認のご案内</text>
+
+        <rect x="222" y="38" width="168" height="60" rx="5" fill="var(--surface-2)" stroke="var(--line-2)"/>
+        <text x="236" y="60" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--accent)">S2</text>
+        <text x="236" y="80" font-size="12.5" font-weight="700" fill="var(--ink)">端末・カメラの確認</text>
+
+        <rect x="410" y="38" width="168" height="60" rx="5" fill="var(--surface-2)" stroke="var(--line-2)"/>
+        <text x="424" y="60" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--accent)">S3</text>
+        <text x="424" y="80" font-size="12.5" font-weight="700" fill="var(--ink)">取扱いへの同意</text>
+
+        <rect x="598" y="38" width="168" height="60" rx="5" fill="var(--surface-2)" stroke="var(--line-2)"/>
+        <text x="612" y="60" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--accent)">S4</text>
+        <text x="612" y="80" font-size="12.5" font-weight="700" fill="var(--ink)">書類の選択</text>
+      </g>
+      <line x1="206" y1="68" x2="218" y2="68" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ar3)"/>
+      <line x1="394" y1="68" x2="406" y2="68" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ar3)"/>
+      <line x1="582" y1="68" x2="594" y2="68" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ar3)"/>
+      <polyline points="682,102 682,120 118,120 118,144" fill="none" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ar3)"/>
+
+      <text x="34" y="166" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--accent)" letter-spacing="1">STEP 2 — 撮影（すべてその場撮影）</text>
+      <g font-family="Zen Kaku Gothic New, sans-serif">
+        <rect x="34" y="178" width="168" height="60" rx="5" fill="var(--surface-2)" stroke="var(--line-2)"/>
+        <text x="48" y="200" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--accent)">S5</text>
+        <text x="48" y="220" font-size="12.5" font-weight="700" fill="var(--ink)">書類の表面</text>
+
+        <rect x="222" y="178" width="168" height="60" rx="5" fill="var(--surface-2)" stroke="var(--line-2)"/>
+        <text x="236" y="200" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--accent)">S6</text>
+        <text x="236" y="220" font-size="12.5" font-weight="700" fill="var(--ink)">書類の裏面</text>
+
+        <rect x="410" y="178" width="168" height="60" rx="5" fill="var(--surface-2)" stroke="var(--line-2)"/>
+        <text x="424" y="200" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--accent)">S7</text>
+        <text x="424" y="220" font-size="12.5" font-weight="700" fill="var(--ink)">書類の厚み（斜め）</text>
+
+        <rect x="598" y="178" width="168" height="60" rx="5" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+        <text x="612" y="200" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--accent)">S8</text>
+        <text x="612" y="220" font-size="12.5" font-weight="700" fill="var(--ink)">セルフィー＋ライブネス</text>
+      </g>
+      <line x1="206" y1="208" x2="218" y2="208" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ar3)"/>
+      <line x1="394" y1="208" x2="406" y2="208" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ar3)"/>
+      <line x1="582" y1="208" x2="594" y2="208" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ar3)"/>
+      <polyline points="682,242 682,260 118,260 118,284" fill="none" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ar3)"/>
+
+      <text x="34" y="306" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--accent)" letter-spacing="1">STEP 3 — 確認と審査</text>
+      <g font-family="Zen Kaku Gothic New, sans-serif">
+        <rect x="34" y="318" width="168" height="60" rx="5" fill="var(--surface-2)" stroke="var(--line-2)"/>
+        <text x="48" y="340" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--accent)">S9</text>
+        <text x="48" y="360" font-size="12.5" font-weight="700" fill="var(--ink)">氏名・生年月日の確認</text>
+
+        <rect x="222" y="318" width="168" height="60" rx="5" fill="var(--surface-2)" stroke="var(--line-2)"/>
+        <text x="236" y="340" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--accent)">S10</text>
+        <text x="236" y="360" font-size="12.5" font-weight="700" fill="var(--ink)">送信完了</text>
+
+        <rect x="410" y="318" width="168" height="60" rx="5" fill="var(--surface-3)" stroke="var(--line-2)" stroke-dasharray="4 3"/>
+        <text x="424" y="340" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--ink-3)">運営</text>
+        <text x="424" y="360" font-size="12.5" font-weight="700" fill="var(--ink-2)">審査（C案は目視）</text>
+
+        <rect x="598" y="318" width="168" height="60" rx="5" fill="var(--ok-soft)" stroke="var(--ok)"/>
+        <text x="612" y="340" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--ok)">S11</text>
+        <text x="612" y="360" font-size="12.5" font-weight="700" fill="var(--ink)">承認 → 受講開始</text>
+      </g>
+      <line x1="206" y1="348" x2="218" y2="348" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ar3)"/>
+      <line x1="394" y1="348" x2="406" y2="348" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ar3)"/>
+      <line x1="582" y1="348" x2="594" y2="348" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ar3)"/>
+
+      <rect x="34" y="398" width="732" height="42" rx="5" fill="var(--warn-soft)" stroke="var(--warn)"/>
+      <text x="48" y="416" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--warn)">S2 の分岐</text>
+      <text x="130" y="416" font-family="Zen Kaku Gothic New, sans-serif" font-size="12" font-weight="700" fill="var(--ink)">カメラが使えない場合</text>
+      <text x="48" y="432" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink-2)">PCで受講中 → QRコードでスマートフォンへ引き継ぎ（S5へ復帰）　／　端末にカメラがない → 運営による手動審査（例外経路）</text>
+    </svg>
+    <figcaption>fig.2 — 本人確認の画面遷移。撮影はすべてその場撮影で、S5〜S8 はいずれも撮り直しが可能。</figcaption>
+  </figure>
+
+  <h3>画面ごとの文言</h3>
+  <p>以下はそのまま実装に使える文案です。<strong>「本人確認」という語は残しつつ、受講者の利益から書き起こしています。</strong></p>
+
+  <div class="uicopy">
+    <span class="sid">S1 — 本人確認のご案内</span>
+    <p class="h">受講の前に、本人確認をお願いします</p>
+    <div class="b">修了証は、あなたのお名前で発行されます。現場で資格の証明としてお使いいただくものですので、別の方が代わりに受講することのないよう、お顔と本人確認書類を確認させてください。<br>所要時間は約3分です。</div>
+    <span class="btn">本人確認をはじめる</span>
+    <p class="sub">▸ 撮影した画像の取扱いについて</p>
+  </div>
+  <p style="font-size:12.5px;color:var(--ink-3);margin-top:-4px">「不正防止のため」とは書きません。疑われていると感じさせます。<strong>「あなたの名前で修了証が出るから」</strong>という受講者側の理由に置き換えています。所要時間の明示も、離脱率に効きます。</p>
+
+  <div class="uicopy">
+    <span class="sid">S2 — 端末・カメラの確認</span>
+    <p class="h">カメラの使用を許可してください</p>
+    <div class="b">本人確認では、書類とお顔を撮影します。次の画面でカメラの使用許可を求めますので、「許可」を選んでください。</div>
+    <span class="btn">カメラを確認する</span>
+  </div>
+
+  <div class="uicopy">
+    <span class="sid">S2-E — 許可されなかった場合</span>
+    <p class="h">カメラが使えませんでした</p>
+    <div class="b">本人確認には撮影が必要です。設定でカメラを許可してから、もう一度お試しください。
+      <ul>
+        <li>iPhone：設定 → Safari → カメラ → 「許可」</li>
+        <li>Android：アドレスバー左の鍵マーク → サイトの設定 → カメラ</li>
+      </ul>
+    </div>
+    <span class="btn">もう一度試す</span><span class="btn2">スマートフォンで続ける</span>
+  </div>
+
+  <div class="uicopy">
+    <span class="sid">S3 — 取扱いへの同意</span>
+    <p class="h">撮影した画像の取扱いについて</p>
+    <div class="b">
+      <ul>
+        <li>本人確認書類とお顔の写真をお預かりします</li>
+        <li><strong>受講中も、予告なくお顔の写真を撮影します</strong>（受講されているのがご本人であることを確認するためです）</li>
+        <li>画像は暗号化して保管し、修了から4年で削除します</li>
+        <li>元請会社などから確認を求められた際、修了した事実をお答えする場合があります</li>
+      </ul>
+    </div>
+    <p class="sub">☐ 上記に同意します</p>
+    <span class="btn">同意してすすむ</span>
+  </div>
+  <p style="font-size:12.5px;color:var(--ink-3);margin-top:-4px"><strong>受講中の撮影と、元請への回答は、必ずここで同意を取ります。</strong>後出しにすると、個人情報保護法上の問題になります（§10 参照）。</p>
+
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th class="mono">画面</th><th>見出し</th><th>本文・補足</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="mono">S4</td><td><strong>本人確認書類を選んでください</strong></td>
+          <td>運転免許証 ／ マイナンバーカード ／ パスポート ／ 在留カード<br>
+          <span style="color:var(--bad)"><strong>マイナンバーカードを選んだとき：</strong>「表面（お顔の写真がある面）だけを撮影してください。裏面のマイナンバーが記載された面は、法律上お預かりできません。」</span></td>
+        </tr>
+        <tr>
+          <td class="mono">S5</td><td><strong>免許証の表面を撮影します</strong></td>
+          <td>枠の中に、文字がはっきり読める大きさで入れてください。<br>
+          ・明るい場所で　・平らな面に置いて　・光の反射にご注意ください<br>
+          撮影後：「この写真でよろしいですか？」→ <strong>使用する</strong> ／ 撮り直す</td>
+        </tr>
+        <tr>
+          <td class="mono">S6</td><td><strong>裏面を撮影します</strong></td>
+          <td>住所の変更などが記載されている場合があるため、裏面も撮影します。<br>
+          （マイナンバーカードを選択した場合、この画面は表示しません）</td>
+        </tr>
+        <tr>
+          <td class="mono">S7</td><td><strong>カードを少し傾けて撮影します</strong></td>
+          <td>厚みが見えるように、斜めから撮ってください。<br>
+          <strong>印刷したコピーではなく、実物であることを確認するためです。</strong><br>
+          <span style="color:var(--ink-3)">※ 理由を書かないと「なぜ？」で手が止まります</span></td>
+        </tr>
+        <tr>
+          <td class="mono">S9</td><td><strong>お名前と生年月日をご確認ください</strong></td>
+          <td>氏名（漢字）／ 氏名（カナ）／ 生年月日<br>
+          <strong>修了証には、ここで入力されたお名前が印字されます。</strong>書類と同じ表記になっているかご確認ください。</td>
+        </tr>
+        <tr>
+          <td class="mono">S10</td><td><strong>本人確認の書類をお預かりしました</strong></td>
+          <td>内容を確認のうえ、<strong>1営業日以内</strong>にメールでご連絡します。確認が完了しましたら、すぐに受講を開始いただけます。<br>
+          <span style="color:var(--ink-3)">※ C案（目視審査）の場合。自動判定なら即時に S11 へ</span></td>
+        </tr>
+        <tr>
+          <td class="mono">S11-E</td><td><strong>書類の再提出をお願いします</strong></td>
+          <td>理由を1つだけ具体的に示します。<br>
+          「文字が読み取れませんでした」／「お顔がはっきり写っていませんでした」／「有効期限が切れています」／「お名前の表記が書類と異なります」</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="uicopy">
+    <span class="sid">S8 — セルフィーの撮影</span>
+    <p class="h">お顔を撮影します</p>
+    <div class="b">帽子とマスクを外し、正面を向いてください。<strong>眼鏡は、普段かけているものであれば着けたままで構いません。</strong>
+      <ul>
+        <li>明るい場所で撮影してください</li>
+        <li>お顔が枠に収まるようにしてください</li>
+        <li>他の方が写り込まないようにしてください</li>
+      </ul>
+    </div>
+    <span class="btn">撮影する</span>
+  </div>
+  <div class="note good">
+    <p class="hd">眼鏡は外させない</p>
+    <p>基準となる顔を「普段の状態」で登録するほうが、受講中のランダム照合が通りやすくなります。ここで外させると、受講中に眼鏡をかけた本人が弾かれます。<strong>誤判定を減らす、費用ゼロの措置です。</strong></p>
+  </div>
+
+  <h3>撮影に失敗したときの文言</h3>
+  <p>ここが最も重要です。<strong>「失敗」「できませんでした」という語を使いません。</strong>次にどうすればよいかだけを伝えます。</p>
+
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th>状況</th><th class="mono">✕ 使わない</th><th class="mono">◯ 使う</th></tr></thead>
+      <tbody>
+        <tr><td>顔が検出できない</td><td style="color:var(--bad)">認証に失敗しました</td><td style="color:var(--ok)"><strong>お顔が枠に入っていないようです。カメラに正面を向けてください。</strong></td></tr>
+        <tr><td>画像が暗い</td><td style="color:var(--bad)">画質が不十分です</td><td style="color:var(--ok)"><strong>少し暗いようです。明るい場所でもう一度お願いします。</strong></td></tr>
+        <tr><td>複数の顔が写った</td><td style="color:var(--bad)">エラーが発生しました</td><td style="color:var(--ok)"><strong>複数の方が写っています。おひとりで撮影してください。</strong></td></tr>
+        <tr><td>文字が読めない</td><td style="color:var(--bad)">OCRに失敗しました</td><td style="color:var(--ok)"><strong>文字がぼやけているようです。ピントを合わせてもう一度お願いします。</strong></td></tr>
+        <tr><td><strong>照合スコアが低い</strong></td><td style="color:var(--bad)">本人と一致しませんでした</td><td style="color:var(--ok)"><strong>もう一度撮影をお願いします。</strong><br><span style="font-size:11.5px">理由を言わない</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note crit">
+    <p class="hd"><span class="mk">重要</span>照合スコアが理由の失敗では、理由を伝えない</p>
+    <p>「本人と一致しませんでした」と表示すると、<strong>閾値の情報を攻撃者に与えます。</strong>何度か試せば通る／通らないの境界が分かってしまいます。</p>
+    <p style="margin-top:10px">同時に、<strong>正当な受講者を不必要に不安にさせます。</strong>照明や角度の問題で弾かれただけの人に「あなたは本人ではない」と告げることになるからです。<strong>「もう一度お願いします」とだけ伝え、記録は残します。</strong></p>
+  </div>
+
+  <h3>受講中のランダム撮影（<span class="chip c-l">L3</span>）のモーダル</h3>
+  <div class="uicopy">
+    <span class="sid">M1 — 受講中の本人確認</span>
+    <p class="h">本人確認</p>
+    <div class="b">受講されているのがご本人であることを確認します。カメラに顔を向けてください。<br>
+    <span style="font-family:var(--mono);font-size:22px;color:var(--accent);font-weight:600">3 … 2 … 1</span></div>
+    <p class="sub">撮影後：「確認しました」を1秒表示し、動画を自動で再開します</p>
+  </div>
+  <ul>
+    <li>失敗時は<strong>「もう一度お願いします」</strong>のみ。<strong>残り回数は表示しません</strong>（表示すると、限界まで回避しようとする行動を誘発します）</li>
+    <li>3回連続で失敗した場合のみ、<strong>「一度受講を中断します。明るい場所で再開してください」</strong>と伝えて視聴を一時停止します</li>
+    <li>保留（REVIEW）判定のときは、<strong>受講者には何も表示しません。</strong>そのまま受講を続けさせます（§05 参照）</li>
+  </ul>
+
+  <h3>離脱を減らすための実装上の要点</h3>
+  <div class="kv">
+    <dt>進捗の表示</dt><dd>「4ステップ中 2」のように、いま何番目かを常に出す。終わりが見えないと人は止まる</dd>
+    <dt>途中保存</dt><dd>撮影が済んだ分は保持する。1枚失敗しただけで最初からやり直させない</dd>
+    <dt>戻れること</dt><dd>各画面から前の画面に戻れるようにする。撮り直しの導線を必ず用意する</dd>
+    <dt>所要時間の明示</dt><dd>S1で「約3分」と伝える。実測して、実際の中央値に合わせて書き換える</dd>
+    <dt>ボタンの文言</dt><dd>「送信」「OK」ではなく、<strong>何が起きるかを書く</strong>（「本人確認をはじめる」「この写真を使用する」）</dd>
+    <dt>PCからの導線</dt><dd>S2でPCと判定したら、QRコードでのスマートフォン引き継ぎを<strong>最初から推奨として提示する</strong>（§03 L1 参照）</dd>
+  </div>
+
+  <h3>公開後に計測する指標</h3>
+  <p>本節の文言は仮説です。<strong>実データを見て書き換える前提で設計してください。</strong></p>
+  <ul>
+    <li><strong>画面ごとの通過率</strong> — S1→S2、S2→S3 … のどこで落ちているか。最も落ちる画面が改善の対象</li>
+    <li><strong>撮り直し回数の分布</strong> — S5〜S8 のどの撮影が難しいか。中央値が2回を超える画面はガイドが不十分</li>
+    <li><strong>差し戻し率と理由の内訳</strong> — 「文字が読めない」が多ければ撮影ガイドの、「顔が写っていない」が多ければ枠の設計の問題</li>
+    <li><strong>S1からS10までの所要時間の中央値</strong> — 表示している「約3分」と乖離していないか</li>
+  </ul>
+</section>
+
+<!-- ================= 5 ================= -->
+<section id="s5">
+  <h2><span class="num">05</span>顔照合の判定設計</h2>
   <p class="lede">実運用で最も揉めるのは、なりすましではなく<strong>誤判定</strong>です。本人なのに弾かれた受講者からのクレームが、運用コストの大半を占めます。ここの設計が事業の成否を分けます。</p>
 
   <h3>3段階判定を採用する</h3>
@@ -689,7 +968,7 @@ a{color:var(--accent)}
 
       <text x="20" y="278" font-family="Zen Kaku Gothic New, sans-serif" font-size="10.5" fill="var(--ink-3)">顔が検出できなかった場合は NO_FACE として別扱いとし、照合回数に算入せず、画角と照明の案内を出して再撮影する。</text>
     </svg>
-    <figcaption>fig.2 — 3段階判定。REVIEW と FAIL のどちらでも、その場では受講を打ち切らない。</figcaption>
+    <figcaption>fig.3 — 3段階判定。REVIEW と FAIL のどちらでも、その場では受講を打ち切らない。</figcaption>
   </figure>
 
   <div class="note key">
@@ -723,9 +1002,9 @@ a{color:var(--accent)}
   </div>
 </section>
 
-<!-- ================= 5 ================= -->
-<section id="s5">
-  <h2><span class="num">05</span>有効視聴時間の算出</h2>
+<!-- ================= 6 ================= -->
+<section id="s6">
+  <h2><span class="num">06</span>有効視聴時間の算出</h2>
   <p class="lede">法定教育時間を満たしたことを示す数値です。<strong>クライアントの自己申告を一切信用せず、サーバ側でハートビートから再構成します。</strong></p>
 
   <figure>
@@ -751,7 +1030,7 @@ a{color:var(--accent)}
       <text x="34" y="158" font-family="Zen Kaku Gothic New, sans-serif" font-size="11.5" fill="var(--ink-2)">④ Δserver_time ≤ 20秒（欠落したハートビートの区間は加算しない）</text>
       <text x="20" y="186" font-family="Zen Kaku Gothic New, sans-serif" font-size="11" fill="var(--ink-3)">判定はすべてサーバ受信時刻で行う。クライアント時刻は改ざん可能なため、記録はするが判定には用いない。</text>
     </svg>
-    <figcaption>fig.3 — 有効視聴時間は、条件を満たす区間だけを積み上げて算出する。</figcaption>
+    <figcaption>fig.4 — 有効視聴時間は、条件を満たす区間だけを積み上げて算出する。</figcaption>
   </figure>
 
   <pre><code><span class="cm"># 有効視聴時間の算出（サーバ側・バッチまたは章終了時）</span>
@@ -777,9 +1056,9 @@ a{color:var(--accent)}
   <p>この方式なら、倍速視聴・シーク・タブ裏での放置がすべて加算対象から外れます。同時に、<strong>「この受講者は何秒間、画面を見ながら再生していたか」を秒単位で証明できる</strong>状態になります。</p>
 </section>
 
-<!-- ================= 6 ================= -->
-<section id="s6">
-  <h2><span class="num">06</span>データモデル</h2>
+<!-- ================= 7 ================= -->
+<section id="s7">
+  <h2><span class="num">07</span>データモデル</h2>
   <p class="lede">主要テーブルの定義です。PostgreSQL を想定しています。</p>
 
   <pre><code><span class="cm">-- 受講者</span>
@@ -873,9 +1152,9 @@ audit_logs(
   </div>
 </section>
 
-<!-- ================= 7 ================= -->
-<section id="s7">
-  <h2><span class="num">07</span>API設計</h2>
+<!-- ================= 8 ================= -->
+<section id="s8">
+  <h2><span class="num">08</span>API設計</h2>
   <p class="lede">主要エンドポイントです。認証は受講者向けにセッションクッキー、運営向けに別途ロールを分離します。</p>
 
   <div class="scroll">
@@ -911,9 +1190,9 @@ audit_logs(
   <p><code>capture_token</code> には短い有効期限（60秒）を設けます。有効期限内に画像が届かない場合は <code>no_face</code> ではなく <code>timeout</code> として記録し、次のハートビートで再指示します。</p>
 </section>
 
-<!-- ================= 8 ================= -->
-<section id="s8">
-  <h2><span class="num">08</span>技術選定</h2>
+<!-- ================= 9 ================= -->
+<section id="s9">
+  <h2><span class="num">09</span>技術選定</h2>
   <p class="lede">結論から記します。<strong>eKYC専門ベンダーの採用は必須ではありません。</strong>立ち上げ期はむしろ採用すべきでないと考えます。理由と、段階的な育て方を示します。</p>
 
   <div class="note key">
@@ -982,7 +1261,7 @@ audit_logs(
 
   <div class="note good">
     <p class="hd">案Cは手抜きではありません</p>
-    <p>顔照合とライブネスという<strong>核心部分は自動化したうえで、判断の柔軟性が要る部分だけ人が見る</strong>という設計です。誤判定への対応（§04）でも、結局は人の目が必要になります。最初からその経路を主戦力として設計しておくほうが、運用は安定します。</p>
+    <p>顔照合とライブネスという<strong>核心部分は自動化したうえで、判断の柔軟性が要る部分だけ人が見る</strong>という設計です。誤判定への対応（§05）でも、結局は人の目が必要になります。最初からその経路を主戦力として設計しておくほうが、運用は安定します。</p>
   </div>
 
   <h3>eKYC専門ベンダーが必要になる条件</h3>
@@ -1015,9 +1294,9 @@ audit_logs(
   </div>
 </section>
 
-<!-- ================= 9 ================= -->
-<section id="s9">
-  <h2><span class="num">09</span>個人情報の取扱い</h2>
+<!-- ================= 10 ================= -->
+<section id="s10">
+  <h2><span class="num">10</span>個人情報の取扱い</h2>
   <p class="lede">顔認証データは個人情報保護法上の<strong>個人識別符号</strong>に該当し、それ単体で個人情報です。外部の受講者から預かる以上、社内利用より一段厳しい設計が必要です。</p>
 
   <h3>保存するもの・保存しないもの</h3>
@@ -1059,9 +1338,9 @@ audit_logs(
   <p>5番目は見落とされがちですが、<strong>本サービスの価値の中心にある機能</strong>です。同意なしに元請へ回答すると第三者提供の問題になります。設計段階で必ず組み込んでください。</p>
 </section>
 
-<!-- ================= 10 ================= -->
-<section id="s10">
-  <h2><span class="num">10</span>受講証明書と真正性検証</h2>
+<!-- ================= 11 ================= -->
+<section id="s11">
+  <h2><span class="num">11</span>受講証明書と真正性検証</h2>
   <p class="lede">ここまでの4層は、すべてこの1枚を出すための仕組みです。<strong>証明書の説得力が、そのまま商品の価値になります。</strong></p>
 
   <h3>受講証明書PDFの記載項目</h3>
@@ -1107,9 +1386,9 @@ audit_logs(
   </div>
 </section>
 
-<!-- ================= 11 ================= -->
-<section id="s11">
-  <h2><span class="num">11</span>例外ケースの運用設計</h2>
+<!-- ================= 12 ================= -->
+<section id="s12">
+  <h2><span class="num">12</span>例外ケースの運用設計</h2>
   <p class="lede">机上の設計はここで壊れます。<strong>想定される例外に、あらかじめ answer を用意しておくかどうかで、運用コストが桁違いに変わります。</strong></p>
 
   <div class="scroll">
@@ -1174,9 +1453,9 @@ audit_logs(
   </div>
 </section>
 
-<!-- ================= 12 ================= -->
-<section id="s12">
-  <h2><span class="num">12</span>実装フェーズと工数</h2>
+<!-- ================= 13 ================= -->
+<section id="s13">
+  <h2><span class="num">13</span>実装フェーズと工数</h2>
   <p class="lede">本人確認まわりに限った工数です。動画配信、決済、企業管理ポータルは含みません。</p>
 
   <div class="scroll">
@@ -1203,9 +1482,9 @@ audit_logs(
   </div>
 </section>
 
-<!-- ================= 13 ================= -->
-<section id="s13">
-  <h2><span class="num">13</span>未確定事項</h2>
+<!-- ================= 14 ================= -->
+<section id="s14">
+  <h2><span class="num">14</span>未確定事項</h2>
   <p class="lede">本設計を確定させるために、聖建様および所轄機関に確認が必要な事項です。</p>
 
   <div class="scroll">
