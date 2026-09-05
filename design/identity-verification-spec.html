@@ -384,8 +384,8 @@ a{color:var(--accent)}
   <h4>処理シーケンス</h4>
   <ol>
     <li>受講者が氏名（漢字・カナ）・生年月日・連絡先を入力</li>
-    <li>本人確認書類を撮影（表面・裏面・厚みの3カット）</li>
-    <li>セルフィーを撮影し、<strong>ライブネス判定</strong>（写真やディスプレイの再撮影でないことの検証）</li>
+    <li>本人確認書類を<strong>その場で撮影</strong>（表面・裏面・厚みの3カット）</li>
+    <li>セルフィーを<strong>その場で撮影</strong>し、<strong>ライブネス判定</strong>（写真やディスプレイの再撮影でないことの検証）</li>
     <li>書類のOCRで氏名・生年月日・有効期限を抽出し、入力値と突合</li>
     <li>書類の顔写真とセルフィーを1:1照合</li>
     <li>スコアが閾値以上かつ突合一致 → 自動承認。それ以外 → 運営レビュー</li>
@@ -415,6 +415,59 @@ a{color:var(--accent)}
       <li>通知カード・個人番号記載の住民票は受理しない</li>
     </ul>
   </div>
+
+  <h4>画像の取得方法 — アップロードではなく、その場撮影</h4>
+  <p>本層で最も重要な実装上の判断です。<strong>ここを誤ると、本人確認が根本から成立しません。</strong></p>
+
+  <div class="scroll">
+    <table class="tw">
+      <thead><tr><th>対象</th><th>方式</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>セルフィー</strong></td>
+          <td><span class="chip c-bad">その場撮影のみ</span><br><span style="color:var(--ink-3);font-size:12px">ファイル選択は一切不可</span></td>
+          <td>アップロードを許せば、他人の顔写真を用意して提出できます。本人確認が完全に無意味になります。ライブネス判定も、その場撮影でなければ成立しません</td>
+        </tr>
+        <tr>
+          <td><strong>本人確認書類</strong></td>
+          <td><span class="chip c-warn">その場撮影を基本</span></td>
+          <td>加工画像や平面コピーを排除するため。ただし本人性そのものは「書類の顔写真 ↔ セルフィー」の照合で担保します</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note crit">
+    <p class="hd"><span class="mk">実装</span><code>capture</code> 属性は使わない</p>
+    <p>モバイルでカメラを起動する書き方として <code>&lt;input type="file" accept="image/*" capture="user"&gt;</code> が知られていますが、<strong>本件では使ってはいけません。</strong></p>
+    <p style="margin-top:10px"><code>capture</code> 属性の扱いはブラウザ実装に依存し、<strong>無視されてフォトライブラリから選択できてしまう</strong>ケースがあります。抜け穴のある端末が1機種でもあれば、そこから替え玉が通ります。</p>
+    <p style="margin-top:10px">必ず <code>getUserMedia</code> でストリームを取得し、<code>canvas</code> に描画して画像化してください。<strong>ファイル選択の余地が構造的に存在しない実装にします。</strong></p>
+  </div>
+
+  <h4>なぜ「厚み」の1カットを撮るのか</h4>
+  <p>身分証を斜めから撮影させます。<strong>印刷物やディスプレイに表示した画像は、斜めにしても厚みが写りません。</strong>平面コピーを排除するための、単純で効果の高い措置です。eKYCサービスが厚み撮影を求めるのはこの理由によります。</p>
+  <p>あわせて、撮影された画像のハッシュを保存し、<strong>同一画像が別アカウントで再利用されていないかを検出</strong>します。<code>doc_number_hash</code> による重複登録の検出と組み合わせることで、身分証の使い回しを二重に検知できます。</p>
+
+  <h4>PCで受講する方への導線 — スマートフォンへの引き継ぎ</h4>
+  <div class="note key">
+    <p class="hd"><span class="mk">必須</span>PCのWebカメラで身分証を撮るのは現実的ではありません</p>
+    <p>ピントが合わず、手が塞がり、画質も足りません。<strong>本人確認の工程だけをスマートフォンに引き継ぐ導線</strong>を用意します。</p>
+    <ol style="margin-top:10px;margin-bottom:0">
+      <li>PC画面にQRコードと短時間有効のワンタイムURLを表示</li>
+      <li>受講者がスマートフォンで読み取り、そのままカメラで書類とセルフィーを撮影</li>
+      <li>撮影が完了したらPC側の画面が自動で次に進む（ポーリングまたはWebSocket）</li>
+    </ol>
+  </div>
+  <p>この導線がないと、PCで受講される方の多くがここで離脱します。実装は2〜3人日程度で、費用対効果はきわめて高い部分です。</p>
+
+  <h4>例外経路 — カメラがどうしても使えない場合</h4>
+  <p>カメラのない端末しか持たない受講者のために、<strong>運営による手動審査の経路</strong>を残します。ただし通常経路と明確に区別します。</p>
+  <ul>
+    <li>画像はメール等の別経路で受け取り、運営が目視で確認して手動承認する</li>
+    <li>その受講登録には <strong>「手動審査」のフラグを立て、監査ログに記録</strong>する</li>
+    <li>ライブネス判定が行われていないため、<span class="chip c-l">L3</span> のランダム照合の閾値を通常より厳しく設定する</li>
+  </ul>
+  <p>この経路を無条件に開けると全員がそこへ流れます。<strong>あくまで例外として、件数を監視してください。</strong></p>
 
   <h4>記録するデータ</h4>
   <p>書類画像、セルフィー画像、OCR抽出値、ライブネススコア、照合スコア、判定結果、審査者、審査日時。書類番号は<strong>ハッシュ化して保存</strong>し、平文では持ちません（重複登録の検出には使えます）。</p>
@@ -891,7 +944,7 @@ audit_logs(
     <table class="tw">
       <thead><tr><th></th><th>A. eKYC専門ベンダー</th><th>B. 汎用クラウドAIの組合せ</th><th>C. 半自動（人手併用）</th></tr></thead>
       <tbody>
-        <tr><td><strong>構成</strong></td><td>TRUSTDOCK / LIQUID eKYC 等に一括委託</td><td>顔照合・ライブネス・OCRを個別に組み合わせる</td><td>顔照合とライブネスのみ自動。氏名の突合は運営が目視</td></tr>
+        <tr><td><strong>構成</strong></td><td>TRUSTDOCK / LIQUID eKYC 等に一括委託</td><td>顔照合・ライブネス・OCRを個別に組み合わせる</td><td>顔照合とライブネスのみ自動。撮影はその場撮影で統一し、氏名の突合だけ運営が目視</td></tr>
         <tr><td><strong>初期費用</strong></td><td>20〜50万円</td><td>0円（実装工数のみ）</td><td>0円</td></tr>
         <tr><td><strong>月額固定</strong></td><td>3〜10万円</td><td class="mono"><strong>0円</strong></td><td class="mono"><strong>0円</strong></td></tr>
         <tr><td><strong>従量</strong></td><td>100〜300円／件</td><td>約10円／件</td><td>約5円／件＋人件費</td></tr>
@@ -919,7 +972,7 @@ audit_logs(
   <h3>推奨：C から始め、B へ育てる</h3>
   <div class="kv">
     <dt>フェーズ 1<br>〜年300人</dt>
-    <dd><strong>案C。</strong>受講者が氏名・生年月日を手入力し、身分証画像とセルフィーをアップロード。顔照合とライブネスだけAPIで自動化し、氏名の突合は運営が目視で承認する。<br>
+    <dd><strong>案C。</strong>受講者が氏名・生年月日を手入力し、身分証とセルフィーを<strong>その場で撮影</strong>する（アップロードは不可。§03 L1 参照）。顔照合とライブネスだけAPIで自動化し、氏名の突合は運営が目視で承認する。<br>
     この段階は<strong>むしろ人が見たほうがよい</strong>。どんな身分証が来るか、どこで受講者が躓くかという実データが手に入る。その知見なしにOCRの自動化を設計しても外す</dd>
     <dt>フェーズ 2<br>年300〜2,000人</dt>
     <dd><strong>案B。</strong>目視が回らなくなった時点で、OCRと自動突合を追加する。ここで初めて自動化に投資する</dd>
@@ -1068,6 +1121,10 @@ audit_logs(
           <td>受講開始前に端末チェックを実施し、カメラがなければ受講を開始させない。スマートフォンでの受講を案内する。<strong>途中で気づかせるのが最悪</strong>なので、申込画面の前に置く</td>
         </tr>
         <tr>
+          <td><strong>PCで受講したいがWebカメラで身分証が撮れない</strong></td>
+          <td>QRコードで本人確認の工程だけスマートフォンに引き継ぐ。撮影完了後、PC画面が自動で次へ進む。<strong>この導線がないとPC受講者の多くが離脱する</strong></td>
+        </tr>
+        <tr>
           <td><strong>カメラの許可を拒否された</strong></td>
           <td>受講を開始させない。「なぜ必要か」を1文で説明し、許可の付け方を端末別に案内する。<strong>ここでの離脱が最も多い</strong>ため、説明文とタイミングは実データを見て改善する</td>
         </tr>
@@ -1126,7 +1183,8 @@ audit_logs(
     <table class="tw">
       <thead><tr><th>フェーズ</th><th>実装範囲</th><th class="num">工数目安</th></tr></thead>
       <tbody>
-        <tr><td class="mono">P1</td><td>eKYC組み込み（<span class="chip c-l">L1</span>）— ベンダー選定、書類アップロードUI、OCR突合、審査画面</td><td class="num">15〜22 人日</td></tr>
+        <tr><td class="mono">P1</td><td>本人確認の組み込み（<span class="chip c-l">L1</span>）— 撮影UI（getUserMedia）、ライブネス、OCR突合、審査画面</td><td class="num">15〜22 人日</td></tr>
+        <tr><td class="mono">P1</td><td>PC↔スマートフォンの引き継ぎ（QRコード・ワンタイムURL）</td><td class="num">2〜4 人日</td></tr>
         <tr><td class="mono">P1</td><td>顔照合基盤（<span class="chip c-l">L2</span><span class="chip c-l">L3</span>）— 撮影UI、照合API連携、3段階判定、スケジューラ</td><td class="num">18〜26 人日</td></tr>
         <tr><td class="mono">P1</td><td>視聴ログ（<span class="chip c-l">L4</span>）— ハートビート、シーク制御、有効視聴時間の算出</td><td class="num">12〜18 人日</td></tr>
         <tr><td class="mono">P1</td><td>テスト（<span class="chip c-l">L5</span>）— 出題、採点、進行制御</td><td class="num">8〜12 人日</td></tr>
@@ -1137,7 +1195,7 @@ audit_logs(
       </tbody>
     </table>
   </div>
-  <p>合計 <strong>82〜121人日</strong>。要件定義、テスト、インフラ構築は別途です。上表は本人確認・受講確認に絞った実装工数であり、<strong>概算見積シートの「フェーズ1」に対応</strong>します。</p>
+  <p>合計 <strong>84〜125人日</strong>。要件定義、テスト、インフラ構築は別途です。上表は本人確認・受講確認に絞った実装工数であり、<strong>概算見積シートの「フェーズ1」に対応</strong>します。</p>
 
   <div class="note">
     <p class="hd">先にやるべきこと</p>
