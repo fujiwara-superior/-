@@ -146,13 +146,17 @@ C(ws,r,1,"保守・運用サービス（弊社）",b=True)
 for i in range(3): C(ws,r,2+i,"='02_単価と前提'!$B$15",fmt=YEN,al="right")
 C(ws,r,5,"定額。監視・障害対応・軽微改修・問い合わせ一次対応",sz=9,col=MUT,wrap=True)
 r+=1
-C(ws,r,1,"インフラ・SaaS 固定費",b=True)
-for i in range(3): C(ws,r,2+i,f"={FIXTOT}-'02_単価と前提'!$B$15",fmt=YEN,al="right")
-C(ws,r,5,"サーバー、DB、キャッシュ、監視、バックアップ、ドメイン等",sz=9,col=MUT,wrap=True)
+C(ws,r,1,"AWS 固定費",b=True)
+for i in range(3): C(ws,r,2+i,"=SUM('02_単価と前提'!$B$16:$B$20)+'02_単価と前提'!$B$22",fmt=YEN,al="right",col=ACC)
+C(ws,r,5,"EC2・RDS・ElastiCache・ALB・S3・Route53。AWSに直接お支払いいただく分",sz=9,col=MUT,wrap=True)
+awsfix=r; r+=1
+C(ws,r,1,"その他SaaS 固定費",b=True)
+for i in range(3): C(ws,r,2+i,"='02_単価と前提'!$B$21+'02_単価と前提'!$B$23",fmt=YEN,al="right")
+C(ws,r,5,"監視サービス（無料枠から開始可）、アバター・音声合成（教材制作中のみ）",sz=9,col=MUT,wrap=True)
 r+=1
 fixrow=r
 C(ws,r,1,"固定費 小計",b=True,fill=LTF)
-for i,col in enumerate("BCD"): C(ws,r,2+i,f"=SUM({col}{r-2}:{col}{r-1})",fmt=YEN,al="right",b=True,fill=LTF)
+for i,col in enumerate("BCD"): C(ws,r,2+i,f"=SUM({col}{r-3}:{col}{r-1})",fmt=YEN,al="right",b=True,fill=LTF)
 C(ws,r,5,"",fill=LTF)
 r+=2
 
@@ -189,6 +193,10 @@ r+=1
 C(ws,r,1,"うち 受講者1名あたり",b=True)
 for i,col in enumerate("BCD"): C(ws,r,2+i,f"=ROUND({col}{tot}/{col}5,0)",fmt=YEN,al="right",b=True,col=ACC)
 C(ws,r,5,"受講者が増えるほど1名あたりの負担は下がります",sz=9,col=MUT,wrap=True)
+r+=1
+C(ws,r,1,"うち AWSへのお支払い（固定＋変動）",b=True,fill=LTF,col=ACC)
+for i,col in enumerate("BCD"): C(ws,r,2+i,f"={col}{awsfix}+{col}{varrow}",fmt=YEN,al="right",b=True,fill=LTF,col=ACC)
+C(ws,r,5,"変動費はすべてAWS（CDN・S3・Rekognition・SES）です",sz=9,col=MUT,wrap=True,fill=LTF)
 r+=2
 
 C(ws,r,1,"C. 売上連動費（参考・上記合計には含みません）",b=True,fill=SUBF,col=BAD)
