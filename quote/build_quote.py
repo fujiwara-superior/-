@@ -264,12 +264,14 @@ C(ws,5,2,"発行日",sz=9,col=MUT,bd=False);   C(ws,5,3,"2026年9月8日",sz=9,f
 C(ws,6,2,"有効期限",sz=9,col=MUT,bd=False); C(ws,6,3,"発行日より60日間",sz=9,fill=YEL,col="0000FF",bd=False)
 C(ws,8,2,"株式会社聖建　御中",b=True,sz=15,bd=False); ws.merge_cells("B8:D8")
 C(ws,9,2,"〒475-0805　愛知県半田市浜田町1丁目7番地",sz=9,col=MUT,bd=False,fill=YEL); ws.merge_cells("B9:D9")
-C(ws,10,2,"営業部　津隈 佑己 様",sz=9.5,col=MUT,bd=False); ws.merge_cells("B10:D10")
+C(ws,10,2,"",sz=9.5,bd=False); ws.merge_cells("B10:D10")
 C(ws,8,5,"株式会社スペリオル",b=True,sz=12,bd=False); ws.merge_cells("E8:F8")
-for i,(lbl,val) in enumerate([("所在地","〒　　　　　（ご記入ください）"),("TEL / FAX","（ご記入ください）"),
-                              ("登録番号（適格請求書）","T　　　　　　　　　　　"),("担当","藤原")]):
-    C(ws,9+i,5,lbl,sz=8.5,col=MUT,bd=False)
-    C(ws,9+i,6,val,sz=8.5,bd=False,fill=YEL if i<3 else None,col="0000FF" if i<3 else INK)
+for i,val in enumerate(["〒464-0075　名古屋市千種区内山3-18-10",
+                        "TEL 052-745-6607",
+                        "登録番号 T9180001048541",
+                        "担当　藤原"]):
+    C(ws,9+i,5,val,sz=8.5,col=MUT if i<3 else INK,bd=False)
+    ws.merge_cells(start_row=9+i,start_column=5,end_row=9+i,end_column=6)
 C(ws,14,2,"下記のとおりお見積り申し上げます。",sz=10,bd=False); ws.merge_cells("B14:F14")
 C(ws,16,2,"件名",b=True,fill=SUBF,al="center")
 C(ws,16,3,"建設業 特別教育 eラーニング配信システム 構築 および 教材制作（10科目）一式",wrap=True)
@@ -333,12 +335,14 @@ ws.merge_cells("B2:F2"); ws["B2"].alignment=Alignment(horizontal="center"); ws.r
 C(ws,4,2,"注文番号",sz=9,col=MUT,bd=False); C(ws,4,3,"（ご記入ください）",sz=9,fill=YEL,col="0000FF",bd=False)
 C(ws,5,2,"発行日",sz=9,col=MUT,bd=False);   C(ws,5,3,"　　年　　月　　日",sz=9,fill=YEL,col="0000FF",bd=False)
 C(ws,7,2,"株式会社スペリオル　御中",b=True,sz=15,bd=False); ws.merge_cells("B7:D7")
-C(ws,8,2,"担当　藤原 様",sz=9.5,col=MUT,bd=False)
+C(ws,8,2,"〒464-0075　名古屋市千種区内山3-18-10",sz=9,col=MUT,bd=False); ws.merge_cells("B8:D8")
+C(ws,9,2,"TEL 052-745-6607　／　登録番号 T9180001048541",sz=9,col=MUT,bd=False); ws.merge_cells("B9:D9")
+C(ws,10,2,"担当　藤原 様",sz=9.5,col=MUT,bd=False)
 C(ws,7,5,"発注者",sz=8.5,col=MUT,bd=False)
-C(ws,8,5,"株式会社聖建",b=True,sz=12,bd=False); ws.merge_cells("E8:F8")
+C(ws,8,5,"株式会社聖建",b=True,sz=13,bd=False); ws.merge_cells("E8:F8")
 C(ws,9,5,"〒475-0805　愛知県半田市浜田町1丁目7番地",sz=8.5,col=MUT,bd=False); ws.merge_cells("E9:F9")
-C(ws,10,5,"TEL 0569-84-9669",sz=8.5,col=MUT,bd=False)
-C(ws,11,5,"ご担当　　　　　　　　　　　　　印",sz=9,bd=False); ws.merge_cells("E11:F11")
+C(ws,10,5,"TEL 0569-84-9669",sz=8.5,col=MUT,bd=False); ws.merge_cells("E10:F10")
+C(ws,11,5,"ご担当　　　　　　　　　　　　　　印",sz=9,bd=False); ws.merge_cells("E11:F11")
 C(ws,13,2,"下記のとおり注文いたします。",sz=10,bd=False); ws.merge_cells("B13:F13")
 C(ws,15,2,"件名",b=True,fill=SUBF,al="center")
 C(ws,15,3,"建設業 特別教育 eラーニング配信システム 構築 および 教材制作（10科目）一式",wrap=True)
