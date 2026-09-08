@@ -198,16 +198,16 @@ ws.row_dimensions[r].height=32; m0=r; r+=1
 C(ws,r,1,"",fill=LTF)
 C(ws,r,2,"法令改正監視・通知サービス",b=True)
 C(ws,r,3,20000,fmt=YEN,al="right",b=True,fill=YEL,col="0000FF")
-C(ws,r,4,"官報・厚生労働省の通達・パブリックコメントを継続監視し、対象10科目に影響しうる改正を検知したら、聖建様と弊社の双方へ自動でメール通知。月次で「該当なし」も含めて報告",wrap=True,sz=9.5)
+C(ws,r,4,"月2回（月初・月中）、官報・厚生労働省の通達・パブリックコメントを確認。対象10科目に影響しうる改正を検知したら、聖建様と弊社の双方へ自動でメール通知。月次で「該当なし」も含めて報告",wrap=True,sz=9.5)
 ws.row_dimensions[r].height=42; m1=r; r+=1
 C(ws,r,1,"",fill=SUBF); C(ws,r,2,"月額 小計（税抜）",b=True,fill=SUBF)
 C(ws,r,3,f"=SUM(C{m0}:C{m1})",fmt=YEN,al="right",b=True,fill=SUBF,sz=11)
 C(ws,r,4,"",fill=SUBF); MON=f"'04_月額・別途費用'!C{r}"; r+=2
 
 C(ws,r,1,"お客様\nご負担",al="center",b=True,wrap=True,fill=LTF)
-C(ws,r,2,"AWS 利用料（本番構成）",b=True)
-C(ws,r,3,36000,fmt=YEN,al="right",b=True,fill=YEL,col="0000FF")
-C(ws,r,4,"EC2冗長構成、RDS PostgreSQL（Multi-AZ）、ElastiCache、ALB、S3、CloudFront、CloudWatch、AWS Backup。聖建様名義でのご契約を推奨します。受講者数により変動します",wrap=True,sz=9.5)
+C(ws,r,2,"AWS 利用料（構成B・推奨）",b=True)
+C(ws,r,3,22800,fmt=YEN,al="right",b=True,fill=YEL,col="0000FF")
+C(ws,r,4,"EC2、RDS PostgreSQL（Multi-AZ・自動バックアップ・PITR）、ElastiCache、ALB、S3、CloudFront、CloudWatch。NAT GatewayはVPCエンドポイントの活用により不要としています。フル冗長構成（36,000円）への変更も可能です",wrap=True,sz=9.5)
 ws.row_dimensions[r].height=42; aws_r=r; r+=1
 C(ws,r,1,"",fill=LTF); C(ws,r,2,"従量課金（顔照合・配信ほか）",b=True)
 C(ws,r,3,"実費",al="right",b=True,col=MUT)
@@ -318,7 +318,7 @@ ws.row_dimensions[r].height=22; r+=2
 C(ws,r,2,"■ 別途ご負担いただく費用",b=True,col=NAVY,bd=False,sz=10); r+=1
 C(ws,r,2,f"・月額 保守・運用サービス および 法令改正監視・通知サービス　合計 100,000円／月（税抜）",sz=9.5,bd=False)
 ws.merge_cells(start_row=r,start_column=2,end_row=r,end_column=6); r+=1
-C(ws,r,2,"・AWS 利用料　月額 36,000円程度（税抜・本番構成・受講者数により変動）。聖建様名義でのご契約を推奨します",sz=9.5,bd=False)
+C(ws,r,2,"・AWS 利用料　月額 22,800円程度（税抜・推奨構成・受講者数により変動）。聖建様名義でのご契約を推奨します",sz=9.5,bd=False)
 ws.merge_cells(start_row=r,start_column=2,end_row=r,end_column=6); r+=1
 C(ws,r,2,"・法令改正にともなう教材の改訂　1科目 300,000円（都度発注）",sz=9.5,bd=False)
 ws.merge_cells(start_row=r,start_column=2,end_row=r,end_column=6)
@@ -390,11 +390,11 @@ BLK=[("■ 1. 本見積に含まれるもの",NAVY,[
  ("","（1）特別教育 eラーニング 本人確認・受講確認システム 詳細設計書 rev.1（2026年9月5日）"),
  ("","（2）アーク溶接等特別教育 配信システム基本設計書 1.1（2026年9月5日）"),
  ("教材制作","特別教育 学科教材 10科目（学科58時間分）。3回に分けて納品します。"),
- ("AWS環境の構築","本番運用に耐える構成で構築します。RDS PostgreSQL は Multi-AZ とし、自動バックアップとPITRを有効にします。"),
+ ("AWS環境の構築","本番運用に耐える構成で構築します。RDS PostgreSQL は Multi-AZ とし、自動バックアップとPITRを有効にします。NAT Gateway は VPCエンドポイントの活用により不要とし、費用を抑えます。"),
 ]),
 ("■ 2. 本見積に含まれないもの",BAD,[
  ("月額サービス","保守・運用サービス 80,000円／月、法令改正監視・通知サービス 20,000円／月（いずれも税抜）。別途契約とします。"),
- ("AWS 利用料","聖建様のご負担とします。本番構成で月額36,000円程度（税抜）を見込みます。聖建様名義でのご契約を推奨します。"),
+ ("AWS 利用料","聖建様のご負担とします。推奨構成（構成B）で月額22,800円程度（税抜）を見込みます。EC2の冗長化とNAT Gatewayを加えたフル冗長構成では36,000円程度です。聖建様名義でのご契約を推奨します。"),
  ("教材の改訂","法令改正にともなう改訂は1科目300,000円（新規制作と同額）。都度ご発注ください。"),
  ("第2次発注の対象機能","企業管理ポータル、オンライン決済、運営管理画面の拡張（監査レポート出力等）、質疑応答機能、修了証の真正性検証ページ、教材の版管理の強化。"),
  ("教材の監修","内容の監修は聖建様の社内有資格者が担われる前提です。外部監修が必要な場合は別途となります。"),

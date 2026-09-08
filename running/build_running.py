@@ -63,7 +63,7 @@ C(ws,r,1,"A. 弊社へお支払いいただく月額（定額）",b=True,fill=SU
 for c in range(2,6): C(ws,r,c,"",fill=SUBF)
 r+=1; HDR(ws,r,["項目","月額","内容","","備考"],h=22); r+=1; a0=r
 OURS=[("保守・運用サービス",80000,"システムの死活監視とエラー監視、障害対応、軽微な改修、受講者からの問い合わせ一次対応、月次レポート","受講者数によらず定額"),
-("法令改正監視・通知サービス",20000,"官報・厚生労働省の通達・パブリックコメントを継続監視。対象10科目に影響しうる改正を検知したら、聖建様と弊社の双方へ自動でメール通知","監視の仕組みは弊社の共通基盤。初期開発費は不要")]
+("法令改正監視・通知サービス",20000,"月2回（月初・月中）、官報・厚生労働省の通達・パブリックコメントを確認。対象10科目に影響しうる改正を検知したら、聖建様と弊社の双方へ自動でメール通知","監視の仕組みは弊社の共通基盤。初期開発費は不要")]
 for lbl,val,desc,note in OURS:
     C(ws,r,1,lbl,wrap=True,b=True); C(ws,r,2,val,fmt=YEN,al="right",b=True,fill=YEL,col="0000FF")
     C(ws,r,3,desc,sz=9,col=MUT,wrap=True); ws.merge_cells(start_row=r,start_column=3,end_row=r,end_column=4)
@@ -74,26 +74,47 @@ C(ws,r,2,f"=SUM(B{a0}:B{a1})",fmt=YEN,al="right",b=True,fill=LTF)
 for c in (3,4,5): C(ws,r,c,"",fill=LTF)
 OURTOT=f"'02_単価と前提'!$B${r}"; r+=2
 
-C(ws,r,1,"B. AWS 利用料（お客様ご負担・本番構成）",b=True,fill=SUBF,col=ACC)
+C(ws,r,1,"B. AWS 固定費（お客様ご負担）── 3構成の比較",b=True,fill=SUBF,col=ACC)
 for c in range(2,6): C(ws,r,c,"",fill=SUBF)
-r+=1; HDR(ws,r,["サービス","月額","用途","","備考"],h=22); r+=1; b0=r
-AWSF=[("EC2（冗長構成 2台）",9000,"t3.medium×2。Laravel／Nginx／PHP-FPM／FFmpeg。ALB配下で冗長化","1台構成なら約4,500円"),
-("RDS PostgreSQL（Multi-AZ）",11000,"db.t3.small 相当。自動バックアップ、PITR、自動フェイルオーバー","記録を守る中核。削減対象外"),
-("ElastiCache Redis（レプリカ付き）",4000,"多重視聴の排他制御、キュー、レート制限","レプリカなしなら約2,000円"),
-("Application Load Balancer",3000,"HTTPSの終端と負荷分散",""),
-("NAT Gateway",6700,"プライベートサブネットからの外部通信","VPCエンドポイント活用で削減可"),
-("S3（オブジェクトストレージ）",500,"教材動画、本人確認画像、バックアップの保管","従量。受講者増で微増"),
-("Route 53 / ACM",200,"ドメインとSSL証明書","ACMは無料"),
-("CloudWatch",1600,"メトリクス監視、ログ保管、アラート通知","")]
-for lbl,val,desc,note in AWSF:
-    C(ws,r,1,lbl,wrap=True); C(ws,r,2,val,fmt=YEN,al="right",b=True,fill=YEL,col="0000FF")
-    C(ws,r,3,desc,sz=9,col=MUT,wrap=True); ws.merge_cells(start_row=r,start_column=3,end_row=r,end_column=4)
-    C(ws,r,5,note,sz=9,col=MUT,wrap=True); ws.row_dimensions[r].height=28; r+=1
+r+=1
+HDR(ws,r,["サービス","A. 最小","B. 推奨","C. フル冗長","用途・備考"],h=22)
+r+=1; b0=r
+AWSCMP=[("EC2（アプリケーション）",4500,4500,9000,"t3.medium。Cは2台構成で冗長化"),
+("RDS PostgreSQL",5500,11000,11000,"B・CはMulti-AZ。自動バックアップとPITRを有効化"),
+("ElastiCache Redis",2000,2000,4000,"Cはレプリカ付き"),
+("Application Load Balancer",3000,3000,3000,"HTTPSの終端と負荷分散"),
+("NAT Gateway",0,0,6700,"A・BはVPCエンドポイントを使い不要とする"),
+("S3（オブジェクトストレージ）",500,500,500,"教材動画、本人確認画像、バックアップ"),
+("Route 53 / ACM",200,200,200,"ドメインとSSL証明書"),
+("CloudWatch",1600,1600,1600,"メトリクス監視、ログ保管、アラート")]
+for lbl,a,b,c_,note in AWSCMP:
+    C(ws,r,1,lbl,wrap=True)
+    C(ws,r,2,a,fmt=YEN,al="right",col=MUT)
+    C(ws,r,3,b,fmt=YEN,al="right",b=True,col=ACC)
+    C(ws,r,4,c_,fmt=YEN,al="right",col=MUT)
+    C(ws,r,5,note,sz=9,col=MUT,wrap=True)
+    ws.row_dimensions[r].height=24; r+=1
 b1=r-1
-C(ws,r,1,"AWS 固定費 小計",b=True,fill=LTF)
-C(ws,r,2,f"=SUM(B{b0}:B{b1})",fmt=YEN,al="right",b=True,fill=LTF,col=ACC)
-for c in (3,4,5): C(ws,r,c,"",fill=LTF)
-AWSTOT=f"'02_単価と前提'!$B${r}"; r+=2
+C(ws,r,1,"合計",b=True,fill=LTF)
+for i,col in enumerate("BCD"):
+    C(ws,r,2+i,f"=SUM({col}{b0}:{col}{b1})",fmt=YEN,al="right",b=True,fill=LTF,
+      col=ACC if col=="C" else MUT)
+C(ws,r,5,"",fill=LTF); cmprow=r; r+=1
+C(ws,r,1,"障害時の挙動",b=True,sz=9)
+C(ws,r,2,"アプリもDBも停止。復旧は手作業",sz=8.5,col=BAD,wrap=True)
+C(ws,r,3,"DBは自動切替。アプリは再作成15〜30分",sz=8.5,col=OK,wrap=True)
+C(ws,r,4,"アプリもDBも自動で切替",sz=8.5,col=OK,wrap=True)
+C(ws,r,5,"",sz=9); ws.row_dimensions[r].height=30; r+=2
+
+C(ws,r,1,"採用する構成の月額（この値がサマリーに反映されます）",b=True,fill=SUBF,col=ACC)
+for c in range(2,6): C(ws,r,c,"",fill=SUBF)
+r+=1
+C(ws,r,1,"AWS 固定費（採用値）",b=True)
+aw=C(ws,r,2,f"=C{cmprow}",fmt=YEN,al="right",b=True,fill=YEL,col="0000FF",sz=11)
+aw.comment=Comment("既定は構成B（推奨）。構成Aにするなら =B" + str(cmprow) + "、構成Cにするなら =D" + str(cmprow) + " に書き換えてください。任意の金額を直接入力しても構いません。","構成の選択")
+C(ws,r,3,"既定は構成B。変更する場合はこのセルを書き換えてください",sz=9,col=MUT,wrap=True)
+ws.merge_cells(start_row=r,start_column=3,end_row=r,end_column=5)
+AWSTOT=f"'02_単価と前提'!$B${r}"; ws.row_dimensions[r].height=24; r+=2
 
 C(ws,r,1,"C. AWS 従量課金の単価（お客様ご負担）",b=True,fill=SUBF,col=ACC)
 for c in range(2,6): C(ws,r,c,"",fill=SUBF)
@@ -147,19 +168,19 @@ C(ws,r,5,"死活監視・エラー監視、障害対応、軽微改修、問い�
 ws.row_dimensions[r].height=24; r+=1
 C(ws,r,1,"法令改正監視・通知サービス",b=True)
 for i in range(3): C(ws,r,2+i,"='02_単価と前提'!$B$16",fmt=YEN,al="right")
-C(ws,r,5,"改正を検知したら聖建様と弊社の双方へ自動メール通知",sz=9,col=MUT,wrap=True)
+C(ws,r,5,"月2回の確認。検知したら聖建様と弊社の双方へ自動メール通知",sz=9,col=MUT,wrap=True)
 ws.row_dimensions[r].height=24; r+=1
 ourrow=r
 C(ws,r,1,"弊社サービス 小計",b=True,fill=LTF)
 for i,col in enumerate("BCD"): C(ws,r,2+i,f"=SUM({col}{r-2}:{col}{r-1})",fmt=YEN,al="right",b=True,fill=LTF)
 C(ws,r,5,"",fill=LTF); r+=2
 
-C(ws,r,1,"B. AWS 利用料（お客様ご負担）",b=True,fill=SUBF,col=ACC)
+C(ws,r,1,"B. AWS 利用料（お客様ご負担・構成B）",b=True,fill=SUBF,col=ACC)
 for c in range(2,6): C(ws,r,c,"",fill=SUBF)
 r+=1
-C(ws,r,1,"AWS 固定費（本番構成）",b=True)
+C(ws,r,1,"AWS 固定費（構成B・推奨）",b=True)
 for i in range(3): C(ws,r,2+i,f"={AWSTOT}",fmt=YEN,al="right",col=ACC)
-C(ws,r,5,"EC2冗長・RDS Multi-AZ・ElastiCache・ALB・NAT・S3・Route53・CloudWatch",sz=9,col=MUT,wrap=True)
+C(ws,r,5,"既定は構成B（推奨）。EC2 1台・RDS Multi-AZ・ElastiCache・ALB・S3・Route53・CloudWatch",sz=9,col=MUT,wrap=True)
 ws.row_dimensions[r].height=26; r+=1; v0=r
 VL=[("動画配信（CDN転送）",lambda n:f"=ROUND(MAX(0,{n}*'02_単価と前提'!$B$6-'02_単価と前提'!$B$11)*{VR['cdn']},0)","受講者数×3.5GB。月1TBの無料枠を控除"),
 ("追加ストレージ",lambda n:f"=ROUND({n}*0.02*{VR['stg']},0)","本人確認画像 1人あたり約20MB"),
@@ -271,8 +292,10 @@ ws["A2"].font=Font(name=F,size=9,color=MUT)
 for c,w in zip("ABC",[26,50,46]): ws.column_dimensions[c].width=w
 HDR(ws,4,["項目","内容","備考"],h=22)
 SV=[("監視の対象","官報、厚生労働省の通達・告示、パブリックコメント、安全衛生特別教育規程の改正","対象10科目に関係しうる範囲"),
-("検知の方法","対象法令の版を定期取得して差分を検知。あわせてキーワード（各科目名、特別教育、安全衛生特別教育規程 等）で新着を抽出","毎日自動で実行"),
+("監視の頻度","月2回（月初・月中）","法令改正は官報での公布から施行まで数か月〜1年の猶予があり、月2回で十分に間に合います"),
+("検知の方法","対象法令の版を定期取得して差分を検知。あわせてキーワード（各科目名、特別教育、安全衛生特別教育規程 等）で新着を抽出。AIで対象10科目との関連性を判定し、無関係な改正を除外","自動で実行"),
 ("通知","検知したら、聖建様のご担当者と弊社の双方へ同時に自動メールを送信","改正の名称、公布日、施行日、該当しうる科目、参照URLを記載"),
+("見逃しへの備え","公布から施行まで通常は数か月あるため、月2回の確認で改訂に必要な期間を確保できます","毎日監視しても検知が数日早まるだけで、実務上の差はありません"),
 ("月次報告","該当なしの月も含め、毎月末に監視結果をご報告","記録として残すことに意味があります"),
 ("通知先の設定","聖建様側の宛先は複数登録できます。担当者の変更にも対応します","管理画面から変更可能"),
 ("改正が見つかったら","影響範囲をご報告し、改訂が必要と判断された科目について都度お見積りします","1科目 300,000円（新規制作と同額）")]
@@ -305,7 +328,17 @@ for t,col in [("■ なぜこのサービスが必要か",NAVY),
 ("",None),
 ("■ 初期開発費が不要な理由",NAVY),
 ("監視の仕組みは弊社が共通サービスとして保有し、聖建様専用に開発するものではありません。",MUT),
-("そのため初期費用は発生せず、月額でご提供できます。",OK)]:
+("そのため初期費用は発生せず、月額でご提供できます。",OK),
+("",None),
+("■ 月額20,000円の中身（このサービスの運用にかかる費用）",NAVY),
+("・AI・インフラの実費　　　　　　　　　　　月100円程度",MUT),
+("　　月2回×数十件の関連性判定。1回あたり数千トークンのため、費用はごくわずかです。",MUT),
+("・通知内容を人が確認する工数　　　　　　　月1〜2時間",MUT),
+("　　自動判定は補助であり、聖建様へお伝えする前に必ず担当者が内容を確認します。",MUT),
+("・月次報告書の作成　　　　　　　　　　　　月30分程度",MUT),
+("",None),
+("つまり月額20,000円の実体は、AIやサーバーの費用ではなく人的サービスの対価です。",OK),
+("AIは判定の補助に使うだけなので、ご心配いただいたような利用料の増加は生じません。",OK)]:
     C(ws,r,1,t,bd=False,sz=10,b=(col in (NAVY,)),col=col or MUT); r+=1
 
 # =====================================================================
