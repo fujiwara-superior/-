@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""聖建様向け ランニングコスト明細 rev.2（AWS本番構成・お客様負担／法令改正監視あり）"""
+"""聖建様向け ランニングコスト明細 rev.3（6科目・月額80,000円・ゼウス決済）"""
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
@@ -47,7 +47,7 @@ C(ws,4,1,"共通の前提",b=True,fill=SUBF,col=NAVY)
 for c in range(2,6): C(ws,4,c,"",fill=SUBF)
 ASM=[("為替レート",150,'¥#,##0"／USD"',"AWS等のドル建て費用の換算に使用します"),
 ("1受講あたりの動画転送量",3.5,'0.0" GB"',"学科4.5時間・720p（約1.5Mbps）＋再視聴分"),
-("1受講あたりの顔照合回数",22,'0" 回"',"受講開始時＋受講中のランダム照合"),
+("1受講あたりの顔照合回数",8,'0" 回"',"各章の再生開始時のみ。受講中のランダム照合は範囲外"),
 ("1受講あたりのライブネス判定",1,'0" 回"',"アカウント登録時の1回のみ"),
 ("受講料（参考）",10000,YEN,"売上と決済手数料の試算に使用"),
 ("決済手数料率",0.036,'0.0%',"オンライン決済を導入された場合"),
@@ -62,8 +62,8 @@ r+=1
 C(ws,r,1,"A. 弊社へお支払いいただく月額（定額）",b=True,fill=SUBF,col=NAVY)
 for c in range(2,6): C(ws,r,c,"",fill=SUBF)
 r+=1; HDR(ws,r,["項目","月額","内容","","備考"],h=22); r+=1; a0=r
-OURS=[("保守・運用サービス",80000,"システムの死活監視とエラー監視、障害対応、軽微な改修、受講者からの問い合わせ一次対応、月次レポート","受講者数によらず定額"),
-("法令改正監視・通知サービス",20000,"月2回（月初・月中）、官報・厚生労働省の通達・パブリックコメントを確認。対象10科目に影響しうる改正を検知したら、聖建様と弊社の双方へ自動でメール通知","監視の仕組みは弊社の共通基盤。初期開発費は不要")]
+OURS=[("保守・運用サービス",60000,"システムの死活監視とエラー監視、障害対応、軽微な改修、受講者からの問い合わせ一次対応、月次レポート","受講中のランダム照合を実装しないため、照合結果の目視確認という運用作業がなくなります。その分を前回の80,000円から減額しています"),
+("法令改正監視・通知サービス",20000,"月2回（月初・月中）、官報・厚生労働省の通達・パブリックコメントを確認。対象6科目に影響しうる改正を検知したら、聖建様と弊社の双方へ自動でメール通知","監視の仕組みは弊社の共通基盤。初期開発費は不要")]
 for lbl,val,desc,note in OURS:
     C(ws,r,1,lbl,wrap=True,b=True); C(ws,r,2,val,fmt=YEN,al="right",b=True,fill=YEL,col="0000FF")
     C(ws,r,3,desc,sz=9,col=MUT,wrap=True); ws.merge_cells(start_row=r,start_column=3,end_row=r,end_column=4)
@@ -122,7 +122,7 @@ r+=1; HDR(ws,r,["項目","単価","単位","算出根拠","備考"],h=22); r+=1
 VR={}
 VAR=[("動画配信（CDN転送）","=0.114*$B$5",'¥#,##0.0',"円／GB","CloudFront 日本 $0.114／GB","月1TBまで無料枠あり","cdn"),
 ("追加ストレージ","=0.025*$B$5",'¥#,##0.0',"円／GB／月","S3標準 $0.025／GB／月","本人確認画像の蓄積分","stg"),
-("顔照合API","=0.001*$B$5",'¥#,##0.00',"円／回","Rekognition CompareFaces","1人あたり22回","fc"),
+("顔照合API","=0.001*$B$5",'¥#,##0.00',"円／回","Rekognition CompareFaces","1人あたり8回（章の開始時）","fc"),
 ("ライブネス判定","=0.0195*$B$5",'¥#,##0.00',"円／回","Rekognition Face Liveness","1人あたり1回","lv"),
 ("メール送信",0.02,'¥#,##0.00',"円／通","SES","1人あたり約5通","ml")]
 for lbl,val,fmt,unit,basis,note,key in VAR:
@@ -136,9 +136,18 @@ for c in range(2,6): C(ws,r,c,"",fill=SUBF)
 r+=1
 C(ws,r,1,"アバター・音声合成サービス",wrap=True)
 C(ws,r,2,5000,fmt=YEN,al="right",b=True,fill=YEL,col="0000FF")
-C(ws,r,3,"HeyGen等の動画生成サービスの月額利用料。10科目の制作が完了すれば解約できます",sz=9,col=MUT,wrap=True)
+C(ws,r,3,"HeyGen等の動画生成サービスの月額利用料。6科目の制作が完了すれば解約できます",sz=9,col=MUT,wrap=True)
 ws.merge_cells(start_row=r,start_column=3,end_row=r,end_column=5)
 ws.row_dimensions[r].height=28; AVA=f"'02_単価と前提'!$B${r}"; r+=2
+
+C(ws,r,1,"E. 決済代行（お客様ご負担）",b=True,fill=SUBF,col=ACC)
+for c in range(2,6): C(ws,r,c,"",fill=SUBF)
+r+=1
+C(ws,r,1,"株式会社ゼウス 月額",wrap=True)
+C(ws,r,2,3000,fmt=YEN,al="right",b=True,fill=YEL,col="0000FF")
+C(ws,r,3,"初期費用は無料、月額3,000円。クレジットカード決済手数料は最大3.5%（売上に応じて別途）。聖建様が直接ご契約いただきます",sz=9,col=MUT,wrap=True)
+ws.merge_cells(start_row=r,start_column=3,end_row=r,end_column=5)
+ws.row_dimensions[r].height=28; ZEUS=f"'02_単価と前提'!$B${r}"; r+=2
 for t in ["■ 注意","・AWSの単価は2026年9月時点の公開情報に基づく想定です。実際の請求は構成と使用量で変動します。",
 "・正式なご提示の前に、実構成でのAWS Pricing Calculatorによる試算をお勧めします。",
 "・Savings Plans（1年契約）を利用すると、EC2とRDSでおおむね30%程度の削減が見込めます。"]:
@@ -184,7 +193,7 @@ C(ws,r,5,"既定は構成B（推奨）。EC2 1台・RDS Multi-AZ・ElastiCache�
 ws.row_dimensions[r].height=26; r+=1; v0=r
 VL=[("動画配信（CDN転送）",lambda n:f"=ROUND(MAX(0,{n}*'02_単価と前提'!$B$6-'02_単価と前提'!$B$11)*{VR['cdn']},0)","受講者数×3.5GB。月1TBの無料枠を控除"),
 ("追加ストレージ",lambda n:f"=ROUND({n}*0.02*{VR['stg']},0)","本人確認画像 1人あたり約20MB"),
-("顔照合API",lambda n:f"=ROUND({n}*'02_単価と前提'!$B$7*{VR['fc']},0)","受講者数×22回×単価"),
+("顔照合API",lambda n:f"=ROUND({n}*'02_単価と前提'!$B$7*{VR['fc']},0)","受講者数×8回×単価"),
 ("ライブネス判定",lambda n:f"=ROUND({n}*'02_単価と前提'!$B$8*{VR['lv']},0)","受講者数×1回×単価"),
 ("メール送信",lambda n:f"=ROUND({n}*5*{VR['ml']},0)","受講者数×5通×単価")]
 for lbl,fn,note in VL:
@@ -197,21 +206,29 @@ C(ws,r,1,"AWS 小計（固定＋従量）",b=True,fill=LTF,col=ACC)
 for i,col in enumerate("BCD"): C(ws,r,2+i,f"={col}{v0-1}+SUM({col}{v0}:{col}{v1})",fmt=YEN,al="right",b=True,fill=LTF,col=ACC)
 C(ws,r,5,"",fill=LTF); r+=2
 
-C(ws,r,1,"C. 制作期間中のみ",b=True,fill=SUBF,col=NAVY)
+C(ws,r,1,"C. 決済代行（お客様ご負担）",b=True,fill=SUBF,col=ACC)
+for c in range(2,6): C(ws,r,c,"",fill=SUBF)
+r+=1
+C(ws,r,1,"株式会社ゼウス 月額",b=True)
+for i in range(3): C(ws,r,2+i,f"={ZEUS}",fmt=YEN,al="right",col=ACC)
+C(ws,r,5,"初期費用無料・月額3,000円。決済手数料 最大3.5%は売上に応じて別途",sz=9,col=MUT,wrap=True)
+zeusrow=r; ws.row_dimensions[r].height=24; r+=2
+
+C(ws,r,1,"D. 制作期間中のみ",b=True,fill=SUBF,col=NAVY)
 for c in range(2,6): C(ws,r,c,"",fill=SUBF)
 r+=1
 C(ws,r,1,"アバター・音声合成サービス")
 for i in range(3): C(ws,r,2+i,f"={AVA}",fmt=YEN,al="right",col=MUT)
-C(ws,r,5,"10科目の制作完了後は解約できます（約10か月間）",sz=9,col=MUT,wrap=True)
+C(ws,r,5,"6科目の制作完了後は解約できます（約7か月間）",sz=9,col=MUT,wrap=True)
 avarow=r; r+=2
 
 tot=r
 C(ws,r,1,"月額 合計（制作期間中）",b=True,fill=SUBF,sz=11,col=NAVY)
-for i,col in enumerate("BCD"): C(ws,r,2+i,f"={col}{ourrow}+{col}{awsrow}+{col}{avarow}",fmt=YEN,al="right",b=True,fill=SUBF,sz=11)
-C(ws,r,5,"最初の約10か月",sz=9,col=MUT,fill=SUBF); ws.row_dimensions[r].height=24; r+=1
+for i,col in enumerate("BCD"): C(ws,r,2+i,f"={col}{ourrow}+{col}{awsrow}+{col}{zeusrow}+{col}{avarow}",fmt=YEN,al="right",b=True,fill=SUBF,sz=11)
+C(ws,r,5,"最初の約7か月",sz=9,col=MUT,fill=SUBF); ws.row_dimensions[r].height=24; r+=1
 C(ws,r,1,"月額 合計（制作完了後）",b=True,fill=SUBF,sz=12,col=NAVY)
-for i,col in enumerate("BCD"): C(ws,r,2+i,f"={col}{ourrow}+{col}{awsrow}",fmt=YEN,al="right",b=True,fill=SUBF,sz=12)
-C(ws,r,5,"11か月目以降の定常状態",sz=9,col=MUT,fill=SUBF); ws.row_dimensions[r].height=26
+for i,col in enumerate("BCD"): C(ws,r,2+i,f"={col}{ourrow}+{col}{awsrow}+{col}{zeusrow}",fmt=YEN,al="right",b=True,fill=SUBF,sz=12)
+C(ws,r,5,"8か月目以降の定常状態",sz=9,col=MUT,fill=SUBF); ws.row_dimensions[r].height=26
 steady=r; r+=1
 C(ws,r,1,"うち 受講者1名あたり",b=True)
 for i,col in enumerate("BCD"): C(ws,r,2+i,f"=ROUND({col}{steady}/{col}5,0)",fmt=YEN,al="right",b=True,col=ACC)
@@ -230,7 +247,7 @@ C(ws,r,1,"差引（教材の償却前）",b=True)
 for i,col in enumerate("BCD"): C(ws,r,2+i,f"={col}{sal}-{col}{steady}-{col}{fee}",fmt=YEN,al="right",b=True,col=OK)
 C(ws,r,5,"ここが黒字になる受講者数が損益分岐です",sz=9,col=MUT,wrap=True); r+=2
 for t in ["■ 読み方",
-"・弊社サービス100,000円とAWS36,000円で、月136,000円が定常のランニングコストです。",
+"・弊社サービス80,000円（保守60,000＋法令監視20,000）とAWS22,800円、ゼウス3,000円で、月105,800円が定常のランニングコストです。",
 "・受講者が6倍（50名→300名）になっても、増えるのは2,500円程度です。CDNの無料枠が効いています。",
 "・したがってこの事業の損益は「固定費を何名で割るか」でほぼ決まります。",
 "・受講料10,000円なら、月15名前後で固定費を回収できる計算になります。"]:
@@ -291,9 +308,9 @@ ws["A2"]="月額 20,000円（税抜）。初期開発費は発生しません。
 ws["A2"].font=Font(name=F,size=9,color=MUT)
 for c,w in zip("ABC",[26,50,46]): ws.column_dimensions[c].width=w
 HDR(ws,4,["項目","内容","備考"],h=22)
-SV=[("監視の対象","官報、厚生労働省の通達・告示、パブリックコメント、安全衛生特別教育規程の改正","対象10科目に関係しうる範囲"),
+SV=[("監視の対象","官報、厚生労働省の通達・告示、パブリックコメント、安全衛生特別教育規程の改正","対象6科目に関係しうる範囲"),
 ("監視の頻度","月2回（月初・月中）","法令改正は官報での公布から施行まで数か月〜1年の猶予があり、月2回で十分に間に合います"),
-("検知の方法","対象法令の版を定期取得して差分を検知。あわせてキーワード（各科目名、特別教育、安全衛生特別教育規程 等）で新着を抽出。AIで対象10科目との関連性を判定し、無関係な改正を除外","自動で実行"),
+("検知の方法","対象法令の版を定期取得して差分を検知。あわせてキーワード（各科目名、特別教育、安全衛生特別教育規程 等）で新着を抽出。AIで対象6科目との関連性を判定し、無関係な改正を除外","自動で実行"),
 ("通知","検知したら、聖建様のご担当者と弊社の双方へ同時に自動メールを送信","改正の名称、公布日、施行日、該当しうる科目、参照URLを記載"),
 ("見逃しへの備え","公布から施行まで通常は数か月あるため、月2回の確認で改訂に必要な期間を確保できます","毎日監視しても検知が数日早まるだけで、実務上の差はありません"),
 ("月次報告","該当なしの月も含め、毎月末に監視結果をご報告","記録として残すことに意味があります"),
@@ -321,7 +338,7 @@ for t,col in [("■ なぜこのサービスが必要か",NAVY),
 ("改正に気づかないまま古い教材を売り続けると、その修了証の有効性が問われます。",BAD),
 ("受講者は「現場に入るため」に購入されているため、修了証が無効になれば直接の損害になります。",BAD),
 ("",None),
-("今回の10科目には、改正が比較的多い分野が含まれています。",MUT),
+("今回の6科目には、改正が比較的多い分野が含まれています。",MUT),
 ("　・石綿　　　　　　　　石綿障害予防規則の改正が続いている領域",MUT),
 ("　・特定粉じん　　　　　化学物質規制の見直しの影響を受けやすい",MUT),
 ("　・テールゲートリフター 2024年に新設されたばかりで運用面の通達が出る可能性",MUT),
@@ -362,8 +379,8 @@ for lbl,a,b in CC:
     ws.row_dimensions[r].height=44; r+=1
 r+=1
 for t,col in [("■ 契約の形",NAVY),("",None),
-("① 弊社への月額 100,000円（税抜）",INK),
-("　　保守・運用サービス 80,000円 ＋ 法令改正監視・通知サービス 20,000円。",MUT),
+("① 弊社への月額 80,000円（税抜）",INK),
+("　　保守・運用サービス 60,000円 ＋ 法令改正監視・通知サービス 20,000円。聖建様ご指定の金額です。",MUT),
 ("　　人的サービスの対価であり、受講者数に左右されません。",MUT),
 ("",None),
 ("② AWS 利用料 ＝ 聖建様名義で直接ご契約（推奨）",INK),
@@ -371,7 +388,7 @@ for t,col in [("■ 契約の形",NAVY),("",None),
 ("　　アカウント管理が難しい場合は、弊社が代行契約し、実費＋事務手数料10%でご請求する形も可能です。",MUT),
 ("",None),
 ("■ ご提示のしかた",NAVY),
-("「月額10万円は保守・運用と法令監視の費用です。サーバーの実費は受講者数で変わるため、",INK),
+("「月額8万円は保守・運用と法令監視の費用です。サーバーの実費は受講者数で変わるため、",INK),
 ("　聖建様のお名前で直接ご契約いただきたく存じます。いまの規模で月3万6千円程度、",INK),
 ("　受講者が月300名になっても月3万9千円ほどの見込みです。",INK),
 ("　定額に含めてしまうと、御社の受講者が増えたときに私どもが値上げをお願いすることになり、",INK),
