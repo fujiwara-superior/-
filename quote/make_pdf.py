@@ -34,6 +34,15 @@ def main():
         n.close()
         print("書き出し:", name)
 
+    imgs = d[P_QUOTE].get_images(full=True)
+    if imgs:
+        r = d[P_QUOTE].get_image_rects(imgs[0][0])[0]
+        pt = 2.54 / 72
+        print("角印の用紙上の位置: 左%.2fcm 上%.2fcm / %.2fcm角"
+              % (r.x0 * pt, r.y0 * pt, r.width * pt))
+    else:
+        print("※ 見積書に角印が入っていません")
+
     out([P_QUOTE], "聖建様_概算見積書.pdf")
     out([P_ORDER], "聖建様_注文書.pdf")
     out([P_TERMS], "聖建様_前提条件.pdf")

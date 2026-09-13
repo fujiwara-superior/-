@@ -29,8 +29,11 @@ PAGE = {
     "07_前提条件":     ("A1:C26", "portrait"),
 }
 
-# 角印の配置（用紙左上からの距離と一辺の長さ）
-SEAL_X_CM, SEAL_Y_CM, SEAL_CM = 17.3, 4.35, 2.3
+# 角印の配置。シート座標（A1の左上を原点とするcm）で指定します。
+# 印刷時は fitToWidth により約0.82倍に縮むため、用紙上の見え方は
+#   用紙上のcm = 1.083 + 0.82 × ここの値   （縦は 1.014 + 0.82 × 値）
+# になります。make_pdf.py が実際の用紙上の位置を表示するので、ずれたら確認してください。
+SEAL_X_CM, SEAL_Y_CM, SEAL_CM = 20.533, 4.983, 2.439
 
 
 def main():
@@ -57,14 +60,21 @@ def main():
         ws.print_options.horizontalCentered = True
 
     ws = wb["01_見積書"]
-    if os.path.exists(SEAL):
+    side = cm_to_EMU(SEAL_CM)
+    anchor = AbsoluteAnchor(
+        pos=XDRPoint2D(cm_to_EMU(SEAL_X_CM), cm_to_EMU(SEAL_Y_CM)),
+        ext=XDRPositiveSize2D(side, side),
+    )
+    if ws._images:
+        # ブックに入っている角印の位置・大きさだけを規定値に揃える
+        for img in ws._images:
+            img.width = img.height = None
+            img.anchor = anchor
+        print("角印の位置を調整しました（%.1fcm角）" % SEAL_CM)
+    elif os.path.exists(SEAL):
         img = XLImage(SEAL)
         img.width = img.height = None
-        side = cm_to_EMU(SEAL_CM)
-        img.anchor = AbsoluteAnchor(
-            pos=XDRPoint2D(cm_to_EMU(SEAL_X_CM), cm_to_EMU(SEAL_Y_CM)),
-            ext=XDRPositiveSize2D(side, side),
-        )
+        img.anchor = anchor
         ws.add_image(img)
         print("角印を配置しました:", SEAL)
     else:
