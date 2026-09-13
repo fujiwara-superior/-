@@ -21,8 +21,8 @@ def C(ws,r,c,v,*,b=False,fmt=None,fill=None,al=None,col=INK,sz=10,wrap=False,bd=
     if bd:x.border=BOX
     x.alignment=Alignment(horizontal=al or "left",vertical=va,wrap_text=wrap)
     return x
-def HDR(ws,row,vals,widths=None,h=22):
-    for i,v in enumerate(vals,1):
+def HDR(ws,row,vals,widths=None,h=22,start=1):
+    for i,v in enumerate(vals,start):
         x=ws.cell(row=row,column=i,value=v)
         x.font=Font(name=F,bold=True,size=9.5,color="FFFFFF"); x.fill=HDRF; x.border=BOX
         x.alignment=Alignment(horizontal="center",vertical="center",wrap_text=True)
@@ -228,8 +228,13 @@ for head,col,rows_ in BRK:
 C(ws,r,2,"差引",b=True,fill=SUBF,sz=11); C(ws,r,3,"▲1,400,000",al="right",b=True,fill=SUBF,sz=11,col=BAD)
 C(ws,r,4,"",fill=SUBF); C(ws,r,5,"8,000,000 − 1,400,000 ＝ 6,600,000",sz=9,col=MUT,fill=SUBF)
 r+=2
-NOTE=[("■ この表の使い方",NAVY),
-("単純な値引きではなく、次の3つの対価として金額が下がっていることをご説明いただけます。",MUT),
+NOTE=[("■ このシートは社内資料です（先方には提出しません）",BAD),
+("提出するのは 01_見積書 ／ 06_注文書 ／ 07_前提条件 の3点のみです。",MUT),
+("先方向けには「前回からの変更は受講中のランダム顔照合を外すことだけ」と説明し、",MUT),
+("下の④は見積書・注文書の上では「貴社特別値引き（特別値引き）」と表示しています。",MUT),
+("",None),
+("■ この表の使い方（社内の根拠整理）",NAVY),
+("単純な値引きではなく、次の3つの対価として金額が下がっていることを社内で説明できます。",MUT),
 ("　① 納品する教材が4科目減ること（成果物の減少）",MUT),
 ("　② 受講中のランダム照合を実装しないこと（機能の減少）",MUT),
 ("　③ 全額を前払いいただくこと（支払条件の対価）",MUT),
@@ -315,8 +320,8 @@ ws=wb.create_sheet("01_見積書",0)
 for col,w in zip("ABCDEFG",[3,20,20,16,16,18,3]): ws.column_dimensions[col].width=w
 ws["B2"]="御　見　積　書"; ws["B2"].font=Font(name=F,bold=True,size=22,color=NAVY)
 ws.merge_cells("B2:F2"); ws["B2"].alignment=Alignment(horizontal="center"); ws.row_dimensions[2].height=34
-C(ws,4,2,"見積番号",sz=9,col=MUT,bd=False); C(ws,4,3,"SP-2026-0002",sz=9,fill=YEL,col="0000FF",bd=False)
-C(ws,5,2,"発行日",sz=9,col=MUT,bd=False);   C(ws,5,3,"2026年9月12日",sz=9,fill=YEL,col="0000FF",bd=False)
+C(ws,4,2,"見積番号",sz=9,col=MUT,bd=False); C(ws,4,3,"SP-2026-0003",sz=9,fill=YEL,col="0000FF",bd=False)
+C(ws,5,2,"発行日",sz=9,col=MUT,bd=False);   C(ws,5,3,"2026年9月13日",sz=9,fill=YEL,col="0000FF",bd=False)
 C(ws,6,2,"有効期限",sz=9,col=MUT,bd=False); C(ws,6,3,"発行日より30日間",sz=9,fill=YEL,col="0000FF",bd=False)
 C(ws,8,2,"株式会社聖建　御中",b=True,sz=15,bd=False); ws.merge_cells("B8:D8")
 C(ws,9,2,"〒475-0805　愛知県半田市浜田町1丁目7番地",sz=9,col=MUT,bd=False); ws.merge_cells("B9:D9")
@@ -325,6 +330,20 @@ for i,val in enumerate(["〒464-0075　名古屋市千種区内山3-18-10","TEL 
                         "登録番号 T9180001048541","担当　藤原"]):
     C(ws,9+i,5,val,sz=8.5,col=MUT if i<3 else INK,bd=False)
     ws.merge_cells(start_row=9+i,start_column=5,end_row=9+i,end_column=6)
+# 角印（quote/seal.png があれば会社名の右に重ねる）
+import os
+_SEAL=os.path.join(os.path.dirname(os.path.abspath(__file__)),"seal.png")
+if os.path.exists(_SEAL):
+    from openpyxl.drawing.image import Image as XLImage
+    from openpyxl.utils.units import cm_to_EMU
+    from openpyxl.drawing.spreadsheet_drawing import AbsoluteAnchor
+    from openpyxl.drawing.xdr import XDRPoint2D, XDRPositiveSize2D
+    _img=XLImage(_SEAL)
+    _side=cm_to_EMU(2.3); _img.width=_img.height=None
+    _img.anchor=AbsoluteAnchor(pos=XDRPoint2D(cm_to_EMU(17.3),cm_to_EMU(4.35)),
+                               ext=XDRPositiveSize2D(_side,_side))
+    ws.add_image(_img)
+
 C(ws,14,2,"下記のとおりお見積り申し上げます。",sz=10,bd=False); ws.merge_cells("B14:F14")
 C(ws,16,2,"件名",b=True,fill=SUBF,al="center")
 C(ws,16,3,"建設業 特別教育 eラーニング配信システム 構築 および 教材制作（6科目）一式",wrap=True)
@@ -336,24 +355,23 @@ C(ws,18,2,"",fill=SUBF)
 C(ws,18,3,f'="消費税 ¥"&TEXT({TAX_A},"#,##0")&"　／　税込 ¥"&TEXT({GT_A},"#,##0")',sz=11,col=MUT,al="left")
 ws.merge_cells("C18:F18"); ws.row_dimensions[18].height=20
 rows=[("納期","システム：ご発注後 約4か月　／　教材：第1次3科目 約4か月、第2次3科目 約7か月"),
-      ("納入場所","貴社ご指定のAWS環境"),
+      ("納入場所","貴社ご指定のサーバー環境"),
       ("検収条件","納品後14日以内に貴社にて検収。期間内にご連絡なき場合は検収完了とみなします。"),
-      ("支払条件","ご発注時に全額を一括でお支払いください。本お見積りは当該条件を前提とした金額です。"),
-      ("備考","月額費用・AWS利用料・ゼウス利用料・教材の改訂費は含みません（シート05）。前回お見積りからの増減はシート02をご参照ください。")]
+      ("支払条件","ご発注時に全額を一括でお支払いください。")]
 r=20
 for lbl,val in rows:
     C(ws,r,2,lbl,b=True,fill=SUBF,al="center")
     C(ws,r,3,val,wrap=True,sz=9.5)
     ws.merge_cells(start_row=r,start_column=3,end_row=r,end_column=6)
-    ws.row_dimensions[r].height=42 if lbl in("納期","備考","支払条件") else 30; r+=1
+    ws.row_dimensions[r].height=42 if lbl=="納期" else 28; r+=1
 r+=1
 C(ws,r,2,"内訳",b=True,col=NAVY,bd=False,sz=11); r+=1
-HDR(ws,r,["","区分","内容","","数量","金額（税抜）"],h=20)
+HDR(ws,r,["区分","内容","","数量","金額（税抜）"],h=20,start=2)
 ws.merge_cells(start_row=r,start_column=3,end_row=r,end_column=4); r+=1
 C(ws,r,2,"システム開発",b=True,al="center")
 C(ws,r,3,"配信基盤・視聴整合性・本人確認・修了証発行・決済",sz=9.5)
 ws.merge_cells(start_row=r,start_column=3,end_row=r,end_column=4)
-C(ws,r,5,f"={MD_A}",fmt=MD,al="center"); C(ws,r,6,f"={SYS_A}",fmt=YEN,al="right"); r+=1
+C(ws,r,5,"一式",al="center"); C(ws,r,6,f"={SYS_A}",fmt=YEN,al="right"); r+=1
 C(ws,r,2,"教材制作",b=True,al="center")
 C(ws,r,3,"特別教育 学科教材 6科目",sz=9.5)
 ws.merge_cells(start_row=r,start_column=3,end_row=r,end_column=4)
@@ -361,7 +379,7 @@ C(ws,r,5,f"={MATCNT}",fmt='0"科目"',al="center"); C(ws,r,6,f"={MATN}",fmt=YEN,
 C(ws,r,2,"小計",b=True,al="center",fill=LTF); C(ws,r,3,"（税抜）",sz=9,col=MUT,fill=LTF)
 C(ws,r,4,"",fill=LTF); C(ws,r,5,"",fill=LTF)
 C(ws,r,6,f"={SUB_A}",fmt=YEN,al="right",b=True,fill=LTF); r+=1
-C(ws,r,2,"調整",b=True,al="center"); C(ws,r,3,"全額一括前払いによる調整",sz=9,col=OK)
+C(ws,r,2,"値引",b=True,al="center"); C(ws,r,3,"貴社特別値引き",sz=9.5,col=OK,b=True)
 C(ws,r,4,""); C(ws,r,5,"")
 C(ws,r,6,f"={ADJ_A}",fmt=YEN,al="right",b=True,col=OK); r+=1
 C(ws,r,2,"差引小計",b=True,al="center"); C(ws,r,3,"（税抜）",sz=9,col=MUT)
@@ -375,8 +393,7 @@ C(ws,r,6,f"={GT_A}",fmt=YEN,al="right",b=True,fill=SUBF,sz=11)
 ws.row_dimensions[r].height=22; r+=2
 C(ws,r,2,"■ 別途ご負担いただく費用（いずれも税抜）",b=True,col=NAVY,bd=False,sz=10); r+=1
 for t in ["・月額 保守・運用サービス 60,000円 ＋ 法令改正監視・通知サービス 20,000円　合計 80,000円／月",
- "・AWS 利用料　月額 22,800円程度（推奨構成・受講者数により変動）。聖建様名義でのご契約を推奨します",
- "・株式会社ゼウス　月額 3,000円 ＋ 決済手数料 最大3.5%。聖建様が直接ご契約いただきます",
+ "・サーバー利用料　月額 20,000円程度（受講者数により変動）。貴社名義でのご契約を推奨します",
  "・法令改正にともなう教材の改訂　1科目 300,000円（都度発注）"]:
     C(ws,r,2,t,sz=9.5,bd=False); ws.merge_cells(start_row=r,start_column=2,end_row=r,end_column=6); r+=1
 
@@ -405,11 +422,11 @@ ws.merge_cells("C15:F15"); ws.row_dimensions[15].height=30
 C(ws,16,2,"根拠見積",b=True,fill=SUBF,al="center")
 C(ws,16,3,"='01_見積書'!C4&\"（\"&'01_見積書'!C5&\" 発行）\"",wrap=True,sz=9.5)
 ws.merge_cells("C16:F16")
-HDR(ws,18,["","区分","内容","数量","","金額（税抜）"],h=20)
+HDR(ws,18,["区分","内容","数量","","金額（税抜）"],h=20,start=2)
 r=19; o0=r
 C(ws,r,2,"システム開発",b=True,al="center")
 C(ws,r,3,"配信基盤・視聴整合性・本人確認・修了証発行・決済",sz=9,wrap=True)
-C(ws,r,4,f"={MD_A}",fmt=MD,al="center"); C(ws,r,5,"")
+C(ws,r,4,"一式",al="center"); C(ws,r,5,"")
 C(ws,r,6,f"={SYS_A}",fmt=YEN,al="right"); ws.row_dimensions[r].height=28; r+=1
 C(ws,r,2,"教材制作",b=True,al="center")
 C(ws,r,3,"特別教育 学科教材 6科目",sz=9,wrap=True)
@@ -419,7 +436,7 @@ o1=r-1
 C(ws,r,2,"小計（税抜）",b=True,fill=LTF)
 for c in (3,4,5): C(ws,r,c,"",fill=LTF)
 C(ws,r,6,f"=SUM(F{o0}:F{o1})",fmt=YEN,al="right",b=True,fill=LTF); osub=r; r+=1
-C(ws,r,2,"全額一括前払いによる調整",b=True,col=OK); C(ws,r,3,"",sz=9); C(ws,r,4,""); C(ws,r,5,"")
+C(ws,r,2,"特別値引き",b=True,col=OK); C(ws,r,3,"",sz=9); C(ws,r,4,""); C(ws,r,5,"")
 C(ws,r,6,f"={ADJ_A}",fmt=YEN,al="right",col=OK,b=True); oadj=r; r+=1
 C(ws,r,2,"消費税",b=True); C(ws,r,3,"",sz=9)
 C(ws,r,4,f"={Q(f'D{tax}')}",fmt="0%",al="center"); C(ws,r,5,"")
@@ -429,14 +446,13 @@ for c in (3,4,5): C(ws,r,c,"",fill=SUBF)
 C(ws,r,6,f"=F{osub}+F{oadj}+F{otax}",fmt=YEN,al="right",b=True,fill=SUBF,sz=13)
 ws.row_dimensions[r].height=26; r+=2
 for lbl,val in [("納期","システム：ご発注後 約4か月　／　教材：第1次3科目 約4か月、第2次3科目 約7か月"),
-                ("納入場所","貴社ご指定のAWS環境"),
+                ("納入場所","貴社ご指定のサーバー環境"),
                 ("検収条件","納品後14日以内に検収。期間内にご連絡なき場合は検収完了とみなします。"),
-                ("支払条件","本注文書の発行時に、上記ご注文金額の全額を一括でお支払いいたします。"),
-                ("別途契約","月額の保守・運用サービスおよび法令改正監視・通知サービス（合計80,000円／月・税抜）は別途契約とします。AWS利用料および株式会社ゼウスとの契約は発注者が直接行うものとします。")]:
+                ("支払条件","本注文書の発行時に、上記ご注文金額の全額を一括でお支払いいたします。")]:
     C(ws,r,2,lbl,b=True,fill=SUBF,al="center")
     C(ws,r,3,val,wrap=True,sz=9.5)
     ws.merge_cells(start_row=r,start_column=3,end_row=r,end_column=6)
-    ws.row_dimensions[r].height=44 if lbl in("納期","別途契約") else 28; r+=1
+    ws.row_dimensions[r].height=42 if lbl=="納期" else 28; r+=1
 
 # =====================================================================
 # 07_前提条件
@@ -445,34 +461,26 @@ ws=wb.create_sheet("07_前提条件")
 ws.column_dimensions["A"].width=3; ws.column_dimensions["B"].width=30; ws.column_dimensions["C"].width=88
 ws["B1"]="見積の前提条件"; ws["B1"].font=Font(name=F,bold=True,size=15,color=NAVY); ws.row_dimensions[1].height=24
 BLK=[("■ 1. 本見積に含まれるもの",NAVY,[
- ("システム開発","配信基盤、視聴整合性、登録時の本人確認、受講開始時の顔照合、確認問題、修了判定、修了証の発行、決済（ゼウス連携）、受講者ポータル、運営管理画面の基本機能。"),
+ ("システム開発","配信基盤、視聴整合性、登録時の本人確認、受講開始時の顔照合、確認問題、修了判定、修了証の発行、決済機能、受講者ポータル、運営管理画面の基本機能。"),
  ("教材制作","特別教育 学科教材 6科目。構成台本、スライド、図解、ナレーション、バーチャル講師映像、章末問題・修了確認テストの作成。"),
  ("修了証","修了証PDFの自動発行、再発行、受講者によるダウンロード。記載項目は受講者氏名、科目、法定学科時間、有効視聴時間、テスト得点、講師名、発行者、証明書番号。"),
- ("AWS環境の構築","本番運用に耐える構成で構築します。RDS PostgreSQL は Multi-AZ とし、自動バックアップとPITRを有効にします。"),
+ ("サーバー環境の構築","本番運用に耐える構成で構築します。データベースは冗長化し、日次のバックアップを取得します。"),
 ]),
-("■ 2. 今回の範囲から外したもの",BAD,[
- ("受講中のランダム顔照合","受講の途中で予告なく撮影し、本人が継続して受講しているかを確認する機能。登録時の本人確認と受講開始時の照合は実装するため、替え玉への防御がゼロになるわけではありません。将来の追加実装を想定した設計としておきます。"),
- ("教材 4科目","低圧電気取扱業務、第2種酸素欠乏危険作業、高所作業車、玉掛け。第2次発注でのご検討をお願いします。"),
- ("企業管理ポータル","従業員の一括申込、進捗確認、修了者一覧のCSV出力。"),
- ("その他","運営管理画面の拡張、質疑応答機能、修了証の真正性検証ページ（QRコード）。"),
-]),
-("■ 3. 本見積に含まれないもの（別途）",BAD,[
+("■ 2. 本見積に含まれないもの（別途）",BAD,[
+ ("受講中のランダム顔照合","受講の途中で予告なく撮影し、本人が継続して受講しているかを確認する機能は含みません。登録時の本人確認と受講開始時の顔照合は実装します。"),
  ("月額サービス","保守・運用サービス 60,000円／月、法令改正監視・通知サービス 20,000円／月。合計80,000円／月（税抜）。別途契約とします。"),
- ("AWS 利用料","聖建様のご負担とします。推奨構成で月額22,800円程度（税抜）。聖建様名義でのご契約を推奨します。"),
- ("ゼウス利用料","初期費用無料、月額3,000円、決済手数料 最大3.5%。聖建様が直接ご契約いただきます。最新の条件はゼウス社へご確認ください。"),
+ ("サーバー利用料","貴社のご負担とします。月額20,000円程度（税抜）。貴社名義でのご契約を推奨します。"),
  ("教材の改訂・追加","1科目300,000円（都度発注）。"),
- ("教材の監修","内容の監修は聖建様の社内有資格者が担われる前提です。"),
- ("実技教育","実技はオンラインで代替できません。受講者の所属事業者が実施する前提です。"),
+ ("教材の監修","内容の監修は貴社の社内有資格者が担われる前提です。"),
 ]),
-("■ 4. 責任の分担",NAVY,[
+("■ 3. 責任の分担",NAVY,[
  ("弊社が保証すること","教材が安全衛生特別教育規程の定める科目・範囲・時間を満たすこと（監修者名を明示）。受講記録を証明可能な形で保存・出力できること。"),
  ("弊社が保証しないこと","受講者の所属事業者が負う労働安全衛生法第59条第3項の実施義務が果たされたこと。労働災害が発生しないこと。行政機関が個別の事案において本教材を適法と判断すること。"),
- ("法令改正への対応","弊社は官報・通達を監視し、該当しうる改正を自動でメール通知します。その改正が教材のどこに影響するかの判断は、聖建様の監修者が行うものとします。"),
+ ("法令改正への対応","弊社は官報・通達を監視し、該当しうる改正を自動でメール通知します。その改正が教材のどこに影響するかの判断は、貴社の監修者が行うものとします。"),
 ]),
-("■ 5. 金額の前提",NAVY,[
- ("人日単価","50,000円／人日（シート03のC4で変更可能）。"),
- ("教材制作単価","300,000円／科目。聖建様ご指定の単価です。改訂・追加時も同額を適用します。"),
- ("支払条件","ご発注時に全額を一括でお支払いいただくことを前提とした金額です。分割払いの場合は金額が変わります。"),
+("■ 4. 金額の前提",NAVY,[
+ ("教材制作単価","300,000円／科目。貴社ご指定の単価です。改訂・追加時も同額を適用します。"),
+ ("支払条件","ご発注時に全額を一括でお支払いいただくことを前提とした金額です。"),
  ("有効期限","発行日より30日間。"),
 ])]
 r=3
@@ -490,13 +498,13 @@ wb._sheets=[wb[n] for n in ["01_見積書","02_増減内訳","03_見積明細","
 
 # ---- 印刷設定（1ページに収める） ----
 PAGE={
- "01_見積書":      ("A1:F41","portrait"),
+ "01_見積書":      ("A1:F38","portrait"),
  "02_増減内訳":    ("A1:E41","portrait"),
  "03_見積明細":    ("A1:F44","landscape"),
  "04_教材科目":    ("A1:F24","landscape"),
  "05_月額・別途費用":("A1:D30","landscape"),
- "06_注文書":      ("A1:F31","portrait"),
- "07_前提条件":    ("A1:C33","portrait"),
+ "06_注文書":      ("A1:F30","portrait"),
+ "07_前提条件":    ("A1:C30","portrait"),
 }
 for name,(area,orient) in PAGE.items():
     w=wb[name]
