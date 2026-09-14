@@ -21,8 +21,8 @@ SEAL = os.path.join(HERE, "seal.png")
 # 印刷範囲は各シートの実データの下端まで（先方提出の3枚は特に切れると致命的）
 PAGE = {
     "01_見積書":       ("A1:F38", "portrait"),
-    "02_増減内訳":     ("A1:E50", "portrait"),
-    "03_見積明細":     ("A1:F45", "landscape"),
+    "02_増減内訳":     ("A1:E55", "portrait"),
+    "03_見積明細":     ("A1:F46", "landscape"),
     "04_教材科目":     ("A1:F24", "landscape"),
     "05_月額・別途費用": ("A1:D30", "landscape"),
     "06_注文書":       ("A1:F35", "portrait"),
