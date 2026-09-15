@@ -5,7 +5,9 @@ set -e
 cd "$(dirname "$0")/.."
 node contract/build_answer.js
 node contract/build_terms.js
+node contract/build_price.js
 soffice --headless --convert-to pdf --outdir contract \
         "contract/聖建様_確認事項へのご回答.docx" \
-        "contract/聖建様_ご契約条件に関する申し入れ.docx" >/dev/null 2>&1
-echo "書き出し: 確認事項へのご回答 / ご契約条件に関する申し入れ（各 docx・pdf）"
+        "contract/聖建様_ご契約条件に関する申し入れ.docx" \
+        "contract/聖建様_お見積金額に関するご説明.docx" >/dev/null 2>&1
+echo "書き出し: 3件（各 docx・pdf）"
